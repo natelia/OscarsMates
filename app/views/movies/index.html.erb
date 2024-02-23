@@ -1,2 +1,10 @@
-<h1>Hi Rails!</h1>
-<p>I'm excited with building this app!</p>
+<h1>Movies</h1>
+
+<ul>
+  <% @movies.each do |movie| %>
+    <li>
+      <%= movie.title %>
+    </li>
+  <% end %>
+</ul>
+
