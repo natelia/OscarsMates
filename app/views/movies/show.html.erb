@@ -1,0 +1,22 @@
+<h2><%= @movie.title %></h2>
+
+<h1><%= @movie.english_title %></h1>
+
+<h4><%= @movie.where_to_watch %></h4>
+
+<p><%= @movie.runtime %></p>
+
+<h3><%= @movie.rating %></h3>
+
+<p><%= @movie.url %></p>
+<p><%= @movie.picture_url %></p>
+
+<ul>
+    <li> <%= link_to "Edit", edit_movie_path(@movie) %> </li>
+    <li> <%= link_to "Home Page", root_path %> </li>
+    <li> <%= link_to "Destroy", movie_path(@movie), data: {
+        turbo_method: :delete,
+        turbo_confirm: "Are you sure?"
+    }%> </li>
+</ul>
+

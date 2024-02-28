@@ -1,0 +1,46 @@
+<%= form_with model: movie do |form| %>
+  <div>
+    <%= form.label :title %><br>
+    <%= form.text_field :title%><br>
+    <% movie.errors.full_messages_for(:title).each do |message| %>
+    <div> <%= message %></div>
+    <% end %>
+  </div>
+
+  <div>
+    <%= form.label :english_title %><br>
+    <%= form.text_field :english_title %><br>
+    <% movie.errors.full_messages_for(:english_title).each do | message | %>
+    <div> <%= message %>
+    <% end %>
+  </div>
+
+  <div>
+    <%= form.label :where_to_watch %><br>
+    <%= form.text_field :where_to_watch %>
+    <% movie.errors.full_messages_for(:where_to_watch).each do |message| %>
+    <div> <%= message %></div>
+    <% end %>
+  </div>
+
+  <div>
+    <%= form.label :runtime %><br>
+    <%= form.text_field :runtime %>
+    <% movie.errors.full_messages_for(:runtime).each do |message| %>
+    <div> <%= message %></div>
+    <% end %>
+  </div>
+
+  <div>
+    <%= form.label :rating %><br>
+    <%= form.text_field :rating %>
+    <% movie.errors.full_messages_for(:rating).each do |message| %>
+    <div> <%= message %></div>
+    <% end %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+ 
+<% end %>  
