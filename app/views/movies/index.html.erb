@@ -18,7 +18,7 @@
 
 <body class="p-3 text-dark-emphasis bg-dark-subtle">
   <div class="container text-center">
-    <h1>Movies</h1>
+    <h1>Oscars Mates</h1>
     <nav class="navbar bg-body-tertiary">
   <div class="container-fluid">
     <a class="navbar-brand">Look for a movie!</a>
@@ -29,19 +29,30 @@
   </div>
 </nav>
 
-    <div class="row">
-      <div class="col">
-        <ul class="list-group">
-          <% @movies.each do |movie| %>
-            <li class="list-group-item">
-              <%= link_to movie.title, movie %>
-            </li>
-          <% end %>
-        </ul>
-        <%= link_to "New Movie", new_movie_path, class: "btn btn-outline-dark mt-3" %>
+
+
+<div class="row">
+  <% @movies.each do |movie| %>
+    <div class="col">
+      <div class="card" style="width: 30rem;">
+        <img src="..." class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title"><%= movie.title %></h5>
+          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+          <a href="#" class="btn btn-primary">Go somewhere</a>
+          <%= link_to movie.title, movie %>
+        </div>
       </div>
     </div>
-  </div>
+  <% end %>
+</div>
+<%= link_to "New Movie", new_movie_path, class: "btn btn-outline-dark mt-3" %>
+
+
+
+
+
+
 
 </body>
 </html>
