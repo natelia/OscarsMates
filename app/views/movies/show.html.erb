@@ -31,7 +31,7 @@
           <div class="card border-dark mb-3" style="max-width: 18rem;">
             <div class="card-header">Where to watch?</div>
             <div class="card-body">
-              <h5 class="card-title"><p><%= @movie.runtime %></p></h5>  
+              <h5 class="card-title"><p><%= @movie.where_to_watch %></p></h5>  
             </div>
           </div>
         </div>
@@ -40,7 +40,7 @@
           <div class="card border-dark mb-3" style="max-width: 18rem;">
             <div class="card-header">Rating (0-10)</div>
             <div class="card-body">
-              <h5 class="card-title"><h4><%= @movie.where_to_watch %></h4></h5>  
+              <h5 class="card-title"><h4><%= @movie.rating %></h4></h5>  
             </div>
           </div>
         </div>
@@ -51,7 +51,7 @@
           <div class="card border-dark mb-3" style="max-width: 18rem;">
             <div class="card-header">Runtime (in mins)</div>
             <div class="card-body">
-              <h5 class="card-title"><h3><%= @movie.rating %></h3></h5>  
+              <h5 class="card-title"><h3><%= @movie.runtime %></h3></h5>  
             </div>
           </div>
         </div>
