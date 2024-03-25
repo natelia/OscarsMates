@@ -57,6 +57,29 @@
               </div>
             <% end %>
           </div>
+
+        
+          <div class="col">
+            <%= form.label :url, class: "form-label" %><br>
+            <%= form.text_field :url, id: "rating", class: "form-control", placeholder: "URL" %><br>
+            <% movie.errors.full_messages_for(:url).each do |message| %>
+              <div class="invalid-feedback">
+                <%= message %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+
+         <div class="row mb-3">
+          <div class="col">
+            <%= form.label :picture_url, class: "form-label" %><br>
+            <%= form.text_field :picture_url, id: "picture_url", class: "form-control", placeholder: "Picture URL" %><br>
+            <% movie.errors.full_messages_for(:picture_url).each do |message| %>
+              <div class="invalid-feedback">
+                <%= message %>
+              </div>
+            <% end %>
+          </div>
         </div>
 
 

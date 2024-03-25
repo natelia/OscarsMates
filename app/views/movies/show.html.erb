@@ -1,61 +1,79 @@
-<p><%= @movie.url %></p>
-<p><%= @movie.picture_url %></p>
-
 <div class="container text-center">
   <div class = 'row mt-3 justify-content-center'>
 
     <div class = 'col'>
-
       <div class="row mb-3">
-        <div class="col">
+        <div class="col-md-6">
           <div class="card border-dark mb-3" style="max-width: 18rem;">
             <div class="card-header">Movie Title</div>
             <div class="card-body">
-              <h5 class="card-title"><h2><%= @movie.title %></h2></h5>  
+              <h2 class="card-title"><%= @movie.title %></h2> 
             </div>
           </div>
         </div>
 
-        <div class="col">
+        <div class="col-md-6">
           <div class="card border-dark mb-3" style="max-width: 18rem;">
             <div class="card-header">English Movie Title</div>
             <div class="card-body">
-              <h5 class="card-title"><h1><%= @movie.english_title %></h1></h5>  
+              <h3 class="card-title"><%= @movie.english_title %></h3> 
             </div>
           </div>
         </div>
       </div>
 
       <div class="row mb-3">
-        <div class="col">
+        <div class="col-md-6">
           <div class="card border-dark mb-3" style="max-width: 18rem;">
             <div class="card-header">Where to watch?</div>
             <div class="card-body">
-              <h5 class="card-title"><p><%= @movie.where_to_watch %></p></h5>  
+              <p class="card-title"><%= @movie.where_to_watch %></p>  
             </div>
           </div>
         </div>
 
-        <div class="col">
+        <div class="col-md-6">
           <div class="card border-dark mb-3" style="max-width: 18rem;">
             <div class="card-header">Rating (0-10)</div>
             <div class="card-body">
-              <h5 class="card-title"><h4><%= @movie.rating %></h4></h5>  
+              <h4 class="card-title"><%= @movie.rating %></h4>  
             </div>
           </div>
         </div>
       </div>
 
-      <div class="row mb-3 justify-content-center">
+      <div class="row mb-3">
         <div class="col-md-6">
           <div class="card border-dark mb-3" style="max-width: 18rem;">
             <div class="card-header">Runtime (in mins)</div>
             <div class="card-body">
-              <h5 class="card-title"><h3><%= @movie.runtime %></h3></h5>  
+              <h3 class="card-title"><%= @movie.runtime %></h3> 
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="card border-dark mb-3" style="max-width: 18rem;">
+            <div class="card-header">See here</div>
+            <div class="card-body">
+              <p class="card-title"><a href="<%= @movie.url %>" target="_blank"><%= @movie.url %></a></p>  
             </div>
           </div>
         </div>
       </div>
+
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <div class="card border-dark mb-3">
+            <div class="card-header">Movie Picture</div>
+            <div class="card-body p-0">
+              <img src="<%= @movie.picture_url %>" class="card-img-top" alt="Movie Picture" style="width: 50%; height: auto;">
+            </div>
+          </div>
+        </div>
+      </div>
+
+
 
       <ul>
         <ul class="list-group list-group-flush">
@@ -69,6 +87,5 @@
       </ul>
 
     </div>
-
   </div>
 </div>
