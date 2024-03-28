@@ -1,4 +1,9 @@
 class Movie < ApplicationRecord
+
+  def self.released
+    Movie.where("released_on < ?", Time.now).order("released_on desc")
+  end
+
   validates :title, presence: true
   validates :english_title, presence: true
   validates :where_to_watch, presence: true
