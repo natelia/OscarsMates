@@ -6,9 +6,4 @@ class Movie < ApplicationRecord
   validates :rating, presence: true, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 10 }
   validates :url, presence: true
   validates :picture_url, presence: true
-
-  def self.released
-    Movie.where("released_on < ?", Time.now).order("released_on desc")
-  end
-
 end
