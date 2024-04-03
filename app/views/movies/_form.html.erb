@@ -1,4 +1,8 @@
 <%= form_with model: movie do |form| %>
+
+
+<%= render "shared/errors", object: movie %>
+
   <div class="container text-center">
     <div class = 'row mt-3'>
       <div class = 'col'>
@@ -75,18 +79,6 @@
             <%= form.label :picture_url, class: "form-label" %><br>
             <%= form.text_field :picture_url, id: "picture_url", class: "form-control", placeholder: "Picture URL" %><br>
             <% movie.errors.full_messages_for(:picture_url).each do |message| %>
-              <div class="invalid-feedback">
-                <%= message %>
-              </div>
-            <% end %>
-          </div>
-        </div>
-
-                 <div class="row mb-3">
-          <div class="col">
-            <%= form.label :released_on, class: "form-label" %><br>
-            <%= form.text_field :released_on, id: "released_on", class: "form-control", placeholder: "Released On" %><br>
-            <% movie.errors.full_messages_for(:released_on).each do |message| %>
               <div class="invalid-feedback">
                 <%= message %>
               </div>
