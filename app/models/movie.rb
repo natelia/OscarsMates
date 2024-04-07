@@ -1,4 +1,6 @@
 class Movie < ApplicationRecord
+  has_many :reviews
+  
   validates :title, presence: true
   validates :english_title, presence: true
   validates :where_to_watch, presence: true
