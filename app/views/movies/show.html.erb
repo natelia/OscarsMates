@@ -75,6 +75,8 @@
 
       <ul>
         <ul class="list-group list-group-flush">
+          <li class="list-group-item"><li> <%= link_to "Write Review", new_movie_review_path(@movie),
+                                                class: "review"%>
           <li class="list-group-item"><li> <%= link_to pluralize(@movie.reviews.size, "review"), movie_reviews_path(@movie)%> </li>
           <li class="list-group-item"><li> <%= link_to "Edit", edit_movie_path(@movie) %> </li></li>
           <li class="list-group-item"><li> <%= link_to "Home Page", root_path %> </li></li>
