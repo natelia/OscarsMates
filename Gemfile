@@ -31,6 +31,7 @@ gem "jbuilder"
 
 gem 'cssbundling-rails'
 
+gem 'bootstrap', '~> 5.1.3'
 
 gem 'jsbundling-rails'
 

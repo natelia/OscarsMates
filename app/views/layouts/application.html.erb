@@ -13,10 +13,20 @@
   </head>
 
   <body>
+    <header>
+      <h1>Oscars Mates</h1>
+    </header>
+
     <div class = "content">
       <%= render "layouts/flash" %>
-
     <%= yield %>
     </div>
+
+    <footer>
+      <p>
+        Copyright &copy; <%= Time.now.year %>
+        <%= link_to "The Pragmatic Studio", "https://pragmaticstudio.com" %>
+      </p>
+    </footer>
   </body>
 </html>
