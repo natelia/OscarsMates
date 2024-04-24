@@ -1,12 +1,10 @@
 <!DOCTYPE html>
 <html>
   <head>
-    
     <title>OscarsMates</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
@@ -14,12 +12,17 @@
 
   <body>
     <header>
+      <ul class="right">
+        <li>
+          <%= link_to "Sign up", new_user_path, class: "button" %>
+        </li>
+      </ul>
       <h1>Oscars Mates</h1>
     </header>
 
     <div class = "content">
       <%= render "layouts/flash" %>
-    <%= yield %>
+      <%= yield %>
     </div>
 
     <footer>
