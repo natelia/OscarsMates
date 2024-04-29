@@ -33,6 +33,13 @@ class UsersController < ApplicationController
     end
   end
 
+  def destroy
+    @user = User.find(params[:id])
+    @user.destroy
+    redirect_to movies_url, status: :see_other,
+        alert: 'Account successfully deleted!'
+  end
+
 private
 
   def user_params
