@@ -1,35 +1,24 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>OscarsMates</title>
+    <title>Super-Heroic Flix</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
-    <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
   </head>
 
   <body>
-    <header>
-      <ul class="right">
-        <li>
-          <%= link_to "Sign up", new_user_path, class: "button" %>
-        </li>
-      </ul>
-      <h1>Oscars Mates</h1>
-    </header>
+    <%= render "layouts/header" %>
 
-    <div class = "content">
+    <div class="content">
       <%= render "layouts/flash" %>
+
       <%= yield %>
     </div>
 
-    <footer>
-      <p>
-        Copyright &copy; <%= Time.now.year %>
-        <%= link_to "The Pragmatic Studio", "https://pragmaticstudio.com" %>
-      </p>
-    </footer>
+    <%# <%= render "layouts/footer" %> %>
   </body>
 </html>
