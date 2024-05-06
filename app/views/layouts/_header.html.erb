@@ -1,7 +1,7 @@
 <header>
   <ul class="right">
     <li>
-      <%= User.find(session[:user_id]).name %>
+      <%= link_to current_user.name, current_user %>
       <%= link_to "Sign In", signin_path, class: "button"%>
       <%= link_to "Sign up", new_user_path, class: "button"%>
       <%= link_to "Mates", users_path, class: "button"%>
