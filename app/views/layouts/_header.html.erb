@@ -6,11 +6,14 @@
     <li>
       <%= link_to current_user.name, current_user %>
       <%= link_to "Account Settings", edit_user_path(current_user)%>
+      <%= link_to "Sign Out", session_path, 
+                  data: {turbo_method: :delete },
+                  class: "button" %>
     </li>
     <% else %>
     <li>
       <%= link_to "Sign In", signin_path, class: "button"%>
-      <%= link_to "Sign up", new_user_path, class: "button"%>
+      <%= link_to "Sign Up", new_user_path, class: "button"%>
     </li>
     <% end %>
   </ul>
