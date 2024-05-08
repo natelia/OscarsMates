@@ -1,0 +1,17 @@
+<header>
+  <ul class="right">
+    <h1>Oscars Mates</h1>
+    <%= link_to "Mates", users_path, class: "button"%>
+    <% if current_user %>
+    <li>
+      <%= link_to current_user.name, current_user %>
+      <%= link_to "Account Settings", edit_user_path(current_user)%>
+    </li>
+    <% else %>
+    <li>
+      <%= link_to "Sign In", signin_path, class: "button"%>
+      <%= link_to "Sign up", new_user_path, class: "button"%>
+    </li>
+    <% end %>
+  </ul>
+</header>
