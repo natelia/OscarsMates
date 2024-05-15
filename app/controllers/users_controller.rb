@@ -46,9 +46,7 @@ private
 
   def require_correct_user
     @user = User.find_by(params[:id])
-    unless current_user == @user
-      redirect_to root_url, status: :see_other
-    end
+    redirect_to root_url, status: :see_other unless current_user?(@user)
   end
 
   def user_params
