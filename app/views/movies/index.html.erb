@@ -43,7 +43,12 @@
     </div>
   <% end %>
 </div>
-<%= link_to "New Movie", new_movie_path, class: "btn btn-outline-dark mt-3" %>
+
+<% if current_user_admin? %>
+  <section class= "admin">
+    <%= link_to "New Movie", new_movie_path, class: "btn btn-outline-dark mt-3" %>
+  </section>
+<% end %>
  </div>
 </body>
 </html> 
