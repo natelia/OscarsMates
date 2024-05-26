@@ -14,7 +14,7 @@ class ReviewsController < ApplicationController
 
     if @review.save
       redirect_to movie_reviews_path(@movie),
-                  notice: "Thanks for your review!"
+                  notice: 'Thanks for your review!'
     else
       render :new, status: :unprocessable_entity
     end
