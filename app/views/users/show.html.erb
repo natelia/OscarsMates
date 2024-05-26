@@ -6,6 +6,24 @@
   <h1><%= @user.name %></h1>
   <h2><%= mail_to(@user.email) %></h2>
             <li class="list-group-item"><li> <%= link_to "Home Page", root_path %> </li></li>
+        
+<%  if @reviews.present? %>
+  <h3>Reviews</h3>
+  <%@reviews.each do |review| %>
+  <div class= "review" >
+    <span class= "title">
+      <%= link_to review.movie.title, review.movie%>
+    <%= pluralize(review.stars, 'star') %>
+    </span>
+    <span class="date">
+      <%=time_ago_in_words(review.created_at) %> ago
+    </span>
+    <p>
+      <%= review.comment %>
+    </p>
+    </div>
+    <% end %>
+    <%end%> 
 
 <% if current_user?(@user)%>
   <div class="actions">
