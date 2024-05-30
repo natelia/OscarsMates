@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resources :favourites
+  resources :favorites
   resources :users
   root 'movies#index'
 
