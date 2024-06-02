@@ -8,6 +8,7 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
+    @reviews = @user.reviews
   end
 
   def new
@@ -39,10 +40,10 @@ class UsersController < ApplicationController
     @user.destroy
     session[:user_id] = nil
     redirect_to movies_url, status: :see_other,
-        alert: 'Account successfully deleted!'
+      alert: 'Account successfully deleted!'
   end
 
-private
+  private
 
   def require_correct_user
     @user = User.find_by(params[:id])
