@@ -25,6 +25,13 @@
     <% end %>
     <%end%> 
 
+    <% if @favorite_movies.present?%>
+      <h3>Mate's Favorites:</h3>
+        <% @favorite_movies.each do |movie| %>
+          <li><%= link_to movie.title, movie%></li>
+        <% end %>
+    <% end %>
+
 <% if current_user?(@user)%>
   <div class="actions">
     <%= link_to "Edit Account", edit_user_path(@user),
