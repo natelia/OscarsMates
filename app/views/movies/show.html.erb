@@ -91,6 +91,16 @@
         <%= link_to pluralize(@movie.reviews.size, "review"),
                 movie_reviews_path(@movie) %>
       </div>
+      
+      <% if current_user %>
+        <div class="faves">
+           <%=button_to "♥️Fave", movie_favorites_path(@movie)%>
+        </div>
+        <div class="count">
+            <%= @fans.size%>
+        </div>
+      <% end %>
+    
 
       <ul>
         <ul class="list-group list-group-flush">
