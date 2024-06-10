@@ -62,6 +62,19 @@
         </div>
       </div>
 
+       <aside>
+        <% if @fans.present? %>
+          <h4>Mates who liked: </h4>
+          <ul>
+            <% @fans.each do |user| %>
+              <li>
+                <%= link_to user.name, user %>
+              </li>
+            <% end %>
+          </ul>
+        <% end %>
+      </aside>
+
       <div class="row mb-3">
         <div class="col-md-6">
           <div class="card border-dark mb-3">
@@ -78,6 +91,15 @@
         <%= link_to pluralize(@movie.reviews.size, "review"),
                 movie_reviews_path(@movie) %>
       </div>
+      
+      <% if current_user %>
+        <div class="faves">
+          <%= fave_or_unfave_button(@movie, @favorite)%>
+        <div class="count">
+            <%= @fans.size%>
+        </div>
+      <% end %>
+    
 
       <ul>
         <ul class="list-group list-group-flush">
