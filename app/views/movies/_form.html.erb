@@ -86,6 +86,10 @@
           </div>
         </div>
 
+       <div class="checkboxes">
+          <%= form.collection_check_boxes(:genre_ids, Genre.order(:name), :id, :name) %>
+        </div>
+
 
         <%= form.submit "Create Movie", class: 'btn btn-outline-secondary' %>
       </div>
