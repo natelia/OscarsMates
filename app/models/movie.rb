@@ -1,3 +1,4 @@
+# Represents a movie in the application
 class Movie < ApplicationRecord
   has_many :reviews, dependent: :destroy
   has_many :favorites, dependent: :destroy

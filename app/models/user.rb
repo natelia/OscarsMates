@@ -1,3 +1,4 @@
+# Represents a user of the application.
 class User < ApplicationRecord
   has_secure_password
   has_many :reviews, dependent: :destroy

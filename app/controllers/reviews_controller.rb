@@ -1,3 +1,5 @@
+# ReviewsController handles the creation and deletion of reviews for movies.
+# It ensures that only signed-in users can create or delete reviews.
 class ReviewsController < ApplicationController
   before_action :require_signin
   before_action :set_movie

@@ -1,3 +1,5 @@
+# FavoritesController manages the creation and deletion of favorite movies for users.
+# It allows users to mark movies as favorites and remove them from their list of favorites.
 class FavoritesController < ApplicationController
   before_action :require_signin
   def create

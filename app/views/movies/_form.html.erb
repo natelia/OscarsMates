@@ -51,47 +51,47 @@
           </div>
         </div>
 
-        <div class="row mb-3">
-          <div class="col">
-            <%= form.label :rating, class: "form-label" %><br>
-            <%= form.text_field :rating, id: "rating", class: "form-control", placeholder: "Rating" %><br>
+        <div class='row mb-3'>
+          <div class='col'>
+            <%= form.label :rating, class: 'form-label' %><br>
+            <%= form.text_field :rating, id: 'rating', class: 'form-control', placeholder: 'Rating' %><br>
             <% movie.errors.full_messages_for(:rating).each do |message| %>
-              <div class="invalid-feedback">
+              <div class='invalid-feedback'>
                 <%= message %>
               </div>
             <% end %>
           </div>
 
         
-          <div class="col">
-            <%= form.label :url, class: "form-label" %><br>
-            <%= form.text_field :url, id: "rating", class: "form-control", placeholder: "URL" %><br>
+          <div class='col'>
+            <%= form.label :url, class: 'form-label' %><br>
+            <%= form.text_field :url, id: 'rating', class: 'form-control', placeholder: 'URL' %><br>
             <% movie.errors.full_messages_for(:url).each do |message| %>
-              <div class="invalid-feedback">
+              <div class='invalid-feedback'>
                 <%= message %>
               </div>
             <% end %>
           </div>
         </div>
 
-         <div class="row mb-3">
-          <div class="col">
-            <%= form.label :picture_url, class: "form-label" %><br>
-            <%= form.text_field :picture_url, id: "picture_url", class: "form-control", placeholder: "Picture URL" %><br>
+         <div class='row mb-3'>
+          <div class='col'>
+            <%= form.label :picture_url, class: 'form-label' %><br>
+            <%= form.text_field :picture_url, id: 'picture_url', class: 'form-control', placeholder: 'Picture URL' %><br>
             <% movie.errors.full_messages_for(:picture_url).each do |message| %>
-              <div class="invalid-feedback">
+              <div class='invalid-feedback'>
                 <%= message %>
               </div>
             <% end %>
           </div>
         </div>
 
-       <div class="checkboxes">
+       <div class='checkboxes'>
           <%= form.collection_check_boxes(:genre_ids, Genre.order(:name), :id, :name) %>
         </div>
 
 
-        <%= form.submit "Create Movie", class: 'btn btn-outline-secondary' %>
+        <%= form.submit 'Create Movie', class: 'btn btn-outline-secondary' %>
       </div>
     </div>
   </div>
