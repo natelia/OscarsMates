@@ -1,6 +1,9 @@
+# UsersController manages the user resources, including creating new users, 
+# viewing user details, editing user profiles, and deleting users. It ensures 
+# that only authenticated and authorized users can perform certain actions.
 class UsersController < ApplicationController
-  before_action :require_signin, except: [:new, :create]
-  before_action :require_correct_user, only:[:edit, :update, :destroy]
+  before_action :require_signin, except: %i[new create]
+  before_action :require_correct_user, only: %i[edit update destroy]
 
   def index
     @users = User.all
@@ -26,8 +29,7 @@ class UsersController < ApplicationController
     end
   end
 
-  def edit 
-  end
+  def edit; end
 
   def update
     if @user.update(user_params)
@@ -41,7 +43,7 @@ class UsersController < ApplicationController
     @user.destroy
     session[:user_id] = nil
     redirect_to movies_url, status: :see_other,
-      alert: 'Account successfully deleted!'
+                            alert: 'Account successfully deleted!'
   end
 
   private

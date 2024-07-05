@@ -1,24 +1,21 @@
+# MoviesController handles the CRUD operations for movies in the application.
+# It allows users to view movies and admins to create, update, and delete movies.
 class MoviesController < ApplicationController
-
-  before_action :require_signin, except: [:index, :show]
-  before_action :require_admin, except: [:index, :show]
+  before_action :require_signin, except: %i[index show]
+  before_action :require_admin, except: %i[index show]
 
   def index
     @movies = Movie.all
   end
 
-
   def show
     @movie = Movie.find(params[:id])
     @fans = @movie.fans
     @genres = @movie.genres.order(:name)
-
-    if current_user
-      @favorite = current_user.favorites.find_by(movie_id: @movie.id)
-    end
+    @favorite = current_user.favorites.find_by(movie_id: @movie.id) if current_user
   end
 
-  def new 
+  def new
     @movie = Movie.new
   end
 
@@ -56,5 +53,4 @@ class MoviesController < ApplicationController
   def movie_params
     params.require(:movie).permit(:title, :english_title, :where_to_watch, :runtime, :rating, :url, :picture_url, genre_ids: [])
   end
-
 end
