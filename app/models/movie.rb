@@ -1,5 +1,6 @@
 # Represents a movie in the application
 class Movie < ApplicationRecord
+  before_save :set_slug
   has_many :reviews, dependent: :destroy
   has_many :favorites, dependent: :destroy
   has_many :fans, through: :favorites, source: :user
@@ -16,5 +17,11 @@ class Movie < ApplicationRecord
 
   def average_stars
     reviews.average(:stars) || 0.0
+  end
+
+  private 
+
+  def set_slug
+    self.slug = title.parameterize
   end
 end
