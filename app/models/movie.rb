@@ -6,7 +6,7 @@ class Movie < ApplicationRecord
   has_many :characterizations, dependent: :destroy
   has_many :genres, through: :characterizations
 
-  validates :title, presence: true
+  validates :title, presence: true, uniqueness: true
   validates :english_title, presence: true
   validates :where_to_watch, presence: true
   validates :runtime, presence: true, numericality: { only_integer: true, greater_than: 0 }
