@@ -19,9 +19,11 @@ class Movie < ApplicationRecord
     reviews.average(:stars) || 0.0
   end
 
-  private 
-
   def set_slug
     self.slug = title.parameterize
+  end
+
+  def to_param
+    slug
   end
 end
