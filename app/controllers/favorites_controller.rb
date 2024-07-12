@@ -14,6 +14,6 @@ class FavoritesController < ApplicationController
     favorite.destroy
 
     @movie = Movie.find_by!(slug: params[:movie_id])
-    redirect_to movie
+    redirect_to @movie
   end
 end

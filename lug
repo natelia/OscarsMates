@@ -1,0 +1,14 @@
+=> 
+[32m#<Movie:0x00007f2042e612c0[0m
+ id: [34m[1m3[0m,
+ title: [31m[1m"[0m[31mZielona Mila[0m[31m[1m"[0m,
+ english_title: [31m[1m"[0m[31mSk[0m[31m[1m"[0m,
+ where_to_watch: [31m[1m"[0m[31mPrime Video[0m[31m[1m"[0m,
+ runtime: [34m[1m144[0m,
+ rating: [35m[1m8.8[0m,
+ url: [31m[1m"[0m[31mhttps://www.imdb.com/title/tt1675434/[0m[31m[1m"[0m,
+ picture_url:
+  [31m[1m"[0m[31mhttps://media.posterlounge.com/img/products/710000/707683/707683_poster.jpg[0m[31m[1m"[0m,
+ created_at: Fri, 19 Apr 2024 16:31:24.720092000 UTC +00:00,
+ updated_at: Fri, 05 Jul 2024 16:25:42.809860000 UTC +00:00,
+ slug: [31m[1m"[0m[31mzielona-mila[0m[31m[1m"[0m[32m>[0m
