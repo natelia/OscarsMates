@@ -1,20 +1,30 @@
-<header>
-  <ul class="right">
-    <h1>Oscars Mates</h1>
-    <%= link_to "Mates", users_path, class: "button"%>
-    <% if current_user %>
-    <li>
-      <%= link_to current_user.name, current_user %>
-      <%= link_to "Account Settings", edit_user_path(current_user)%>
-      <%= link_to "Sign Out", session_path, 
-                  data: {turbo_method: :delete },
-                  class: "button" %>
-    </li>
-    <% else %>
-    <li>
-      <%= link_to "Sign In", signin_path, class: "button"%>
-      <%= link_to "Sign Up", new_user_path, class: "button"%>
-    </li>
-    <% end %>
-  </ul>
+<header class="bg-dark py-3">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center">
+      <h1 class="text-light mb-0">Oscars Mates</h1>
+      <ul class="nav">
+        <li class="nav-item">
+          <%= link_to "Mates", users_path, class: "nav-link text-light"%>
+        </li>
+        <% if current_user %>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-light" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <%= current_user.name %>
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="userDropdown">
+              <li><%= link_to "Account Settings", edit_user_path(current_user), class: "dropdown-item" %></li>
+              <li><%= link_to "Sign Out", session_path, method: :delete, class: "dropdown-item", data: { turbo_method: :delete } %></li>
+            </ul>
+          </li>
+        <% else %>
+          <li class="nav-item">
+            <%= link_to "Sign In", signin_path, class: "nav-link text-light"%>
+          </li>
+          <li class="nav-item">
+            <%= link_to "Sign Up", new_user_path, class: "nav-link text-light"%>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
 </header>
