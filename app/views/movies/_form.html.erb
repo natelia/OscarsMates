@@ -1,28 +1,28 @@
-<%= form_with model: movie do |form| %>
+<%= form_with model: movie, class: 'container mt-5' do |form| %>
 
 
 <%= render "shared/errors", object: movie %>
 
-  <div class="container text-center">
+  <div class = "text-center">
     <div class = 'row mt-3'>
       <div class = 'col'>
 
         <div class="row mb-3">
           <div class="col">
-            <%= form.label :title, class: "form-label" %><br>
-            <%= form.text_field :title, id: "title", class: "form-control", placeholder: "Movie Title" %><br>
+            <%= form.label :title, class: "form-label" %>
+            <%= form.text_field :title, id: "title", class: "form-control", placeholder: "Movie Title" %>
             <% movie.errors.full_messages_for(:title).each do |message| %>
-              <div class="invalid-feedback">
+              <div class="invalid-feedback d-block">
                 <%= message %>
               </div>
             <% end %>
         </div> 
 
         <div class="col">
-            <%= form.label :english_title, class: "form-label" %><br>
-            <%= form.text_field :english_title, id: "english_title", class: "form-control", placeholder: "English Title" %><br>
+            <%= form.label :english_title, class: "form-label" %>
+            <%= form.text_field :english_title, id: "english_title", class: "form-control", placeholder: "English Title" %>
             <% movie.errors.full_messages_for(:english_title).each do | message | %>
-              <div class="invalid-feedback">
+              <div class="invalid-feedback d-block">
                 <%= message %>
               </div>
             <% end %>
@@ -31,20 +31,20 @@
 
         <div class="row mb-3">
           <div class="col">
-            <%= form.label :where_to_watch, class: "form-label" %><br>
-            <%= form.text_field :where_to_watch, id: "where_to_watch", class: "form-control", placeholder: "Where can you watch it?" %><br>
+            <%= form.label :where_to_watch, class: "form-label" %>
+            <%= form.text_field :where_to_watch, id: "where_to_watch", class: "form-control", placeholder: "Where can you watch it?" %>
             <% movie.errors.full_messages_for(:where_to_watch).each do |message| %>
-              <div class="invalid-feedback">
+              <div class="invalid-feedback d-block">
                 <%= message %>
               </div>
             <% end %>
           </div>
 
         <div class="col">
-            <%= form.label :runtime, class: "form-label" %><br>
-            <%= form.text_field :runtime, id: "runtime", class: "form-control", placeholder: "Runtime (in mins)" %><br>
+            <%= form.label :runtime, class: "form-label" %>
+            <%= form.text_field :runtime, id: "runtime", class: "form-control", placeholder: "Runtime (in mins)" %>
             <% movie.errors.full_messages_for(:runtime).each do |message| %>
-              <div class="invalid-feedback">
+              <div class="invalid-feedback d-block">
                 <%= message %>
               </div>
             <% end %>
@@ -53,10 +53,10 @@
 
         <div class='row mb-3'>
           <div class='col'>
-            <%= form.label :rating, class: 'form-label' %><br>
-            <%= form.text_field :rating, id: 'rating', class: 'form-control', placeholder: 'Rating' %><br>
+            <%= form.label :rating, class: 'form-label' %>
+            <%= form.text_field :rating, id: 'rating', class: 'form-control', placeholder: 'Rating' %>
             <% movie.errors.full_messages_for(:rating).each do |message| %>
-              <div class='invalid-feedback'>
+              <div class='invalid-feedback d-block'>
                 <%= message %>
               </div>
             <% end %>
@@ -64,10 +64,10 @@
 
         
           <div class='col'>
-            <%= form.label :url, class: 'form-label' %><br>
-            <%= form.text_field :url, id: 'rating', class: 'form-control', placeholder: 'URL' %><br>
+            <%= form.label :url, class: 'form-label' %>
+            <%= form.text_field :url, id: 'rating', class: 'form-control', placeholder: 'URL' %>
             <% movie.errors.full_messages_for(:url).each do |message| %>
-              <div class='invalid-feedback'>
+              <div class='invalid-feedback d-block'>
                 <%= message %>
               </div>
             <% end %>
@@ -76,24 +76,36 @@
 
          <div class='row mb-3'>
           <div class='col'>
-            <%= form.label :picture_url, class: 'form-label' %><br>
-            <%= form.text_field :picture_url, id: 'picture_url', class: 'form-control', placeholder: 'Picture URL' %><br>
+            <%= form.label :picture_url, class: 'form-label' %>
+            <%= form.text_field :picture_url, id: 'picture_url', class: 'form-control', placeholder: 'Picture URL' %>
             <% movie.errors.full_messages_for(:picture_url).each do |message| %>
-              <div class='invalid-feedback'>
+              <div class='invalid-feedback d-block'>
                 <%= message %>
               </div>
             <% end %>
           </div>
         </div>
 
-       <div class='checkboxes'>
-          <%= form.collection_check_boxes(:genre_ids, Genre.order(:name), :id, :name) %>
+         <div class='row mb-3'>
+          <div class='col'>
+            <%= form.label :genres, class: "form-label" %>
+            <div class="form-check form-check-inline">
+              <%= form.collection_check_boxes(:genre_ids, Genre.order(:name), :id, :name) do |checkbox| %>
+                <div class="form-check form-check-inline">
+                  <%= checkbox.check_box(class: "form-check_input") %>
+                  <%= checkbox.label(class: "form-check-label") %>
+                </div>
+              <% end %>
+            </div>
+          </div>
         </div>
 
 
-        <%= form.submit 'Create Movie', class: 'btn btn-outline-secondary' %>
+        <div class="row mb-3">
+          <div class="col">
+            <%= form.submit 'Create Movie', class: 'btn btn-outline-secondary' %>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-  </div>
  <% end %>  
