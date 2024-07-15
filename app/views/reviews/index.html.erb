@@ -1,18 +1,23 @@
-<h1>Reviews for <%= link_to @movie.title, @movie %></h1>
-<ul class="reviews">
+<h1 class="text-center mt-4">Reviews for <%= link_to @movie.title, @movie, style: "text-decoration: none; color: #c82388;" %></h1>
+<ul class="reviews list-group">
   <% @reviews.each do |review| %>
-    <li>
-      <%= pluralize(review.stars, 'star') %>
-      <p>
-        <%= link_to review.user.name, review.user %>
-        <span class="date">
-          <%= time_ago_in_words(review.created_at) %> ago
-        </span>
-      </p>
-      <p>
-        <%= review.comment %>
-      </p>
+    <li class="list-group-item d-flex justify-content-center">
+      <div class="review">
+        <div class="stars text-center">
+          <%= render_stars(review.stars) %>
+        </div>
+        <div class="info">
+          <p class="text-center">
+            <%= link_to review.user.name, review.user, style: "text-decoration: none; color: #c82388;" %>
+            <span class="date">
+              <%= time_ago_in_words(review.created_at) %> ago
+            </span>
+          </p>
+          <p class="comment text-center">
+            <%= review.comment %>
+          </p>
+        </div>
+      </div>
     </li>
   <% end %>
 </ul>
- <li class="list-group-item"><li> <%= link_to "Home Page", root_path %> </li></li>
