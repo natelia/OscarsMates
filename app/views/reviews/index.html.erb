@@ -1,23 +1,86 @@
-<h1 class="text-center mt-4">Reviews for <%= link_to @movie.title, @movie, style: "text-decoration: none; color: #c82388;" %></h1>
-<ul class="reviews list-group">
-  <% @reviews.each do |review| %>
-    <li class="list-group-item d-flex justify-content-center">
-      <div class="review">
-        <div class="stars text-center">
-          <%= render_stars(review.stars) %>
-        </div>
-        <div class="info">
-          <p class="text-center">
-            <%= link_to review.user.name, review.user, style: "text-decoration: none; color: #c82388;" %>
-            <span class="date">
-              <%= time_ago_in_words(review.created_at) %> ago
-            </span>
-          </p>
-          <p class="comment text-center">
-            <%= review.comment %>
-          </p>
-        </div>
-      </div>
-    </li>
-  <% end %>
-</ul>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reviews for <%= @movie.title %></title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f9fa;
+      color: #343a40;
+    }
+
+    .reviews {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    .list-group-item:hover {
+      background-color: #f0f0f0;
+    }
+
+    .stars {
+      font-size: 20px;
+      color: #ffc107;
+    }
+
+    .info {
+      margin-top: 10px;
+    }
+
+    .info p {
+      margin-bottom: 5px;
+    }
+
+    .info a {
+      text-decoration: none;
+      color: #6c757d;
+      font-weight: bold;
+    }
+
+    .info small {
+      color: #6c757d;
+    }
+
+    .btn-container {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .btn-container a {
+      margin-right: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="text-center mt-4">Reviews for <%= link_to @movie.title, @movie, style: "text-decoration: none; color: #6c757d;" %></h1>
+    <ul class="reviews list-group">
+      <% @reviews.reverse_each do |review| %>
+        <li class="list-group-item">
+          <div class="review">
+            <div class="stars text-center">
+              <%= render_stars(review.stars) %>
+            </div>
+            <div class="info">
+              <p class="text-center">
+                <%= link_to review.user.name, review.user, style: "text-decoration: none; color: #6c757d;" %><br>
+                <small><%= time_ago_in_words(review.created_at) %> ago</small>
+              </p>
+              <p class="comment text-center">
+                <%= review.comment %>
+              </p>
+            </div>
+          </div>
+        </li>
+      <% end %>
+    </ul>
+
+    <div class="btn-container">
+      <%= link_to "Home Page", root_path, class: "btn btn-outline-dark" %>
+      <%= link_to "Movie Details", @movie, class: "btn btn-outline-dark" %>
+    </div>
+  </div>
+</body>
+</html>

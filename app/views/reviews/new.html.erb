@@ -1,18 +1,32 @@
-<h1>New Review for <%= link_to @movie.title, @movie %></h1>
-<%= form_with(model: [@movie, @review]) do |f| %>
-  <%= render "shared/errors", object: @review %>
-  
-  <%= f.label :stars %>
-  <%= Review::STARS.each do |star| %>
-    <span class="star">
-      <%= f.radio_button :stars, star %>
-      <%= label_tag star %>
-    </span>
-  <% end %>
+<body>
+  <div class="container">
+    <h1 class="mt-4 mb-3">New Review for <%= link_to @movie.title, @movie, style: "text-decoration: none; color: #c82388;" %></h1>
 
+    <%= form_with(model: [@movie, @review], class: "mb-4") do |f| %>
+      <%= render "shared/errors", object: @review %>
 
-  <%= f.label :comment %>
-  <%= f.text_field :comment, placeholder: "What did you think mate?" %>
+      <div class="mb-3">
+        <%= f.label :stars, class: "form-label" %><br>
+        <% Review::STARS.each do |star| %>
+          <div class="form-check form-check-inline">
+            <%= f.radio_button :stars, star, id: "star_#{star}", class: "form-check-input" %>
+            <%= label_tag "star_#{star}", "★", class: "form-check-label fs-3" %>
+          </div>
+        <% end %>
+      </div>
 
-  <%= f.submit "Post Review" %>
-  <% end %>
+      <div class="mb-3">
+        <%= f.label :comment, class: "form-label" %>
+        <%= f.text_field :comment, class: "form-control", placeholder: "What do you think, mate?" %>
+      </div>
+
+      <%= f.submit "Post Review", class: "btn btn-dark" %>
+    <% end %>
+
+    <div class="mt-4">
+      <%= link_to "Back to Movie Details", @movie, class: "btn btn-outline-dark" %>
+    </div>
+  </div>
+
+</body>
+</html>
