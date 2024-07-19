@@ -1,75 +1,122 @@
-<div class="container text-center mt-3">
-  <div class="row justify-content-center">
-    <div class="col-md-8">
-      <div class="row mb-3">
-        <!-- Movie Picture -->
-        <div class="col-md-4 text-center mb-3">
-          <img src="<%= @movie.picture_url %>" class="img-fluid" alt="Movie Picture">
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Movie Details</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .btn-blue {
+      background-color: #007bff;
+      border-color: #007bff;
+      color: white;
+    }
+    .btn-blue:hover {
+      background-color: #0056b3;
+      border-color: #0056b3;
+    }
+    .btn-custom {
+      background-color: #007bff;
+      border-color: #007bff;
+      color: white;
+    }
+    .btn-custom:hover {
+      background-color: #0056b3;
+      border-color: #0056b3;
+    }
+    .small-text {
+      font-size: 0.9rem;
+    }
+    .btn-group-custom {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+  <div class="container text-center mt-3">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="row mb-3">
+          <!-- Movie Picture -->
+          <div class="col-md-4 text-center mb-3">
+            <img src="<%= @movie.picture_url %>" class="img-fluid" alt="Movie Picture">
+          </div>
+
+          <!-- Movie Details -->
+          <div class="col-md-8">
+            <h2><%= @movie.title %></h2>
+            <h4><%= @movie.english_title %></h4>
+            <p><strong>Where to watch:</strong> <%= @movie.where_to_watch %></p>
+            <p><strong>Rating (0-10):</strong> <%= @movie.rating %></p>
+            <p><strong>Runtime (in mins):</strong> <%= @movie.runtime %></p>
+            <p><strong>See here:</strong> <a href="<%= @movie.url %>" target="_blank"><%= @movie.url %></a></p>
+            
+            <!-- Genres -->
+            <% if @genres.present? %>
+              <div class="mb-3 text-center">
+                <% @genres.each do |g| %>
+                  <span class="badge bg-light text-dark me-2 mb-2"><%= g.name %></span>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
         </div>
 
-        <!-- Movie Details -->
-        <div class="col-md-8">
-          <h2><%= @movie.title %></h2>
-          <h3><%= @movie.english_title %></h3>
-          <p><strong>Where to watch:</strong> <%= @movie.where_to_watch %></p>
-          <p><strong>Rating (0-10):</strong> <%= @movie.rating %></p>
-          <p><strong>Runtime (in mins):</strong> <%= @movie.runtime %></p>
-          <p><strong>See here:</strong> <a href="<%= @movie.url %>" target="_blank"><%= @movie.url %></a></p>
-          
-          <!-- Genres -->
-          <% if @genres.present? %>
-            <div class="mb-3 text-center">
-              <% @genres.each do |g| %>
-                <span class="badge bg-light text-dark me-2 mb-2"><%= g.name %></span>
+        <!-- Reviews and Actions -->
+        <div class="mb-3">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <%= average_stars(@movie) %>
+              <%= link_to pluralize(@movie.reviews.size, "review"), movie_reviews_path(@movie), class: "ms-2" %>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+              <% if current_user %>
+                <div class="d-flex align-items-center gap-2">
+                  <%= fave_or_unfave_button(@movie, @favorite) %>
+                  <span class="ms-2"><%= @fans.size %></span>
+                  <!-- Button Group -->
+                  <div class="btn-group-custom">
+                    <% if @fans.present? %>
+                      <button class="btn btn-secondary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#fansList" aria-expanded="false" aria-controls="fansList">
+                        Mates who liked
+                      </button>
+                      <div class="collapse mt-2" id="fansList">
+                        <ul class="list-group list-group-flush small-text">
+                          <% @fans.each do |user| %>
+                            <li class="list-group-item">
+                              <%= link_to user.name, user %>
+                            </li>
+                          <% end %>
+                        </ul>
+                      </div>
+                    <% end %>
+                    <%= link_to "Write Review", new_movie_review_path(@movie), class: "btn btn-outline-primary btn-sm" %>
+                  </div>
+                </div>
               <% end %>
             </div>
+          </div>
+        </div>
+
+        <!-- Additional Actions -->
+        <ul class="list-group">
+          <li class="list-group-item">
+            <%= link_to "Home Page", root_path, class: "btn btn-outline-dark w-100" %>
+          </li>
+          <% if current_user_admin? %>
+            <li class="list-group-item">
+              <%= link_to "Edit", edit_movie_path(@movie), class: "btn btn-outline-dark w-100" %>
+            </li>
+            <li class="list-group-item">
+              <%= link_to "Destroy", movie_path(@movie), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, class: "btn btn-outline-danger w-100" %>
+            </li>
           <% end %>
-        </div>
+        </ul>
       </div>
-
-      <!-- Fans who liked -->
-      <% if @fans.present? %>
-        <div class="mb-3">
-          <h4>Mates who liked:</h4>
-          <ul class="list-group">
-            <% @fans.each do |user| %>
-              <li class="list-group-item">
-                <%= link_to user.name, user %>
-              </li>
-            <% end %>
-          </ul>
-        </div>
-      <% end %>
-
-      <!-- Reviews and Actions -->
-      <div class="mb-3">
-        <div class="d-flex justify-content-between align-items-center">
-          <div>
-            <%= average_stars(@movie) %>
-            <%= link_to pluralize(@movie.reviews.size, "review"), movie_reviews_path(@movie), class: "ms-2" %>
-          </div>
-          <div>
-            <% if current_user %>
-              <%= fave_or_unfave_button(@movie, @favorite) %>
-              <span class="ms-2"><%= @fans.size %></span>
-            <% end %>
-          </div>
-        </div>
-      </div>
-
-      <!-- Additional Actions -->
-      <ul class="list-group">
-        <li class="list-group-item"><%= link_to "Write Review", new_movie_review_path(@movie), class: "btn btn-outline-dark w-100" %></li>
-        <li class="list-group-item"><%= link_to "Home Page", root_path, class: "btn btn-outline-dark w-100" %></li>
-        <% if current_user_admin? %>
-          <li class="list-group-item">
-            <%= link_to "Edit", edit_movie_path(@movie), class: "btn btn-outline-dark w-100" %>
-          </li>
-          <li class="list-group-item">
-            <%= link_to "Destroy", movie_path(@movie), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, class: "btn btn-outline-danger w-100" %>
-          </li>
-        <% end %>
-      </ul>
     </div>
   </div>
-</div>
+</body>
+</html>
