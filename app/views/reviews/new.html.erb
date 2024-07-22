@@ -1,6 +1,6 @@
 <body>
   <div class="container">
-    <h1 class="mt-4 mb-3">New Review for <%= link_to @movie.title, @movie, style: "text-decoration: none; color: #c82388;" %></h1>
+    <h1 class="mt-4 mb-3">New Review for <%= link_to @movie.title, @movie, style: "text-decoration: none; color: #555555;" %></h1>
 
     <%= form_with(model: [@movie, @review], class: "mb-4") do |f| %>
       <%= render "shared/errors", object: @review %>
