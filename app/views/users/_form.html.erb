@@ -1,62 +1,86 @@
-<%= form_with model: user, local: true, class: "needs-validation" do |form| %>
-  <div class="container text-center mt-5">
-    <div class='row'>
-      <div class='col-md-8 offset-md-2'>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Form</title>
+  <style>
+    .btn-blue {
+      background-color: #007bff;
+      color: white;
+      border-color: #007bff;
+    }
+    .btn-blue:hover {
+      background-color: #0056b3;
+      border-color: #0056b3;
+    }
+    .form-text.text-danger {
+      margin-top: 0.25rem;
+    }
+  </style>
+</head>
+<body>
+  <%= form_with model: user, local: true, class: "needs-validation" do |form| %>
+    <div class="container text-center mt-5">
+      <div class='row'>
+        <div class='col-md-8 offset-md-2'>
 
-        <%= render "shared/errors", object: user %>
+          <%= render "shared/errors", object: user %>
 
-        <div class="row mb-3">
-          <div class="col-md-6">
-            <%= form.label :name, class: "form-label" %>
-            <%= form.text_field :name, id: "name", class: "form-control", placeholder: "Name" %>
-            <% user.errors.full_messages_for(:name).each do |message| %>
-              <div class="form-text text-danger">
-                <%= message %>
-              </div>
-            <% end %>
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <%= form.label :name, class: "form-label" %>
+              <%= form.text_field :name, id: "name", class: "form-control", placeholder: "Name" %>
+              <% user.errors.full_messages_for(:name).each do |message| %>
+                <div class="form-text text-danger">
+                  <%= message %>
+                </div>
+              <% end %>
+            </div>
+
+            <div class="col-md-6">
+              <%= form.label :email, class: "form-label" %>
+              <%= form.email_field :email, id: "email", class: "form-control", placeholder: "Email" %>
+              <% user.errors.full_messages_for(:email).each do |message| %>
+                <div class="form-text text-danger">
+                  <%= message %>
+                </div>
+              <% end %>
+            </div>
           </div>
 
-          <div class="col-md-6">
-            <%= form.label :email, class: "form-label" %>
-            <%= form.email_field :email, id: "email", class: "form-control", placeholder: "Email" %>
-            <% user.errors.full_messages_for(:email).each do |message| %>
-              <div class="form-text text-danger">
-                <%= message %>
-              </div>
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <%= form.label :password, class: "form-label" %>
+              <%= form.password_field :password, id: "password", class: "form-control", placeholder: "Password" %>
+              <% user.errors.full_messages_for(:password).each do |message| %>
+                <div class="form-text text-danger">
+                  <%= message %>
+                </div>
+              <% end %>
+            </div>
+
+            <div class="col-md-6">
+              <%= form.label :password_confirmation, class: "form-label" %>
+              <%= form.password_field :password_confirmation, id: "password_confirmation", class: "form-control", placeholder: "Password Confirmation" %>
+              <% user.errors.full_messages_for(:password_confirmation).each do |message| %>
+                <div class="form-text text-danger">
+                  <%= message %>
+                </div>
+              <% end %>
+            </div>
+          </div>
+
+          <div class="d-grid">
+            <% if user.new_record? %>
+              <%= form.submit 'Sign up!', class: 'btn btn-blue' %>
+            <% else %>
+              <%= form.submit 'Update Account', class: 'btn btn-blue' %>
             <% end %>
           </div>
-        </div>
-
-        <div class="row mb-3">
-          <div class="col-md-6">
-            <%= form.label :password, class: "form-label" %>
-            <%= form.password_field :password, id: "password", class: "form-control", placeholder: "Password" %>
-            <% user.errors.full_messages_for(:password).each do |message| %>
-              <div class="form-text text-danger">
-                <%= message %>
-              </div>
-            <% end %>
-          </div>
-
-          <div class="col-md-6">
-            <%= form.label :password_confirmation, class: "form-label" %>
-            <%= form.password_field :password_confirmation, id: "password_confirmation", class: "form-control", placeholder: "Password Confirmation" %>
-            <% user.errors.full_messages_for(:password_confirmation).each do |message| %>
-              <div class="form-text text-danger">
-                <%= message %>
-              </div>
-            <% end %>
-          </div>
-        </div>
-
-        <div class="d-grid">
-          <% if user.new_record? %>
-            <%= form.submit 'Sign up!', class: 'btn btn-blue' %>
-          <% else %>
-            <%= form.submit 'Update Account', class: 'btn btn-blue' %>
-          <% end %>
         </div>
       </div>
     </div>
-  </div>
-<% end %>
+  <% end %>
+</body>
+</html>
