@@ -1,32 +1,40 @@
-<body>
+<section class="new-review py-5">
   <div class="container">
-    <h1 class="mt-4 mb-3">New Review for <%= link_to @movie.title, @movie, style: "text-decoration: none; color: #555555;" %></h1>
+    <h1 class="mt-4 mb-3 text-center">
+      New Review for <%= link_to @movie.title, @movie, style: "text-decoration: none; color: #555555;" %>
+    </h1>
 
-    <%= form_with(model: [@movie, @review], class: "mb-4") do |f| %>
-      <%= render "shared/errors", object: @review %>
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <%= form_with(model: [@movie, @review], class: "mb-4") do |f| %>
+          <%= render "shared/errors", object: @review %>
 
-      <div class="mb-3">
-        <%= f.label :stars, class: "form-label" %><br>
-        <% Review::STARS.each do |star| %>
-          <div class="form-check form-check-inline">
-            <%= f.radio_button :stars, star, id: "star_#{star}", class: "form-check-input" %>
-            <%= label_tag "star_#{star}", "★", class: "form-check-label fs-3" %>
+          <div class="mb-3 text-center">
+            <%= f.label :stars, class: "form-label" %><br>
+            <% Review::STARS.each do |star| %>
+              <div class="form-check form-check-inline">
+                <%= f.radio_button :stars, star, id: "star_#{star}", class: "form-check-input" %>
+                <%= label_tag "star_#{star}", "★", class: "form-check-label fs-3" %>
+              </div>
+            <% end %>
+          </div>
+
+          <div class="mb-3">
+            <%= f.label :comment, class: "form-label" %>
+            <%= f.text_area :comment, class: "form-control", placeholder: "What do you think, mate?", rows: 5 %>
+          </div>
+
+          <div class="d-grid gap-2 d-md-block text-center">
+            <%= f.submit "Post Review", class: "btn btn-dark" %>
           </div>
         <% end %>
+
+        <div class="mt-4 text-center">
+          <%= link_to "Back to Movie Details", @movie, class: "btn btn-outline-dark" %>
+        </div>
       </div>
-
-      <div class="mb-3">
-        <%= f.label :comment, class: "form-label" %>
-        <%= f.text_field :comment, class: "form-control", placeholder: "What do you think, mate?" %>
-      </div>
-
-      <%= f.submit "Post Review", class: "btn btn-dark" %>
-    <% end %>
-
-    <div class="mt-4">
-      <%= link_to "Back to Movie Details", @movie, class: "btn btn-outline-dark" %>
     </div>
   </div>
+</section>
 
-</body>
-</html>
+
