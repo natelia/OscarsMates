@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :categories
+  resources :nominations
   resources :genres
   resources :users
   root 'movies#index'
