@@ -1,132 +1,88 @@
-<div class="container text-center">
-  <div class = 'row mt-3 justify-content-center'>
+<section class="movie-details py-5">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8 col-md-10">
+        <div class="card mb-4">
+          <div class="row g-0">
+            <!-- Movie Picture -->
+            <div class="col-md-4">
+              <img src="<%= @movie.picture_url %>" class="img-fluid" alt="Movie Picture">
+            </div>
 
-    <div class = 'col'>
-      <div class="row mb-3">
-        <div class="col-md-6">
-          <div class="card border-dark mb-3" style="max-width: 18rem;">
-            <div class="card-header">Movie Title</div>
-            <div class="card-body">
-              <h2 class="card-title"><%= @movie.title %></h2> 
+            <!-- Movie Details -->
+            <div class="col-md-8">
+              <div class="card-body">
+                <h2 class="card-title"><%= @movie.title %></h2>
+                <h4 class="card-subtitle mb-2 text-muted"><%= @movie.english_title %></h4>
+                <p><strong>Where to watch:</strong> <%= @movie.where_to_watch %></p>
+                <p><strong>Rating (0-10):</strong> <%= @movie.rating %></p>
+                <p><strong>Runtime:</strong> <%= @movie.runtime %> mins</p>
+                <a href="<%= @movie.url %>" class="btn btn-secondary btn-sm" target="_blank">Details</a>
+
+                <!-- Genres -->
+                <% if @genres.present? %>
+                  <div class="mt-3">
+                    <% @genres.each do |g| %>
+                      <span class="badge bg-light text-dark me-2"><%= g.name %></span>
+                    <% end %>
+                  </div>
+                <% end %>
+              </div>
             </div>
           </div>
         </div>
 
-        <div class="col-md-6">
-          <div class="card border-dark mb-3" style="max-width: 18rem;">
-            <div class="card-header">English Movie Title</div>
-            <div class="card-body">
-              <h3 class="card-title"><%= @movie.english_title %></h3> 
+        <!-- Reviews and Actions -->
+        <div class="mb-4">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+              <%= average_stars(@movie) %>
+              <%= link_to pluralize(@movie.reviews.size, "review"), movie_reviews_path(@movie), class: "ms-2" %>
             </div>
-          </div>
-        </div>
-      </div>
+            <div class="d-flex align-items-center gap-2">
+              <% if current_user %>
+                <div class="d-flex align-items-center gap-2">
+                  <%= fave_or_unfave_button(@movie, @favorite) %>
+                  <span class="ms-2"><%= @fans.size %></span>
 
-      <div class="row mb-3">
-        <div class="col-md-6">
-          <div class="card border-dark mb-3" style="max-width: 18rem;">
-            <div class="card-header">Where to watch?</div>
-            <div class="card-body">
-              <p class="card-title"><%= @movie.where_to_watch %></p>  
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-6">
-          <div class="card border-dark mb-3" style="max-width: 18rem;">
-            <div class="card-header">Rating (0-10)</div>
-            <div class="card-body">
-              <h4 class="card-title"><%= @movie.rating %></h4>  
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="row mb-3">
-        <div class="col-md-6">
-          <div class="card border-dark mb-3" style="max-width: 18rem;">
-            <div class="card-header">Runtime (in mins)</div>
-            <div class="card-body">
-              <h3 class="card-title"><%= @movie.runtime %></h3> 
+                  <% if @fans.present? %>
+                    <div class="btn-group">
+                      <button class="btn btn-secondary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#fansList" aria-expanded="false" aria-controls="fansList">
+                        Mates who liked
+                      </button>
+                      <div class="collapse mt-2" id="fansList">
+                        <ul class="list-group list-group-flush small-text">
+                          <% @fans.each do |user| %>
+                            <li class="list-group-item">
+                              <%= link_to user.name, user %>
+                            </li>
+                          <% end %>
+                        </ul>
+                      </div>
+                    </div>
+                  <% end %>
+                  <%= link_to "Write Review", new_movie_review_path(@movie), class: "btn btn-outline-primary btn-sm" %>
+                </div>
+              <% end %>
             </div>
           </div>
         </div>
 
-        <div class="col-md-6">
-          <div class="card border-dark mb-3" style="max-width: 18rem;">
-            <div class="card-header">See here</div>
-            <div class="card-body">
-              <p class="card-title"><a href="<%= @movie.url %>" target="_blank"><%= @movie.url %></a></p>  
-            </div>
-          </div>
-        </div>
-      </div>
-
-       <aside>
-        <% if @fans.present? %>
-          <h4>Mates who liked: </h4>
-          <ul>
-            <% @fans.each do |user| %>
-              <li>
-                <%= link_to user.name, user %>
-              </li>
-            <% end %>
-          </ul>
-        <% end %>
-      </aside>
-
-      <div class="row mb-3">
-        <div class="col-md-6">
-          <div class="card border-dark mb-3">
-            <div class="card-header">Movie Picture</div>
-            <div class="card-body p-0">
-              <img src="<%= @movie.picture_url %>" class="card-img-top" alt="Movie Picture" style="width: 50%; height: auto;">
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="reviews">
-        <%= average_stars(@movie) %>
-        <%= link_to pluralize(@movie.reviews.size, "review"),
-                movie_reviews_path(@movie) %>
-      </div>
-      
-      <% if current_user %>
-        <div class="faves">
-          <%= fave_or_unfave_button(@movie, @favorite)%>
-        <div class="count">
-            <%= @fans.size%>
-        </div>
-      <% end %>
-
-      <% if @genres.present? %>
-        <h4> Genres </h4>
-        <ul>
-          <% @genres.each do |g| %>
-            <li><%= g.name %></li>
+        <!-- Additional Actions -->
+        <ul class="list-group">
+          <li class="list-group-item">
+            <%= link_to "Home Page", root_path, class: "btn btn-outline-dark w-100" %>
+          </li>
+          <% if current_user_admin? %>
+            <li class="list-group-item">
+              <%= link_to "Edit", edit_movie_path(@movie), class: "btn btn-outline-dark w-100" %>
+            </li>
+            <li class="list-group-item">
+              <%= link_to "Destroy", movie_path(@movie), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, class: "btn btn-outline-danger w-100" %>
+            </li>
           <% end %>
         </ul>
-      <% end %>
-    
-
-      <ul>
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item"><li> <%= link_to "Write Review", new_movie_review_path(@movie),
-                                                class: "review"%>
-          <li class="list-group-item"><li> <%= link_to "Home Page", root_path %> </li></li>
-            <% if current_user_admin? %>
-              <section class= "admin" >
-          <li class="list-group-item"><li> <%= link_to "Edit", edit_movie_path(@movie) %> </li></li>
-          <li class="list-group-item"><li> <%= link_to "Destroy", movie_path(@movie),
-                data: {
-                turbo_method: :delete,
-                turbo_confirm: "Are you sure?" }%> </li></li>
-               </section>
-              <% end %>
-        </ul>
-      </ul>
-
+      </div>
     </div>
   </div>
-</div>
+</section>
