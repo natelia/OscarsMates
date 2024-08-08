@@ -84,6 +84,20 @@
 
             <div class="row mb-3">
               <div class="col">
+                <%= form.label :categories, class: "form-label" %>
+                <div class="form-check form-check-inline">
+                  <%= form.collection_check_boxes(:category_ids, Category.order(:name), :id, :name) do |checkbox| %>
+                    <div class="form-check form-check-inline">
+                      <%= checkbox.check_box(class: "form-check-input") %>
+                      <%= checkbox.label(class: "form-check-label") %>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col">
                 <%= form.submit 'Create Movie', class: 'btn btn-outline-secondary' %>
               </div>
             </div>
