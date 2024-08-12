@@ -1,0 +1,12 @@
+<h1><%= category_name%><h1>
+
+<h2>Movies in this Category:<h2>
+<ul>
+  <% @movies.each do |movie| %>
+    <li><%= link_to movie.title, movie_path(movie) %></li>
+  <% end %>
+</ul>
+
+<%= link_to 'Edit', edit_category_path(@catgeory) if current_user&.admin? %>
+<%= link_to 'Back to Categories', categories_path %>
+  
