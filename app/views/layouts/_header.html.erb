@@ -8,10 +8,18 @@
             <i class="bi bi-people"></i> Mates
           <% end %>
         </li>
+
+        <% if current_user&.admin? %>
+          <li class="nav-item">
+            <%= link_to 'Manage Categories', categories_path, class: "nav-link text-dark" %>
+          </li>
+        <% else %>
+          <li class="nav-item">
+            <%= link_to 'Categories', categories_path, class: 'nav-link text-dark'%>
+          </li>
+        <% end %>
+
         <% if current_user %>
-            <li class="nav-item">
-              <%= link_to 'Manage Categories', categories_path, class: "nav-link text-dark" %>
-            </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle text-dark" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               <i class="bi bi-person-circle"></i> <%= current_user.name %>
