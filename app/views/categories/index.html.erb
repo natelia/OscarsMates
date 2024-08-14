@@ -1,15 +1,49 @@
-<h1>Categories</h1>
-
-<%= link_to 'New Category', new_category_path if current_user&.admin? %>
-
-<ul>
-  <% @categories.each do |category| %>
-    <li>
-      <%= link_to category.name, category_path(category) %>
+<div class="container my-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="display-4 mb-0">Categories</h1>
+    <div class="d-flex align-items-center">
+      <form class="d-flex ms-3" role="search" method="get" action="<%= categories_path %>">
+        <input class="form-control form-control-md" type="search" name="query" placeholder="Search categories..." aria-label="Search">
+        <button class="btn btn-outline-secondary btn-md ms-2" type="submit">Search</button>
+      </form>
       <% if current_user&.admin? %>
-        <%= link_to 'Edit', edit_category_path(category) %> |
-        <%= link_to 'Destroy', category, method: :delete, data: { confirm: 'Are you sure?' } %>
+        <%= link_to 'New Category', new_category_path, class: 'btn btn-primary ms-3 rounded-pill' %>
       <% end %>
-    </li>
-  <% end %>
-</ul>
+    </div>
+  </div>
+  
+  <div class="row justify-content-center">
+    <% @categories.each_slice(2) do |category_pair| %>
+      <div class="col-12 col-md-6 col-lg-4 mb-3">
+        <div class="list-group text-center">
+          <% category_pair.each do |category| %>
+            <div class="list-group-item d-flex justify-content-between align-items-center">
+              <%= link_to category.name, category_path(category), class: "text-decoration-none text-dark fs-5 w-100" %>
+              <% if current_user&.admin? %>
+                <div class="mt-2">
+                  <%= link_to 'Edit', edit_category_path(category), class: 'btn btn-sm btn-outline-warning me-2' %>
+                  <%= link_to 'Destroy', category, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-outline-danger' %>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<style>
+.list-group-item {
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+.list-group-item:hover {
+  background-color: #f8f9fa;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.list-group-item {
+  border-radius: 8px;
+  padding: 15px;
+  border: 1px solid #dee2e6;
+}
+</style>
