@@ -1,0 +1,28 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6 text-center">
+      <%= form_with(model: @category, local: true) do |form| %>
+        <% if @category.errors.any? %>
+          <div id="error_explanation" class="alert alert-danger">
+            <h4 class="alert-heading"><%= pluralize(@category.errors.count, "error") %> prohibited this category from being saved:</h4>
+            <ul>
+              <% @category.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+
+        <div class="mb-3 text-center">
+          <%= form.label :name, class: 'form-label' %>
+          <%= form.text_field :name, class: 'form-control w-75 mx-auto', placeholder: 'Enter category name' %>
+        </div>
+
+        <div class="d-flex justify-content-between">
+          <%= link_to 'Back', categories_path, class: 'btn btn-secondary' %>
+          <%= form.submit 'Save Category', class: 'btn btn-primary' %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

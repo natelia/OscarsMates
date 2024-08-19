@@ -10,7 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_05_155927) do
+ActiveRecord::Schema[7.1].define(version: 2024_08_07_172659) do
+  create_table "categories", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "characterizations", force: :cascade do |t|
     t.integer "movie_id", null: false
     t.integer "genre_id", null: false
@@ -48,6 +54,16 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_05_155927) do
     t.string "slug"
   end
 
+  create_table "nominations", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "movie_id", null: false
+    t.integer "category_id", null: false
+    t.index ["category_id"], name: "index_nominations_on_category_id"
+    t.index ["movie_id"], name: "index_nominations_on_movie_id"
+  end
+
   create_table "reviews", force: :cascade do |t|
     t.integer "stars"
     t.text "comment"
@@ -71,5 +87,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_05_155927) do
   add_foreign_key "characterizations", "movies"
   add_foreign_key "favorites", "movies"
   add_foreign_key "favorites", "users"
+  add_foreign_key "nominations", "categories"
+  add_foreign_key "nominations", "movies"
   add_foreign_key "reviews", "movies"
 end

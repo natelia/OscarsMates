@@ -1,0 +1,51 @@
+<div class="container my-5">
+  <h1 class="display-4 mb-4"><%= @category.name %></h1>
+
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+    <% @movies.each do |movie| %>
+      <div class="col">
+        <div class="card movie-card h-100">
+          <% if movie.picture_url.present? %>
+            <picture>
+              <img src="<%= movie.picture_url %>" class="card-img-top" alt="<%= movie.title %>">
+            </picture>
+          <% else %>
+            <picture>
+              <img src="placeholder_image_url.jpg" class="card-img-top" alt="Placeholder">
+            </picture>
+          <% end %>
+          <div class="card-body text-center">
+            <h5 class="card-title mb-2"><%= movie.title %></h5>
+            <p class="card-text mb-2">Mates rated this movie as <%= average_stars(movie) %> out of 5!</p>
+            <%= link_to "See More!", movie_path(movie), class: "btn btn-dark btn-sm" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="mt-4">
+    <% if current_user&.admin? %>
+      <%= link_to 'Edit Category', edit_category_path(@category), class: 'btn btn-warning' %>
+    <% end %>
+    <%= link_to 'Back to Categories', categories_path, class: 'btn btn-secondary' %>
+    <%= link_to 'Home Page', root_path, class: 'btn btn-warning' %>
+  </div>
+</div>
+
+<style>
+.movie-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.movie-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.card-img-top {
+  object-fit: cover;
+  height: 260px; 
+  width: 100%;
+}
+</style>
