@@ -5,8 +5,65 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
-Movie.destroy_all
+puts "Creating User..."
+User.destroy_all
+User.create(name: "admin", email: "admin@example.com", password: "password", admin: true)
+User.create(name: "user", email: "user@example.com", password: "password", admin: false)
 
+puts "Creating Categories..."
+Category.destroy_all
+categories = [
+  {name: "Best Picture"},
+  {name: "Best Director"},
+  {name: "Best Actor"},
+  {name: "Best Actress"},
+  {name: "Best Cinematography"},
+  {name: "Best Production Design"},
+  {name: "Best Adapted Screenplay"},
+  {name: "Best Sound"},
+  {name: "Best Animated Short Film"},
+  {name: "Best Live Action Short Film"},
+  {name: "Best Film Editing"},
+  {name: "Best Original Score"},
+  {name: "Best Original Song"},
+  {name: "Best Supporting Actor"},
+  {name: "Best Supporting Actress"},
+  {name: "Best Visual Effects"},
+  {name: "Best Original Screenplay"},
+  {name: "Best Documantary Short Film"},
+  {name: "Best Documantary Feature Film"},
+  {name: "Best International Feature Film"},
+  {name: "Best Costume Design"},
+  {name: "Best Makeup and Hairstyling"},
+  {name: "Best Animated Feature Film"},
+]
+
+categories.each do |category|
+  Category.create!(category)
+end
+
+puts "Creating Genres..."
+Genre.destroy_all
+genres = [
+  {name: "Action"},
+  {name: "Drama"},
+  {name: "Sci-Fi"},
+  {name: "Thriller"},
+  {name: "Comedy"},
+  {name: "Animation"},
+  {name: "Adventure"},
+  {name: "Documentary"},
+  {name: "Musical"},
+  {name: "Historical"},
+  {name: "Romance"},
+]
+
+genres.each do |genre|
+  Genre.create!(genre)
+end
+
+puts "Creating Movies..."
+Movie.destroy_all
 movies = [
   {
     title: "Oppenheimer",
