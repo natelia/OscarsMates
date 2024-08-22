@@ -22,7 +22,7 @@
               <% if current_user&.admin? %>
                 <div class="mt-2">
                   <%= link_to 'Edit', edit_category_path(category), class: 'btn btn-sm btn-outline-warning me-2' %>
-                  <%= link_to 'Destroy', category, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-outline-danger' %>
+                  <%= link_to 'Destroy', category_path(category), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, class: 'btn btn-sm btn-outline-danger' %>
                 </div>
               <% end %>
             </div>
