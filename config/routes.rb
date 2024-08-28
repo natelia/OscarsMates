@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :watcheds
   resources :categories
   resources :nominations
   resources :genres

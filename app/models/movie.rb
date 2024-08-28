@@ -8,6 +8,7 @@ class Movie < ApplicationRecord
   has_many :genres, through: :characterizations
   has_many :nominations, dependent: :destroy
   has_many :categories, through: :nominations
+  has_many :watcheds, dependent: :destroy
 
   validates :title, presence: true, uniqueness: true
   validates :english_title, presence: true
