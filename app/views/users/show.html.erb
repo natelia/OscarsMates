@@ -60,6 +60,29 @@
       </div>
     <% end %>
 
+    <% if @watched_movies.present? %>
+      <div class="accordion mb-4" id="watchedsAccordion">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingWatcheds">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWatcheds" aria-expanded="false" aria-controls="collapseWatcheds">
+              Mate's Watched
+            </button>
+          </h2>
+          <div id="collapseWatcheds" class="accordion-collapse collapse" aria-labelledby="headingWatcheds" data-bs-parent="#watchedsAccordion">
+            <div class="accordion-body">
+              <ul class="list-group">
+                <% @watched_movies.each do |movie| %>
+                  <li class="list-group-item">
+                    <%= link_to movie.title, movie %>
+                  </li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
     <% if current_user?(@user) %>
       <div class="actions mb-4 text-center">
         <%= link_to "Edit Account", edit_user_path(@user), class: "btn btn-warning me-2" %>
