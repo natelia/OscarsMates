@@ -14,6 +14,7 @@ class MoviesController < ApplicationController
     @genres = @movie.genres.order(:name)
     @favorite = current_user.favorites.find_by(movie_id: @movie.id) if current_user
     @categories = @movie.categories.order(:name)
+    @viewers = @movie.viewers
   end
 
   def new
