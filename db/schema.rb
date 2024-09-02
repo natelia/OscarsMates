@@ -56,10 +56,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_07_172659) do
 
   create_table "nominations", force: :cascade do |t|
     t.string "name"
+    t.integer "category_id", null: false
+    t.integer "movie_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "movie_id", null: false
-    t.integer "category_id", null: false
     t.index ["category_id"], name: "index_nominations_on_category_id"
     t.index ["movie_id"], name: "index_nominations_on_movie_id"
   end
