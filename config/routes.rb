@@ -8,7 +8,6 @@ Rails.application.routes.draw do
 
     resources :reviews
     resources :favorites, only: [:create, :destroy]
-    resources :watcheds, only: [:create, :destroy]
   end
 
   get 'signup' => 'users#new'
