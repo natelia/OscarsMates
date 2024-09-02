@@ -23,6 +23,14 @@ class ReviewsController < ApplicationController
     end
   end
 
+  def destroy
+    movie = Movie.find_by!(slug: params[:movie_id])
+    review = current_user.reviews.find_by(movie_id: movie.id)
+    review.destroy
+
+    redirect_to movie, notice: "Movie marked as Unwatched!"
+  end
+
   private
 
   def review_params
