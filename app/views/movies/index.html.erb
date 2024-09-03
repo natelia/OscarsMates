@@ -13,20 +13,22 @@
     <% @movies.each do |movie| %>
       <div class="col">
         <div class="card movie-card h-100">
-          <% if movie.picture_url.present? %>
-            <picture>
-              <img src="<%= movie.picture_url %>" class="card-img-top" alt="<%= movie.title %>">
-            </picture>
-          <% else %>
-            <picture>
-              <img src="placeholder_image_url.jpg" class="card-img-top" alt="Placeholder">
-            </picture>
+          <%= link_to movie_path(movie), class: "stretched-link", style: "text-decoration: none; color: inherit;" do %>
+            <% if movie.picture_url.present? %>
+              <picture>
+                <img src="<%= movie.picture_url %>" class="card-img-top" alt="<%= movie.title %>">
+              </picture>
+            <% else %>
+              <picture>
+                <img src="placeholder_image_url.jpg" class="card-img-top" alt="Placeholder">
+              </picture>
+            <% end %>
+            <div class="card-body text-center">
+              <h5 class="card-title mb-2"><%= movie.title %></h5>
+              <p class="card-text mb-2">Mates' rating: <%= average_stars(movie) %>/5</p>
+              <%# <button class="btn btn-dark btn-sm">See More!</button> %>
+            </div>
           <% end %>
-          <div class="card-body text-center">
-            <h5 class="card-title mb-2"><%= movie.title %></h5>
-            <p class="card-text mb-2">Mates rated this movie as <%= average_stars(movie) %> out of 5!</p>
-            <%= link_to "See More!", movie_path(movie), class: "btn btn-dark btn-sm" %>
-          </div>
         </div>
       </div>
     <% end %>
