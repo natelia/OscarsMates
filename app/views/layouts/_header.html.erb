@@ -27,6 +27,7 @@
               <i class="bi bi-person-circle"></i> <%= current_user.name %>
             </a>
             <ul class="dropdown-menu" aria-labelledby="userDropdown">
+              <li><%= link_to "My Profile", user_path(current_user), class: "dropdown-item" %></li>
               <li><%= link_to "Account Settings", edit_user_path(current_user), class: "dropdown-item" %></li>
               <li><%= link_to "Sign Out", session_path, method: :delete, class: "dropdown-item text-danger", data: { turbo_method: :delete } %></li>
             </ul>
