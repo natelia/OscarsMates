@@ -1,18 +1,25 @@
 <section class="container mt-5">
-  <nav class="navbar navbar-expand-lg navbar-light mb-4">
-    <div class="container-fluid">
-      <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Look for a Movie!" aria-label="Search">
-        <button class="btn btn-outline-dark" type="submit">Search</button>
-      </form>
-        <div class="filter-toggle text-center mb-4">
-          <% if params[:filter] == 'unwatched' %>
-            <%= link_to "<i class='bi bi-eye-slash'></i> Unwatched".html_safe, movies_path, class: "btn btn-outline-dark" %>
-          <% else %>
-            <%= link_to "<i class='bi bi-list'></i> All Movies".html_safe, movies_path(filter: 'unwatched'), class: "btn btn-outline-dark" %>
-          <% end %>
-        </div>
+  <% if current_user %>
+  <div class="progress my-3">
+    <div class="progress-bar bg-success" role="progressbar" style="width: <%= @progress %>%;" aria-valuenow="<%= @progress %>" aria-valuemin="0" aria-valuemax="100">
+      <%= number_to_percentage(@progress, precision: 0) %> Watched
     </div>
+  </div>
+  <% end %>
+    <nav class="navbar navbar-expand-lg navbar-light mb-4">
+      <div class="container-fluid">
+        <form class="d-flex" role="search">
+          <input class="form-control me-2" type="search" placeholder="Look for a Movie!" aria-label="Search">
+          <button class="btn btn-outline-dark" type="submit">Search</button>
+        </form>
+          <div class="filter-toggle text-center mb-4">
+            <% if params[:filter] == 'unwatched' %>
+              <%= link_to "<i class='bi bi-eye-slash'></i> Unwatched".html_safe, movies_path, class: "btn btn-outline-dark" %>
+            <% else %>
+              <%= link_to "<i class='bi bi-list'></i> All Movies".html_safe, movies_path(filter: 'unwatched'), class: "btn btn-outline-dark" %>
+            <% end %>
+          </div>
+      </div>
   </nav>
 
 
