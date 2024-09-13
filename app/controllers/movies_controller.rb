@@ -12,6 +12,9 @@ class MoviesController < ApplicationController
               else
                 Movie.all
               end
+    @watched_movies_count = current_user.reviews.count
+    @total_movies_count = Movie.count
+    @progress = @watched_movies_count.to_f / @total_movies_count * 100
   end
 
   def show
