@@ -6,7 +6,17 @@ class MoviesController < ApplicationController
   before_action :set_movie, only: %i[show edit update destroy]
 
   def index
-    @movies = Movie.all
+    @movies = if params[:filter] == 'unwatched' && current_user
+                Movie.left_joins(:reviews)
+                     .where(reviews: { user_id: nil })
+              else
+                Movie.all
+              end
+    if current_user
+      @watched_movies_count = current_user.reviews.count
+      @total_movies_count = Movie.count
+      @progress = @watched_movies_count.to_f / @total_movies_count * 100
+    end
   end
 
   def show
