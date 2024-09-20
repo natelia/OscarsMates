@@ -4,6 +4,11 @@ class User < ApplicationRecord
   has_many :reviews, dependent: :destroy
   has_many :favorites, dependent: :destroy
   has_many :favorite_movies, through: :favorites, source: :movie
+  
+  has_many :follows, foreign_key: :follower_id, dependent: :destroy
+  has_many :following, through: :follows, source: :followed
+  has_many :inverse_follows, class_name: 'Follow', foreign_key: :followed_id, dependent: :destroy
+  has_many :followers, through: :inverse_follows, source: :follower
 
   validates :name, presence: true
   validates :email, presence: true,
