@@ -6,6 +6,12 @@
       <p class="text-muted">
         Member Since <%= @user.created_at.strftime("%B %Y") %>
       </p>
+      <% if current_user.following.include?(@user) %>
+        <%= button_to 'Unfollow', unfollow_user_path(@user), method: :delete, class: "btn btn-danger" %>
+      <% else %>
+        <%= button_to 'Follow', follow_user_path(@user), method: :post, class: "btn btn-primary" %>
+      <% end %>
+
     </div>
 
     <% if @reviews.present? %>
