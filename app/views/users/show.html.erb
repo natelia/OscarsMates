@@ -9,13 +9,11 @@
         Member Since <%= @user.created_at.strftime("%B %Y") %>
       </p>
 
-      <% if current_user %>
-        <div class="progress my-3">
-          <div class="progress-bar bg-success" role="progressbar" style="width: <%= @progress %>%;" aria-valuenow="<%= @progress %>" aria-valuemin="0" aria-valuemax="100">
-            <%= number_to_percentage(@progress, precision: 0) %> Watched
-          </div>
+      <div class="progress my-3">
+        <div class="progress-bar bg-success" role="progressbar" style="width: <%= @progress %>%;" aria-valuenow="<%= @progress %>" aria-valuemin="0" aria-valuemax="100">
+          <%= number_to_percentage(@progress, precision: 0) %> Watched
         </div>
-      <% end %>
+      </div>
 
       <% if current_user.following.include?(@user) %>
         <%= button_to 'Unfollow', unfollow_user_path(@user), method: :delete, class: "btn btn-danger" %>
