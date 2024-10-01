@@ -2,12 +2,19 @@
   <div class="container">
     <div class="text-center mb-4">
       <h1 class="display-4"><%= @user.name %></h1>
-      <strong>Follows:</strong> <%=@user.following.count%>
-      <strong>Followers: </strong> <%= @user.follows.count%>
+      <strong>Follows:</strong> <%= @user.following.count %>
+      <strong>Followers:</strong> <%= @user.follows.count %>
       <h4><%= mail_to(@user.email) %></h4>
       <p class="text-muted">
         Member Since <%= @user.created_at.strftime("%B %Y") %>
       </p>
+
+      <div class="progress my-3">
+        <div class="progress-bar bg-success" role="progressbar" style="width: <%= @progress %>%;" aria-valuenow="<%= @progress %>" aria-valuemin="0" aria-valuemax="100">
+          <%= number_to_percentage(@progress, precision: 0) %> Watched
+        </div>
+      </div>
+
       <% if current_user.following.include?(@user) %>
         <%= button_to 'Unfollow', unfollow_user_path(@user), method: :delete, class: "btn btn-danger" %>
       <% else %>
@@ -15,6 +22,7 @@
       <% end %>
     </div>
     
+
     <% if @reviews.present? %>
       <div class="accordion mb-4" id="reviewsAccordion">
         <div class="accordion-item">
@@ -42,7 +50,7 @@
           </div>
         </div>
       </div>
-    <% end %> 
+    <% end %>
 
     <% if @favorite_movies.present? %>
       <div class="accordion mb-4" id="favoritesAccordion">
