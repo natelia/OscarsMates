@@ -51,15 +51,39 @@
 </header>
 
 <style>
-.nav-link:hover {
-    background-color: #f8f9fa;
-}
-
 .header {
   position: sticky;
-  top: 0;
-  z-index: 1000; 
-  background-color: white;
+  top: 20px;
+  z-index: 1000;
+  background-color: #e6f7ff; /* Light blue */
+  width: 100%;
+  border-radius: 50px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 10px;
+  padding: 15px 30px;
+}
+
+.header .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav {
+  display: flex;
+  justify-content: flex-end;
+  flex: 1;
+}
+
+.nav-link {
+  padding: 0 20px;
+  font-size: 1.1rem;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.nav-link:hover {
+  background-color: #e0e0e0;
+  color: #007bff;
 }
 
 </style>
