@@ -1,8 +1,8 @@
 <section class="container mt-5">
     <nav class="navbar navbar-expand-lg navbar-light mb-4">
       <div class="container-fluid">
-        <form class="d-flex" role="search">
-          <input class="form-control me-2" type="search" placeholder="Look for a Movie!" aria-label="Search">
+        <form class="d-flex" role="search" action="<%= movies_path %>" method="get">
+          <input class="form-control me-2" type="search" name="query" placeholder="Look for a Movie!" aria-label="Search" value="<%= params[:query] %>">
           <button class="btn btn-outline-dark" type="submit">Search</button>
         </form>
           <div class="filter-toggle text-center mb-4">
