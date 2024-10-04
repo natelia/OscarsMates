@@ -4,31 +4,16 @@
       <h1>
         <%= pluralize(@users.size, "Mate") %>
       </h1>
-      <%= link_to "Home Page", root_path, class: "btn btn-outline-dark me-2" %>
-    </div>
-    
-    <!-- Search Bar -->
-    <div class="mb-4">
-      <%= form_with url: users_path, method: :get, local: true, class: "d-flex justify-content-center" do |form| %>
-        <%= form.text_field :search, class: "form-control me-2", placeholder: "Search Mates", style: "max-width: 300px;" %>
-        <%= form.submit "Search", class: "btn btn-primary" %>
-      <% end %>
     </div>
 
-    <div class="row">
+    <div class="list-group">
       <% @users.each do |user| %>
-        <div class="col-md-4 mb-4">
-          <div class="card border-light h-100">
-            <div class="card-body text-center">
-              <h5 class="card-title">
-                <%= link_to user.name, user, class: "text-decoration-none text-dark" %>
-              </h5>
-              <p class="card-text">
-                <%= "#{pluralize(user.reviews.count, 'movie')} rated" %>
-              </p>
-            </div>
+        <%= link_to user, class: "list-group-item list-group-item-action d-flex justify-content-between align-items-center" do %>
+          <div>
+            <h5 class="mb-1"><%= user.name %></h5>
+            <small><%= pluralize(user.reviews.count, 'movie') %> rated</small>
           </div>
-        </div>
+        <% end %>
       <% end %>
     </div>
   </div>
