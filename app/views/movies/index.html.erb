@@ -1,20 +1,21 @@
 <section class="container mt-5">
-    <nav class="navbar navbar-expand-lg navbar-light mb-4">
-      <div class="container-fluid">
-        <form class="d-flex" role="search">
-          <input class="form-control me-2" type="search" placeholder="Look for a Movie!" aria-label="Search">
-          <button class="btn btn-outline-dark" type="submit">Search</button>
-        </form>
-          <div class="filter-toggle text-center mb-4">
-            <% if params[:filter] == 'unwatched' %>
-              <%= link_to "<i class='bi bi-eye-slash'></i> Unwatched".html_safe, movies_path, class: "btn btn-outline-dark" %>
-            <% else %>
-              <%= link_to "<i class='bi bi-list'></i> All Movies".html_safe, movies_path(filter: 'unwatched'), class: "btn btn-outline-dark" %>
-            <% end %>
-          </div>
-      </div>
-  </nav>
+  <nav class="navbar navbar-expand-lg navbar-light mb-4">
+    <div class="container-fluid">
 
+      <form class="d-flex" role="search" action="<%= movies_path %>" method="get">
+        <input class="form-control me-2" type="search" name="query" placeholder="Look for a Movie!" aria-label="Search" value="<%= params[:query] %>">
+        <button class="btn btn-outline-dark" type="submit">Search</button>
+      </form>
+      
+      <div class="filter-toggle text-center mb-4">
+        <% if params[:filter] == 'unwatched' %>
+          <%= link_to "<i class='bi bi-list'></i> Show All Movies".html_safe, movies_path, class: "btn btn-outline-dark" %>
+        <% else %>
+          <%= link_to "<i class='bi bi-eye-slash'></i> Show Unwatched".html_safe, movies_path(filter: 'unwatched'), class: "btn btn-outline-dark" %>
+        <% end %>
+      </div>
+    </div>
+  </nav>
 
   <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
     <% @movies.each do |movie| %>
@@ -33,13 +34,16 @@
             <div class="card-body text-center">
               <h5 class="card-title mb-2"><%= movie.title %></h5>
               <p class="card-text mb-2">Mates' rating: <%= average_stars(movie) %>/5</p>
-              <%# <button class="btn btn-dark btn-sm">See More!</button> %>
             </div>
           <% end %>
         </div>
       </div>
     <% end %>
   </div>
+
+  <% if @movies.empty? %>
+    <p>No movies found for "<%= params[:query] %>". Try a different search!</p>
+  <% end %>
 
   <% if current_user_admin? %>
     <div class="text-center mt-3">
@@ -63,5 +67,4 @@
   height: 260px; 
   width: 100%;
 }
-
 </style>

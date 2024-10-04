@@ -6,12 +6,17 @@ class MoviesController < ApplicationController
   before_action :set_movie, only: %i[show edit update destroy]
 
   def index
-    @movies = if params[:filter] == 'unwatched' && current_user
-                Movie.left_joins(:reviews)
-                     .where(reviews: { user_id: nil })
-              else
-                Movie.all
-              end
+    @movies = Movie.all
+
+    if params[:filter] == 'unwatched' && current_user
+      @movies = @movies.left_joins(:reviews)
+                       .where(reviews: {user_id: nil})
+    end
+
+    if params[:query].present?
+      @movies = @movies.where('title LIKE ?', "%#{params[:query]}%")
+    end
+
     if current_user
       @watched_movies_count = current_user.reviews.count
       @total_movies_count = Movie.count
