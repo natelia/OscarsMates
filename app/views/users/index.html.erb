@@ -8,12 +8,19 @@
 
     <div class="list-group">
       <% @users.each do |user| %>
-        <%= link_to user, class: "list-group-item list-group-item-action d-flex justify-content-between align-items-center" do %>
-          <div>
-            <h5 class="mb-1"><%= user.name %></h5>
-            <small><%= pluralize(user.reviews.count, 'movie') %> rated</small>
-          </div>
+        <div class="list-group-item d-flex justify-content-between align-items-center">
+        <%= link_to user, class: "flex-grow-1 text-decoration-none", style: "color: inherit;" do %>
+          <h5 class="mb-1"><%= user.name %></h5>
+          <small><%= pluralize(user.reviews.count, 'movie') %> rated</small>
         <% end %>
+          <% if user != current_user %>
+            <% if current_user.following.include?(user) %>
+              <%= button_to 'Unfollow', unfollow_user_path(user), method: :delete, class: "btn btn-danger btn-sm ms-2"%>
+            <% else %>
+              <%= button_to 'Follow', follow_user_path(user), method: :post, class: "btn btn-primary btn-sm ms-2" %>
+            <% end %>
+          <% end %>
+        </div>
       <% end %>
     </div>
   </div>
