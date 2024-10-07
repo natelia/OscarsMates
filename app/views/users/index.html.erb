@@ -12,6 +12,8 @@
         <%= link_to user, class: "flex-grow-1 text-decoration-none", style: "color: inherit;" do %>
           <h5 class="mb-1"><%= user.name %></h5>
           <small><%= pluralize(user.reviews.count, 'movie') %> rated</small>
+          <% progress = (user.reviews.count.to_f / @total_movies_count) * 100 %>
+            <small class="text-muted">Progress: <%= number_to_percentage(progress, precision: 0) %> watched</small>
         <% end %>
           <% if user != current_user %>
             <% if current_user.following.include?(user) %>

@@ -7,6 +7,7 @@ class UsersController < ApplicationController
 
   def index
     @users = User.all
+    @total_movies_count = Movie.count
   end
 
   def show
