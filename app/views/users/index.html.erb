@@ -4,32 +4,51 @@
       <h1>
         <%= pluralize(@users.size, "Mate") %>
       </h1>
-      <%= link_to "Home Page", root_path, class: "btn btn-outline-dark me-2" %>
     </div>
-    
-    <!-- Search Bar -->
-    <div class="mb-4">
-      <%= form_with url: users_path, method: :get, local: true, class: "d-flex justify-content-center" do |form| %>
-        <%= form.text_field :search, class: "form-control me-2", placeholder: "Search Mates", style: "max-width: 300px;" %>
-        <%= form.submit "Search", class: "btn btn-primary" %>
+
+    <div class="filter-toggle text-center mb-4">
+      <% if params[:filter] == 'followed' %>
+        <%= link_to "<i class='bi bi-people'></i> Show All Users".html_safe, users_path, class: "btn btn-outline-dark" %>
+      <% else %>
+        <%= link_to "<i class='bi bi-heart'></i> Show Followed".html_safe, users_path(filter: 'followed'), class: "btn btn-outline-primary" %>
       <% end %>
     </div>
 
-    <div class="row">
+    <div class="list-group">
       <% @users.each do |user| %>
-        <div class="col-md-4 mb-4">
-          <div class="card border-light h-100">
-            <div class="card-body text-center">
-              <h5 class="card-title">
-                <%= link_to user.name, user, class: "text-decoration-none text-dark" %>
-              </h5>
-              <p class="card-text">
-                <%= "#{pluralize(user.reviews.count, 'movie')} rated" %>
-              </p>
-            </div>
+        <div class="list-group-item d-flex justify-content-between align-items-center p-3 shadow-sm rounded mb-3">
+          <div class="user-info flex-grow-1">
+            <%= link_to user, class: "text-decoration-none text-dark" do %>
+              <h5 class="mb-1"><%= user.name %></h5>
+              <p class="mb-1"><small class="text-muted"><%= pluralize(user.reviews.count, 'movie') %> rated</small></p>
+              <% progress = (user.reviews.count.to_f / @total_movies_count) * 100 %>
+              <p class="mb-0"><small class="text-muted">Progress: <%= number_to_percentage(progress, precision: 0) %> watched</small></p>
+            <% end %>
+          </div>
+
+          <div class="user-actions">
+            <% if user != current_user %>
+              <% if current_user.following.include?(user) %>
+                <%= button_to 'Unfollow', unfollow_user_path(user), method: :delete, class: "btn btn-danger btn-sm" %>
+              <% else %>
+                <%= button_to 'Follow', follow_user_path(user), method: :post, class: "btn btn-primary btn-sm" %>
+              <% end %>
+            <% end %>
           </div>
         </div>
       <% end %>
     </div>
   </div>
 </section>
+
+
+<style>
+ 
+  .list-group-item {
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .list-group-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+</style>
