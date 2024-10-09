@@ -8,6 +8,10 @@ class UsersController < ApplicationController
   def index
     @users = User.all
     @total_movies_count = Movie.count
+
+    if params[:filter] == 'followed' && current_user
+      @users = current_user.following
+    end
   end
 
   def show
