@@ -44,8 +44,12 @@
   </div>
 
   <% if @movies.empty? %>
-    <p>No movies found for "<%= params[:query] %>". Try a different search!</p>
-  <% end %>
+  <div class="text-center">
+    <p>No movies found for "<%= params[:query] %>". Try a different search or browse all movies!</p>
+    <%= link_to "Clear Filters", movies_path, class: "btn btn-outline-dark mt-2" %>
+  </div>
+<% end %>
+
 
   <% if current_user_admin? %>
     <div class="text-center mt-3">
