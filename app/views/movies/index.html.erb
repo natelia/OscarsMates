@@ -35,6 +35,7 @@
             <div class="card-body text-center">
               <h5 class="card-title mb-2"><%= movie.title %></h5>
               <p class="card-text mb-2">Mates' rating: <%= average_stars(movie) %>/5</p>
+              <%= watch_or_unwatch_button(movie, movie.reviews.find_by(user: current_user)) %>
             </div>
           <% end %>
         </div>

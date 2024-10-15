@@ -12,7 +12,7 @@ Rails.application.routes.draw do
   root 'movies#index'
 
   resources :movies do
-    resources :reviews
+    resources :reviews, only: [:new, :create, :destroy]
     resources :favorites, only: [:create, :destroy]
   end
 
