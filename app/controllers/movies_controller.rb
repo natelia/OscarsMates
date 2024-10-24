@@ -8,28 +8,16 @@ class MoviesController < ApplicationController
   def index
     @movies = Movie.all
 
-    if params[:filter] == 'unwatched' && current_user
-      @movies = @movies.left_joins(:reviews)
-                       .where(reviews: {user_id: nil})
-    end
-
-    if params[:query].present?
-      @movies = @movies.where('title LIKE ?', "%#{params[:query]}%")
-    end
-
-    if current_user
-      @watched_movies_count = current_user.reviews.count
-      @total_movies_count = Movie.count
-      @progress = @watched_movies_count.to_f / @total_movies_count * 100
-    end
+    filter_unwatched_movies if current_user && params[:filter] == 'unwatched'
+    search_movies if params[:query].present?
+    calculate_progress if current_user
   end
 
   def show
     @fans = @movie.fans
     @genres = @movie.genres.order(:name)
-    @favorite = current_user.favorites.find_by(movie_id: @movie.id) if current_user
     @categories = @movie.categories.order(:name)
-    @review = current_user.reviews.find_by(movie_id: @movie.id) if current_user
+    set_users_specific_data if current_user
   end
 
   def new
@@ -38,7 +26,6 @@ class MoviesController < ApplicationController
 
   def create
     @movie = Movie.new(movie_params)
-
     if @movie.save
       redirect_to @movie, notice: 'Movie successfully created!'
     else
@@ -46,8 +33,7 @@ class MoviesController < ApplicationController
     end
   end
 
-  def edit
-  end
+  def edit; end
 
   def update
     if @movie.update(movie_params)
@@ -70,5 +56,25 @@ class MoviesController < ApplicationController
 
   def movie_params
     params.require(:movie).permit(:title, :english_title, :where_to_watch, :runtime, :rating, :url, :picture_url, genre_ids: [], category_ids: [])
+  end
+
+  def filter_unwatched_movies
+    @movies = @movies.left_joins(:reviews)
+                       .where(reviews: {user_id: nil})
+  end
+
+  def search_movies
+    @movies = @movies.where('title LIKE ?', "%#{params[:query]}%")
+  end
+
+  def calculate_progress
+    @watched_movies_count = current_user.reviews.count
+    @total_movies_count = Movie.count
+    @progress = @watched_movies_count.to_f / @total_movies_count * 100
+  end
+
+  def set_users_specific_data
+    @favorite = current_user.favorites.find_by(movie_id: @movie.id)
+    @review = current_user.reviews.find_by(movie_id: @movie.id) 
   end
 end
