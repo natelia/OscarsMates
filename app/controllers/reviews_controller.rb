@@ -3,6 +3,7 @@
 class ReviewsController < ApplicationController
   before_action :require_signin
   before_action :set_movie
+
   def index
     @reviews = @movie.reviews
   end
@@ -24,11 +25,10 @@ class ReviewsController < ApplicationController
   end
 
   def destroy
-    movie = Movie.find_by!(slug: params[:movie_id])
-    review = current_user.reviews.find_by(movie_id: movie.id)
+    review = find_review
     review.destroy
 
-    redirect_to movie, notice: "Movie marked as Unwatched!"
+    redirect_to @movie, notice: "Movie marked as Unwatched!"
   end
 
   private
@@ -39,5 +39,9 @@ class ReviewsController < ApplicationController
 
   def set_movie
     @movie = Movie.find_by!(slug: params[:movie_id])
+  end
+
+  def find_review
+    current_user.reviews.find_by(movie_id: movie.id)
   end
 end
