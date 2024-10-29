@@ -1,0 +1,16 @@
+=> 
+[[32m#<Genre:0x00007f3f6ea339a0[0m
+  id: [34m[1m1[0m,
+  name: [31m[1m"[0m[31mAction[0m[31m[1m"[0m,
+  created_at: Tue, 11 Jun 2024 11:30:46.402818000 UTC +00:00,
+  updated_at: Tue, 11 Jun 2024 11:30:46.402818000 UTC +00:00[32m>[0m,
+ [32m#<Genre:0x00007f3f6ea33860[0m
+  id: [34m[1m8[0m,
+  name: [31m[1m"[0m[31mAdventure[0m[31m[1m"[0m,
+  created_at: Tue, 11 Jun 2024 11:30:46.754543000 UTC +00:00,
+  updated_at: Tue, 11 Jun 2024 11:30:46.754543000 UTC +00:00[32m>[0m,
+ [32m#<Genre:0x00007f3f6ea33720[0m
+  id: [34m[1m10[0m,
+  name: [31m[1m"[0m[31mSci-Fi[0m[31m[1m"[0m,
+  created_at: Tue, 11 Jun 2024 11:31:11.780434000 UTC +00:00,
+  updated_at: Tue, 11 Jun 2024 11:31:11.780434000 UTC +00:00[32m>[0m]

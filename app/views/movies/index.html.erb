@@ -1,0 +1,80 @@
+<a id="top"></a>
+
+<section class="container mt-5">
+  <nav class="navbar navbar-expand-lg navbar-light mb-4">
+    <div class="container-fluid">
+      <form class="d-flex" role="search" action="<%= movies_path %>" method="get">
+        <input class="form-control me-2" type="search" name="query" placeholder="Look for a Movie!" aria-label="Search" value="<%= params[:query] %>">
+        <button class="btn btn-outline-dark" type="submit">Search</button>
+      </form>
+      
+      <div class="filter-toggle text-center mb-4">
+        <% if params[:filter] == 'unwatched' %>
+          <%= link_to "<i class='bi bi-list'></i> Show All Movies".html_safe, movies_path, class: "btn btn-outline-dark" %>
+        <% else %>
+          <%= link_to "<i class='bi bi-eye-slash'></i> Show Unwatched".html_safe, movies_path(filter: 'unwatched'), class: "btn btn-outline-dark" %>
+        <% end %>
+      </div>
+    </div>
+  </nav>
+
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+    <% @movies.each do |movie| %>
+      <div class="col">
+        <div class="card movie-card h-100">
+          <%= link_to movie_path(movie), class: "stretched-link", style: "text-decoration: none; color: inherit;" do %>
+            <% if movie.picture_url.present? %>
+              <picture>
+                <img src="<%= movie.picture_url %>" class="card-img-top" alt="<%= movie.title %>">
+              </picture>
+            <% else %>
+              <picture>
+                <img src="placeholder_image_url.jpg" class="card-img-top" alt="Placeholder">
+              </picture>
+            <% end %>
+            <div class="card-body text-center">
+              <h5 class="card-title mb-2"><%= movie.title %></h5>
+              <p class="card-text mb-2">Mates' rating: <%= average_stars(movie) %>/5</p>
+              <%= watch_or_unwatch_button(movie, movie.reviews.find_by(user: current_user)) %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <% if @movies.empty? %>
+  <div class="text-center">
+    <p>No movies found for "<%= params[:query] %>". Try a different search or browse all movies!</p>
+    <%= link_to "Clear Filters", movies_path, class: "btn btn-outline-dark mt-2" %>
+  </div>
+<% end %>
+
+
+  <% if current_user_admin? %>
+    <div class="text-center mt-3">
+      <%= link_to "New Movie", new_movie_path, class: "btn btn-outline-dark mt-3" %>
+    </div>
+  <% end %>
+  <a href="#" id="back-to-top" class="btn btn-dark" style="position: fixed; bottom: 20px; right: 20px; display: block;">
+  Back to Top
+</a>
+
+</section>
+
+<style>
+.movie-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.movie-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.card-img-top {
+  object-fit: cover;
+  height: 260px; 
+  width: 100%;
+}
+</style>

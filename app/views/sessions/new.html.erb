@@ -1,0 +1,35 @@
+<section class="sign-in py-5">
+  <div class="container mt-5">
+    <h1 class="text-center mb-4">Sign In</h1>
+
+    <div class="text-center mb-4">
+      No account yet? <%= link_to "Sign Up!", signup_path, class: "btn btn-link p-0 align-baseline" %>
+    </div>
+
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <%= form_with(url: session_path, local: true, class: "needs-validation", novalidate: true) do |f| %>
+
+          <div class="mb-3">
+            <%= f.label :email, class: "form-label" %>
+            <%= f.email_field :email, autofocus: true, class: "form-control", placeholder: "Enter your email" %>
+          </div>
+
+          <div class="mb-3">
+            <%= f.label :password, class: "form-label" %>
+            <%= f.password_field :password, class: "form-control", placeholder: "Enter your password" %>
+          </div>
+
+          <div class="form-check mb-3">
+            <%= f.check_box :remember_me, class: "form-check-input" %>
+            <%= f.label :remember_me, "Remember me", class: "form-check-label" %>
+          </div>
+
+          <div class="d-grid">
+            <%= f.submit "Sign In!", class: "btn btn-primary" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</section>

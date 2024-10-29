@@ -1,0 +1,55 @@
+<section class="user-form py-5">
+  <div class="container text-center">
+    <%= form_with model: user, local: true, class: "needs-validation" do |form| %>
+      <%= render "shared/errors", object: user %>
+
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <%= form.label :name, class: "form-label" %>
+          <%= form.text_field :name, id: "name", class: "form-control", placeholder: "Name" %>
+          <% user.errors.full_messages_for(:name).each do |message| %>
+            <div class="form-text text-danger">
+              <%= message %>
+            </div>
+          <% end %>
+        </div>
+
+        <div class="col-md-6">
+          <%= form.label :email, class: "form-label" %>
+          <%= form.email_field :email, id: "email", class: "form-control", placeholder: "Email" %>
+          <% user.errors.full_messages_for(:email).each do |message| %>
+            <div class="form-text text-danger">
+              <%= message %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <%= form.label :password, class: "form-label" %>
+          <%= form.password_field :password, id: "password", class: "form-control", placeholder: "Password" %>
+          <% user.errors.full_messages_for(:password).each do |message| %>
+            <div class="form-text text-danger">
+              <%= message %>
+            </div>
+          <% end %>
+        </div>
+
+        <div class="col-md-6">
+          <%= form.label :password_confirmation, class: "form-label" %>
+          <%= form.password_field :password_confirmation, id: "password_confirmation", class: "form-control", placeholder: "Password Confirmation" %>
+          <% user.errors.full_messages_for(:password_confirmation).each do |message| %>
+            <div class="form-text text-danger">
+              <%= message %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="d-grid">
+        <%= form.submit user.new_record? ? 'Sign up!' : 'Update Account', class: 'btn btn-primary' %>
+      </div>
+    <% end %>
+  </div>
+</section>
