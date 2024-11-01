@@ -5,9 +5,8 @@
     <h1 class="display-4 mb-0">Categories</h1>
     <div class="d-flex align-items-center">
       <form class="d-flex ms-3" role="search" method="get" action="<%= categories_path %>">
-      <input type="search" name="query" placeholder="Search categories..." aria-label="Search" class="form-control form-control-md" autofocus />
-
-        <button type="submit" class="btn btn-outline-secondary btn-md ms-2">Search</button>
+      <input class="form-control form-control-md" type="search" name="query" placeholder="Search categories..." aria-label="Search" value="<%= params[:query] %>">
+      <button class="btn btn-outline-secondary btn-md ms-2" type="submit">Search</button>
       </form>
       <% if current_user&.admin? %>
         <%= link_to 'New Category', new_category_path, class: 'btn btn-primary ms-3 rounded-pill' %>
