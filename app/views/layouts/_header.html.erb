@@ -35,7 +35,7 @@
               <%= link_to "Account Settings", edit_user_path(current_user), class: "dropdown-item", style: "color: #333; text-decoration: none;" %>
             </li>
             <li>
-              <%= link_to "Sign Out", session_path, method: :delete, class: "dropdown-item text-danger", data: { turbo_method: :delete }, style: "color: #333; text-decoration: none;" %>
+              <%= link_to "Sign Out", create_session_path, method: :delete, class: "dropdown-item text-danger", data: { turbo_method: :delete }, style: "color: #333; text-decoration: none;" %>
             </li>
           </ul>
         </li>
