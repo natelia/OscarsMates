@@ -4,12 +4,12 @@ class FollowsController < ApplicationController
 
   def create
     current_user.following << @user
-    redirect_to @user, notice: 'You are now following #{@user.name}.'
+     redirect_back fallback_location: users_path, notice: "You are now following  #{@user.name}."
   end
 
   def destroy
     current_user.following.delete(@user)
-    redirect_to @user, notice: 'You are no longer following #{@user.name}.'
+    redirect_back fallback_location: users_path, notice: "You are no longer following #{@user.name}."
   end
 
   private

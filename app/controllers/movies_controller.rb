@@ -7,7 +7,8 @@ class MoviesController < ApplicationController
 
   def index
     @movies = Movie.all
-
+    @user_reviews = current_user.reviews.where(movie: @movies).index_by(&:movie_id) 
+    
     filter_unwatched_movies if current_user && params[:filter] == 'unwatched'
     search_movies if params[:query].present?
     calculate_progress if current_user
