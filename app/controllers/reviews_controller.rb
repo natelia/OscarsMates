@@ -25,10 +25,10 @@ class ReviewsController < ApplicationController
   end
 
   def destroy
-    review = find_review
-    review.destroy
+    @review = find_review
+    @review.destroy if @review
 
-    redirect_to @movie, notice: "Movie marked as Unwatched!"
+    redirect_to movies_path, notice: "Movie marked as Unwatched!"
   end
 
   private
@@ -42,6 +42,6 @@ class ReviewsController < ApplicationController
   end
 
   def find_review
-    current_user.reviews.find_by(movie_id: movie.id)
+    current_user.reviews.find_by(movie_id: @movie.id)
   end
 end
