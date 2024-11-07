@@ -7,6 +7,7 @@ Rails.application.routes.draw do
       post 'follow', to: 'follows#create'
       delete 'unfollow', to: 'follows#destroy'
     end
+    get 'stats', on: :collection
   end
 
   root 'movies#index'
