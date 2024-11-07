@@ -54,6 +54,13 @@ class UsersController < ApplicationController
                             alert: 'Account successfully deleted!'
   end
 
+  def stats
+    @total_movies_watched = Review.where(user_id: current_user.id).count
+    @total_minutes_watched = Review.joins(:movie)
+                                   .where(user_id: current_user.id)
+                                   .sum('movies.runtime')
+  end
+
   private
 
   def require_correct_user
