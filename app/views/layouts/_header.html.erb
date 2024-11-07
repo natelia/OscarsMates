@@ -12,6 +12,12 @@
           <% end %>
         </li>
 
+        <li class="nav-item">
+        <%= link_to stats_users_path, class: "nav-link stats-button", style: "color: #333; text-decoration: none;" do %>
+          <i class="bi bi-bar-chart"></i> Stats
+        <% end %>
+        </li>
+      
         <% if current_user&.admin? %>
           <li class="nav-item">
             <%= link_to raw("<i class='bi bi-list-ul'></i> Manage Categories"), categories_path, class: "nav-link text-dark", style: "color: #333; text-decoration: none;" %>
