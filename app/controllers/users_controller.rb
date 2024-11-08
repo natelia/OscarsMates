@@ -65,7 +65,7 @@ class UsersController < ApplicationController
 
     @mates_stats = @mates.map do |mate|
       {
-        name: mate.username,
+        name: mate.name,
         movies_watched: mate.reviews.joins(:movie).count,
         minutes_watched: mate.reviews.joins(:movie).sum('movies.runtime')
       }
