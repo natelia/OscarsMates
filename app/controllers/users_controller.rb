@@ -59,17 +59,26 @@ class UsersController < ApplicationController
     @mates = @user.following 
 
     @total_movies_watched = Review.where(user_id: current_user.id).count
-    @total_minutes_watched = Review.joins(:movie)
-                                   .where(user_id: current_user.id)
-                                   .sum('movies.runtime')
+    @total_minutes_watched = Review.joins(:movie).where(user_id: @user.id).sum('movies.runtime')
 
+    @user_daily_minutes_watched = @user.reviews
+    .joins(:movie)
+    .group("DATE(reviews.created_at)")
+    .sum("movies.runtime")
+    
     @mates_stats = @mates.map do |mate|
       {
         name: mate.name,
-        movies_watched: mate.reviews.joins(:movie).count,
-        minutes_watched: mate.reviews.joins(:movie).sum('movies.runtime')
+        total_movies_watched: mate.reviews.count,
+        total_minutes_watched: mate.reviews.joins(:movie).sum('movies.runtime'),
+        daily_minutes_watched: mate.reviews
+          .joins(:movie)
+          .group("DATE(reviews.created_at)")
+          .sum("movies.runtime")
       }
     end
+
+
   end
 
   private

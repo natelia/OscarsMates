@@ -1,15 +1,20 @@
-<h2>Statistics</h2>
-
 <h3>Your Stats</h3>
 <p>Movies Watched: <%= @total_movies_watched %></p>
 <p>Total Minutes Watched: <%= @total_minutes_watched %> mins</p>
 
-<h3>Your Mates Stats</h3>
-<% @mates_stats.each do |mate_stat| %>
-  <div class="mate-stat">
-    <h4><%= mate_stat[:name] %></h4>
-    <p>Movies Watched: <%= mate_stat[:movies_watched] %></p>
-    <p>Total Minutes Watched: <%= mate_stat[:minutes_watched] %> mins</p>
-  </div>
+<h3>Your Daily Stats</h3>
+<% @user_daily_minutes_watched.each do |date, minutes| %>
+  <p><%= date %>: <%= minutes %> mins</p>
 <% end %>
 
+<h3>Your Mates Stats</h3>
+<% @mates_stats.each do |mate_stat| %>
+  <h4><%= mate_stat[:name] %></h4>
+  <p>Total Movies Watched: <%= mate_stat[:total_movies_watched] %></p>
+  <p>Total Minutes Watched: <%= mate_stat[:total_minutes_watched] %> mins</p>
+
+  <h5>Daily Stats</h5>
+  <% mate_stat[:daily_minutes_watched].each do |date, minutes| %>
+    <p><%= date %>: <%= minutes %> mins</p>
+  <% end %>
+<% end %>
