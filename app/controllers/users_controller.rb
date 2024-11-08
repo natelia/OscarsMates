@@ -55,10 +55,21 @@ class UsersController < ApplicationController
   end
 
   def stats
+    @user = current_user
+    @mates = @user.following 
+
     @total_movies_watched = Review.where(user_id: current_user.id).count
     @total_minutes_watched = Review.joins(:movie)
                                    .where(user_id: current_user.id)
                                    .sum('movies.runtime')
+
+    @mates_stats = @mates.map do |mate|
+      {
+        name: mate.username,
+        movies_watched: mate.reviews.joins(:movie).count,
+        minutes_watched: mate.reviews.joins(:movie).sum('movies.runtime')
+      }
+    end
   end
 
   private
