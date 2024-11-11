@@ -5,7 +5,7 @@
 <% if @user_daily_minutes_watched.any? %>
   <h3>Your Daily Stats</h3>
   <% @user_daily_minutes_watched.each do |date, minutes| %>
-    <p><%= date %>: <%= minutes %> mins</p>
+    <p><%= date.strftime("%B %d, %Y") %>: <%= minutes %> mins</p>
   <% end %>
 <% else %>
   <p>No daily stats available.</p>
@@ -21,12 +21,12 @@
     <% if mate_stat[:daily_minutes_watched].any? %>
       <h5>Daily Stats</h5>
       <% mate_stat[:daily_minutes_watched].each do |date, minutes| %>
-        <p><%= date %>: <%= minutes %> mins</p>
+        <p><%= date.strftime("%B %d, %Y") %>: <%= minutes %> mins</p>
       <% end %>
     <% else %>
       <p>No daily stats available for <%= mate_stat[:name] %>.</p>
     <% end %>
   <% end %>
 <% else %>
-  <p>No mates stats available.</p>
+  <p>You are not following any users yet.</p>
 <% end %>

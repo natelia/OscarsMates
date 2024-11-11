@@ -65,6 +65,8 @@ class UsersController < ApplicationController
                                      .joins(:movie)
                                      .group("DATE(reviews.created_at)")
                                      .sum("movies.runtime")
+                                     .transform_keys { |date_str| Date.parse(date_str) }
+
     
     @mates_stats = @mates.map do |mate|
       {
@@ -75,6 +77,7 @@ class UsersController < ApplicationController
           .joins(:movie)
           .group("DATE(reviews.created_at)")
           .sum("movies.runtime")
+          .transform_keys { |date_str| Date.parse(date_str) }
       }
     end
 
