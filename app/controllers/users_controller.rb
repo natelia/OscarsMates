@@ -54,6 +54,36 @@ class UsersController < ApplicationController
                             alert: 'Account successfully deleted!'
   end
 
+  def stats
+    @user = current_user
+    @mates = @user.following 
+
+    @total_movies_watched = @user.reviews.count
+    @total_minutes_watched = @user.reviews.joins(:movie).sum('movies.runtime')
+
+    @user_daily_minutes_watched = @user.reviews
+                                     .joins(:movie)
+                                     .group("DATE(reviews.created_at)")
+                                     .sum("movies.runtime")
+                                     .transform_keys { |date_str| Date.parse(date_str) }
+
+    
+    @mates_stats = @mates.map do |mate|
+      {
+        name: mate.name,
+        total_movies_watched: mate.reviews.count,
+        total_minutes_watched: mate.reviews.joins(:movie).sum('movies.runtime'),
+        daily_minutes_watched: mate.reviews
+          .joins(:movie)
+          .group("DATE(reviews.created_at)")
+          .sum("movies.runtime")
+          .transform_keys { |date_str| Date.parse(date_str) }
+      }
+    end
+
+
+  end
+
   private
 
   def require_correct_user

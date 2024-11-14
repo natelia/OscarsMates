@@ -1,0 +1,53 @@
+<div class="container">
+  <div class="text-center mb-5">
+    <h3>Your Stats</h3>
+    <p>Movies Watched: <strong><%= @total_movies_watched %></strong></p>
+    <p>Total Minutes Watched: <strong><%= @total_minutes_watched %> mins</strong></p>
+  </div>
+
+  <div class="mb-5">
+    <h3 class="text-center">Your Daily Stats</h3>
+    <% if @user_daily_minutes_watched.any? %>
+      <div class="row">
+        <% @user_daily_minutes_watched.each do |date, minutes| %>
+          <div class="col-md-4">
+            <div class="card my-2">
+              <div class="card-body text-center">
+                <h5 class="card-title"><%= date.strftime("%B %d, %Y") %></h5>
+                <p class="card-text"><strong><%= minutes %></strong> mins watched</p>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <p class="text-center">No daily stats available.</p>
+    <% end %>
+  </div>
+
+  <div>
+    <h3 class="text-center">Your Mates Stats</h3>
+    <% if @mates_stats.any? %>
+      <% @mates_stats.each do |mate_stat| %>
+        <div class="card my-3">
+          <div class="card-body">
+            <h4><%= mate_stat[:name] %></h4>
+            <p>Total Movies Watched: <strong><%= mate_stat[:total_movies_watched] %></strong></p>
+            <p>Total Minutes Watched: <strong><%= mate_stat[:total_minutes_watched] %> mins</strong></p>
+
+            <% if mate_stat[:daily_minutes_watched].any? %>
+              <h5>Daily Stats</h5>
+              <% mate_stat[:daily_minutes_watched].each do |date, minutes| %>
+                <p><%= date.strftime("%B %d, %Y") %>: <%= minutes %> mins</p>
+              <% end %>
+            <% else %>
+              <p>No daily stats available for <%= mate_stat[:name] %>.</p>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    <% else %>
+      <p class="text-center">You are not following any users yet.</p>
+    <% end %>
+  </div>
+</div>
