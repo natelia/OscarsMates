@@ -7,6 +7,7 @@ class MoviesController < ApplicationController
 
   def index
     @movies = Movie.all
+    @user_reviews = []
     if current_user
       @user_reviews = current_user.reviews.where(movie: @movies).index_by(&:movie_id) 
       filter_unwatched_movies if params[:filter] == 'unwatched'
