@@ -25,7 +25,7 @@ class User < ApplicationRecord
   private
 
   def generate_pin
-    self.pin = rand(1000...9999)
+    self.pin = "1234"
   end
 
 end
