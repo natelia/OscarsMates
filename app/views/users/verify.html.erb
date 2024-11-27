@@ -4,10 +4,10 @@
 
 <%= form_with url: verify_pin_user_path(@user), method: :post do %>
   <div>
-    <%= label_tag :pin, 'PIN' %>
-    <%= text_field_tag :pin %>
+    <%= label_tag :pin, 'PIN' %><br>
+    <%= number_field_tag :pin, nil, required: true, min: 0 %>
   </div>
   <div>
-    <%= submit_tag 'Verify' %>
+    <%= submit_tag 'Verify', class: 'btn btn-primary' %>
   </div>
 <% end %>
