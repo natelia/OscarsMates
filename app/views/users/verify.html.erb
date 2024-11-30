@@ -1,0 +1,15 @@
+<h1>Verify Your Email</h1>
+
+<p>Please enter the PIN sent to your email to verify your account.</p>
+
+<%= form_with url: verify_pin_user_path(@user), method: :post do %>
+  <div class="form-group mb-3">
+    <%= label_tag :pin, 'PIN', class: 'form-label' %><br>
+    <%= number_field_tag :pin, nil, required: true, min: 0, class: 'form-control', 
+                        placeholder: 'Enter your PIN', maxlength: 6 %>
+    <small class="text-muted">(For development: PIN is 1234)</small>
+  </div>
+  <div>
+    <%= submit_tag 'Verify', class: 'btn btn-primary' %>
+  </div>
+<% end %>
