@@ -2,7 +2,7 @@
 # viewing user details, editing user profiles, and deleting users. It ensures 
 # that only authenticated and authorized users can perform certain actions.
 class UsersController < ApplicationController
-  before_action :require_signin, except: %i[new create verify verify_pin]
+  before_action :require_signin, except: %i[new create]
   before_action :require_correct_user, only: %i[edit update destroy]
 
   def index
@@ -30,10 +30,8 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
-      # Send the verification email
-      UserMailer.verification_email(@user).deliver_now
       session[:user_id] = @user.id
-      redirect_to verify_user_path(@user), notice: 'Please verify your email address'
+      redirect_to movies_path, notice: 'Thanks for signing up!'
     else
       render :new, status: :unprocessable_entity
     end
@@ -83,28 +81,7 @@ class UsersController < ApplicationController
       }
     end
   end
-
-  def verify
-    @user = User.find(params[:id])
-  end
   
-  def verify_pin
-    @user = User.find(params[:id])
-    if @user.pin == params[:pin].to_i
-      if @user.update(verified: true)
-        redirect_to @user, notice: 'Your email has been successfully verified!'
-      else
-        flash.now[:alert] = 'Something went wrong. Please try again.'
-        render :verify, status: :unprocessable_entity
-      end
-    else
-      flash.now[:alert] = 'Invalid PIN. Please try again.'
-      render :verify, status: :unprocessable_entity
-    end
-  end
-  
-
-
   private
 
   def require_correct_user
