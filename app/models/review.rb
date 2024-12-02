@@ -3,11 +3,11 @@ class Review < ApplicationRecord
   belongs_to :movie
   belongs_to :user
 
-  STARS = [1, 2, 3, 4, 5].freeze
+  STARS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].freeze
 
   validates :stars, inclusion: {
     in: STARS,
-    message: 'must be between 1 and 5'
+    message: 'must be between 1 and 10'
   }
   validate :unique_user_review_for_movie
 
