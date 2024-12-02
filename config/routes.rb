@@ -7,11 +7,8 @@ Rails.application.routes.draw do
     member do
       post 'follow', to: 'follows#create'
       delete 'unfollow', to: 'follows#destroy'
-
-      get 'verify', to: 'users#verify'
-      post 'verify_pin', to: 'users#verify_pin'
     end
-    
+
     get 'stats', on: :collection
   end
 

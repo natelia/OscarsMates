@@ -1,8 +1,5 @@
 # Represents a user of the application.
 class User < ApplicationRecord
-  # Generates a random 4-digit PIN before a user is created
-  before_create :generate_pin
-
   has_secure_password
 
   # User relationships
@@ -22,10 +19,5 @@ class User < ApplicationRecord
                     format: { with: /\S+@\S+/ },
                     uniqueness: { case_sensitive: false }
 
-  private
-
-  def generate_pin
-    self.pin = "1234"
-  end
 
 end
