@@ -9,9 +9,9 @@ class UsersController < ApplicationController
     @users = User.all
     @total_movies_count = Movie.count
 
-    if params[:filter] == 'followed' && current_user
-      @users = current_user.following
-    end
+    return unless params[:filter] == 'followed' && current_user
+
+    @users = current_user.following
   end
 
   def show
@@ -56,37 +56,39 @@ class UsersController < ApplicationController
 
   def stats
     @user = current_user
-    @mates = @user.following 
+    @mates = @user.following
 
     @total_movies_watched = @user.reviews.count
     @total_minutes_watched = @user.reviews.joins(:movie).sum('movies.runtime')
 
-    @user_daily_minutes_watched = @user.reviews
-                                     .joins(:movie)
-                                     .group("DATE(reviews.created_at)")
-                                     .sum("movies.runtime")
-                                     .transform_keys { |date_str| Date.parse(date_str) }
-
-    
-    @mates_stats = @mates.map do |mate|
-      {
-        name: mate.name,
-        total_movies_watched: mate.reviews.count,
-        total_minutes_watched: mate.reviews.joins(:movie).sum('movies.runtime'),
-        daily_minutes_watched: mate.reviews
-          .joins(:movie)
-          .group("DATE(reviews.created_at)")
-          .sum("movies.runtime")
-          .transform_keys { |date_str| Date.parse(date_str) }
-      }
-    end
+    @user_daily_minutes_watched = user_daily_minutes_watched(@user)
+    @mates_stats = mates_stats(@mates)
   end
-  
+
   private
 
   def require_correct_user
     @user = User.find(params[:id])
     redirect_to root_url, status: :see_other unless current_user?(@user)
+  end
+
+  def user_daily_minutes_watched(user)
+    user.reviews
+        .joins(:movie)
+        .group("DATE(reviews.created_at)")
+        .sum("movies.runtime")
+        .transform_keys { |date_str| Date.parse(date_str) }
+  end
+
+  def mates_stats(mates)
+    mates.map do |mate|
+      {
+        name: mate.name,
+        total_movies_watched: mate.reviews.count,
+        total_minutes_watched: total_minutes_watched(mate),
+        daily_minutes_watched: user_daily_minutes_watched(mate)
+      }
+    end
   end
 
   def user_params
