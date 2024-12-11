@@ -7,7 +7,7 @@ module ApplicationHelper
     if review
       link_to 'Unwatch', movie_review_path(movie, review),
               method: :delete,
-              data: { turbo_method: :delete, turbo_confirm: "Are you sure?" },
+              data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' },
               class: 'btn btn-outline-danger btn-sm'
     else
       link_to 'Watched!', new_movie_review_path(movie),
