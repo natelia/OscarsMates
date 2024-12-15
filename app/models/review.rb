@@ -14,8 +14,8 @@ class Review < ApplicationRecord
   private
 
   def unique_user_review_for_movie
-    if Review.exists?(user_id: user_id, movie_id: movie_id)
-      errors.add(:base, 'You have already reviewed this movie')
-    end
+    return unless Review.exists?(user_id: user_id, movie_id: movie_id)
+
+    errors.add(:base, 'You have already reviewed this movie')
   end
 end
