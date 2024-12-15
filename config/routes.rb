@@ -21,11 +21,10 @@ Rails.application.routes.draw do
 
   get 'signup' => 'users#new'
 
-
   get '/session', to: 'sessions#new', as: :new_session
 
   post '/session', to: 'sessions#create', as: :create_session
   delete '/session', to: 'sessions#destroy', as: :destroy_session
 
-  get "signin" => "sessions#new"
+  get 'signin' => 'sessions#new'
 end
