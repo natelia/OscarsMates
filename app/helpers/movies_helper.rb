@@ -7,11 +7,11 @@ module MoviesHelper
     end
   end
 
-  def watch_or_unwatch_button(movie,review)
+  def watch_or_unwatch_button(movie, review)
     if review
-      button_to "Unwatch! ", movie_review_path(movie, review), method: :delete, class: "btn btn-outline-warning btn-sm"
+      button_to 'Unwatch! ', movie_review_path(movie, review), method: :delete, class: 'btn btn-outline-warning btn-sm'
     else
-      link_to "Watched!", new_movie_review_path(movie), class: "btn btn-outline-primary btn-sm"
+      link_to 'Watched!', new_movie_review_path(movie), class: 'btn btn-outline-primary btn-sm'
     end
   end
 end

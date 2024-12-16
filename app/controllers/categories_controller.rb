@@ -3,11 +3,7 @@ class CategoriesController < ApplicationController
   before_action :set_category, only: [:show, :edit, :update, :destroy]
 
   def index
-    if params[:query].present?
-      @categories = Category.where("name LIKE ?", "%#{params[:query]}%")
-    else
-      @categories = Category.all
-    end
+    @categories = params[:query].present? ? Category.where('name LIKE ?', "%#{params[:query]}%") : Category.all
   end
 
   def show
