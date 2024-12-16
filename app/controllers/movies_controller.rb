@@ -9,7 +9,7 @@ class MoviesController < ApplicationController
     @movies = Movie.all
     @user_reviews = []
     if current_user
-      @user_reviews = current_user.reviews.where(movie: @movies).index_by(&:movie_id) 
+      @user_reviews = current_user.reviews.where(movie: @movies).index_by(&:movie_id)
       filter_unwatched_movies if params[:filter] == 'unwatched'
       calculate_progress
     end
@@ -63,7 +63,7 @@ class MoviesController < ApplicationController
 
   def filter_unwatched_movies
     @movies = @movies.left_joins(:reviews)
-                     .where(reviews: {user_id: nil})
+                     .where(reviews: { user_id: nil })
   end
 
   def search_movies

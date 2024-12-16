@@ -1,5 +1,5 @@
-# UsersController manages the user resources, including creating new users, 
-# viewing user details, editing user profiles, and deleting users. It ensures 
+# UsersController manages the user resources, including creating new users,
+# viewing user details, editing user profiles, and deleting users. It ensures
 # that only authenticated and authorized users can perform certain actions.
 class UsersController < ApplicationController
   before_action :require_signin, except: %i[new create]
@@ -18,8 +18,8 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     @reviews = @user.reviews
     @favorite_movies = @user.favorite_movies
-    total_movies = Movie.count 
-    watched_movies = @user.reviews.count 
+    total_movies = Movie.count
+    watched_movies = @user.reviews.count
     @progress = (watched_movies.to_f / total_movies) * 100
   end
 
@@ -75,8 +75,8 @@ class UsersController < ApplicationController
   def user_daily_minutes_watched(user)
     user.reviews
         .joins(:movie)
-        .group("DATE(reviews.created_at)")
-        .sum("movies.runtime")
+        .group('DATE(reviews.created_at)')
+        .sum('movies.runtime')
         .transform_keys { |date_str| Date.parse(date_str) }
   end
 
