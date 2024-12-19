@@ -51,6 +51,22 @@ class MoviesController < ApplicationController
     redirect_to root_path, status: :see_other, alert: 'Movie successfully deleted!'
   end
 
+  def import
+    file = params[:file]
+  
+    if file.nil?
+      redirect_to movies_path, alert: "Please upload a CSV file."
+      return
+    end
+  
+    # Loop through the CSV and create movies
+    CSV.foreach(file.path, headers: true) do |row|
+      Movie.create(row.to_h)
+    end
+  
+    redirect_to movies_path, notice: "Movies imported successfully!"
+  end
+
   private
 
   def set_movie
