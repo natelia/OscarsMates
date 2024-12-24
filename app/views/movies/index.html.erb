@@ -8,6 +8,30 @@
         <button class="btn btn-outline-dark" type="submit">Search</button>
       </form>
       
+      <% if current_user_admin? %>
+        <div class="dropdown">
+          <button class="btn btn-outline-dark dropdown-toggle" type="button" id="adminDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            Admin Options
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="adminDropdown">
+            <li>
+              <%= form_with url: import_movies_path, method: :post, multipart: true, class: "px-3 py-2" do %>
+                <div>
+                  <label for="file" class="form-label">Upload CSV File</label>
+                  <%= file_field_tag :file, required: true, class: "form-control" %>
+                </div>
+                <div class="mt-2">
+                  <%= submit_tag "Import Movies", class: "btn btn-primary btn-sm" %>
+                </div>
+              <% end %>
+            </li>
+            <li>
+              <%= link_to "New Movie", new_movie_path, class: "dropdown-item" %>
+            </li>
+          </ul>
+        </div>
+      <% end %>
+
       <div class="filter-toggle text-center mb-4">
         <% if params[:filter] == 'unwatched' %>
           <%= link_to "<i class='bi bi-list'></i> Show All Movies".html_safe, movies_path, class: "btn btn-outline-dark" %>
@@ -40,7 +64,7 @@
           
           <div class="card-footer text-center bg-transparent border-0 pb-3">
             <% review = @user_reviews[movie.id] %>
-           <%= watch_or_unwatch_button(movie,review) %>
+            <%= watch_or_unwatch_button(movie,review) %>
           </div>
         </div>
       </div>
@@ -48,21 +72,15 @@
   </div>
 
   <% if @movies.empty? %>
-  <div class="text-center">
-    <p>No movies found for "<%= params[:query] %>". Try a different search or browse all movies!</p>
-    <%= link_to "Clear Filters", movies_path, class: "btn btn-outline-dark mt-2" %>
-  </div>
-<% end %>
-
-
-  <% if current_user_admin? %>
-    <div class="text-center mt-3">
-      <%= link_to "New Movie", new_movie_path, class: "btn btn-outline-dark mt-3" %>
+    <div class="text-center">
+      <p>No movies found for "<%= params[:query] %>". Try a different search or browse all movies!</p>
+      <%= link_to "Clear Filters", movies_path, class: "btn btn-outline-dark mt-2" %>
     </div>
   <% end %>
+  
   <a href="#" id="back-to-top" class="btn btn-dark" style="position: fixed; bottom: 20px; right: 20px; display: block;">
   Back to Top
-</a>
+  </a>
 
 </section>
 
