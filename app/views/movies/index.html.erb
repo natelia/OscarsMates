@@ -23,7 +23,7 @@
   <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
     <% @movies.each do |movie| %>
       <div class="col">
-        <div class="card movie-card h-100">
+        <div class="card movie-card h-100 position-relative">
           <%= link_to movie_path(movie), style: "text-decoration: none; color: inherit;" do %>
             <% if movie.picture_url.present? %>
               <picture>
@@ -39,7 +39,13 @@
               <p class="card-text mb-2">Mates' rating: <%= average_stars(movie) %>/10</p>
             </div>
           <% end %>
-          
+
+          <% if @user_reviews[movie.id] && @user_reviews[movie.id].stars.present? %>
+            <div class="badge bg-warning text-dark position-absolute top-0 start-0 m-2 p-2" style="font-size: 1rem; padding: 0.6rem;">
+              <%= @user_reviews[movie.id].stars%> ★
+            </div>
+          <% end %>
+
           <div class="card-footer text-center bg-transparent border-0 pb-3">
             <% review = @user_reviews[movie.id] %>
            <%= watch_or_unwatch_button(movie,review) %>
