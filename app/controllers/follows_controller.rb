@@ -3,8 +3,12 @@ class FollowsController < ApplicationController
   before_action :find_user
 
   def create
-    current_user.following << @user
-    redirect_back fallback_location: users_path, notice: "You are now following  #{@user.name}."
+    if current_user.following.include?(@user)
+      redirect_back fallback_location: users_path, alert: "You are already following #{@user.name}."
+    else
+      current_user.following << @user
+      redirect_back fallback_location: users_path, notice: "You are now following  #{@user.name}."
+    end
   end
 
   def destroy

@@ -29,9 +29,9 @@
           <div class="user-actions">
             <% if user != current_user %>
               <% if current_user.following.include?(user) %>
-                <%= button_to 'Unfollow', unfollow_user_path(user), method: :delete, class: "btn btn-danger btn-sm" %>
+                <%= button_to 'Unfollow', unfollow_user_path(user), method: :delete, class: "btn btn-danger btn-sm", data: { disable_with: "Unfollowing..." } %>
               <% else %>
-                <%= button_to 'Follow', follow_user_path(user), method: :post, class: "btn btn-primary btn-sm" %>
+                <%= button_to 'Follow', follow_user_path(user), method: :post, class: "btn btn-primary btn-sm", data: { disable_with: "Following..." } %>
               <% end %>
             <% end %>
           </div>
