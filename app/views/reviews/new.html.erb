@@ -20,9 +20,9 @@
     <% end %>
         
     <div class="mb-3 text-center">
-      <div class="star-rating">
+      <div class="star-rating d-flex flex-row-reverse">
         <% Review::STARS.reverse.each do |star| %>
-          <%= f.radio_button :stars, star, id: "star_#{star}", class: "d-none" %>
+          <%= f.radio_button :stars, star, id: "star_#{star}", class: "d-none", checked: f.object.stars == star %>
           <%= label_tag "star_#{star}", "★", class: "star fs-2" %>
         <% end %>
       </div>
@@ -38,7 +38,6 @@
           </div>
         <% end %>
 
-        <!-- Back Button -->
         <div class="mt-4 text-center">
           <%= link_to "Back to Movie Details", @movie, class: "btn btn-outline-dark" %>
         </div>
@@ -51,6 +50,7 @@
   .star-rating {
     display: inline-flex;
     gap: 5px;
+    justify-content: center;
   }
 
   .star {
