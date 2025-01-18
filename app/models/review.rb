@@ -10,6 +10,7 @@ class Review < ApplicationRecord
     message: 'must be between 1 and 10'
   }
   validate :unique_user_review_for_movie
+  validates :watched_on, presence: true
 
   private
 
