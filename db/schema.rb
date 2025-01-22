@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_01_13_180516) do
+ActiveRecord::Schema[7.1].define(version: 2025_01_22_214938) do
   create_table "categories", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -79,7 +79,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_13_180516) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "user_id"
-    t.date "watched_date"
+    t.date "watched_on"
     t.index ["movie_id"], name: "index_reviews_on_movie_id"
   end
 
