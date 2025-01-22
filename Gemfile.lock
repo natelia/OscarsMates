@@ -118,10 +118,6 @@ GEM
       activesupport (>= 6.1)
     i18n (1.14.1)
       concurrent-ruby (~> 1.0)
-    importmap-rails (2.0.1)
-      actionpack (>= 6.0.0)
-      activesupport (>= 6.0.0)
-      railties (>= 6.0.0)
     io-console (0.7.2)
     irb (1.11.2)
       rdoc
@@ -273,7 +269,6 @@ DEPENDENCIES
   capybara
   cssbundling-rails
   debug
-  importmap-rails
   jbuilder
   jsbundling-rails
   pry-rails
