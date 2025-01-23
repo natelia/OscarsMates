@@ -59,7 +59,7 @@ class UsersController < ApplicationController
     @mates = @user.following
 
     @total_movies_watched = @user.reviews.count
-    @total_minutes_watched = @user.reviews.joins(:movie).sum('movies.runtime')
+    @total_minutes_watched = total_minutes_watched(@user)
 
     @user_daily_minutes_watched = user_daily_minutes_watched(@user)
     @mates_stats = mates_stats(@mates)
@@ -78,6 +78,10 @@ class UsersController < ApplicationController
         .group('DATE(reviews.created_at)')
         .sum('movies.runtime')
         .transform_keys { |date_str| Date.parse(date_str) }
+  end
+
+  def total_minutes_watched(user)
+    user.reviews.joins(:movie).sum('movies.runtime')
   end
 
   def mates_stats(mates)
