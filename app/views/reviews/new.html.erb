@@ -28,6 +28,11 @@
             </div>
           </div>
 
+          <div class="field">
+            <%= f.label :watched_on, "Date Watched" %>
+            <%= f.date_field :watched_on, value: Date.today %>
+          </div>
+
           <div class="mb-3">
             <%= f.label :comment, class: "form-label" %>
             <%= f.text_area :comment, class: "form-control", placeholder: "What do you think, mate?", rows: 5 %>
