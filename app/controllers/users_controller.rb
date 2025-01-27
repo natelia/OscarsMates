@@ -61,7 +61,6 @@ class UsersController < ApplicationController
     @total_movies_watched = @user.reviews.count
     @total_minutes_watched = total_minutes_watched(@user)
 
-    @user_daily_minutes_watched = user_daily_minutes_watched(@user)
     @mates_stats = mates_stats(@mates)
 
     @mates_minutes_watched = @mates_stats.flat_map do |mate|
@@ -70,11 +69,15 @@ class UsersController < ApplicationController
       
       date_range = (dates.min..dates.max).to_a
       
+    
+      previous_value = 0
       date_range.map do |date|
+        current_value = mate[:daily_minutes_watched][date] || previous_value
+        previous_value = current_value
         { 
           name: mate[:name],
           date: date,
-          minutes_watched: mate[:daily_minutes_watched][date] || 0
+          minutes_watched: current_value
         }
       end
     end
@@ -88,11 +91,17 @@ class UsersController < ApplicationController
   end
 
   def user_daily_minutes_watched(user)
-    user.reviews
-        .joins(:movie)
-        .group('DATE(reviews.created_at)')
-        .sum('movies.runtime')
-        .transform_keys { |date_str| Date.parse(date_str) }
+    daily_minutes = user.reviews
+                       .joins(:movie)
+                       .group('DATE(reviews.created_at)')
+                       .sum('movies.runtime')
+                       .transform_keys { |date_str| Date.parse(date_str) }
+    
+    # Sort by date and calculate cumulative sum
+    cumulative_sum = 0
+    daily_minutes.sort.to_h.transform_values do |minutes|
+      cumulative_sum += minutes
+    end
   end
 
   def total_minutes_watched(user)
@@ -100,12 +109,13 @@ class UsersController < ApplicationController
   end
 
   def mates_stats(mates)
-    mates.map do |mate|
+    all_users = [current_user] + mates
+    all_users.map do |user|
       {
-        name: mate.name,
-        total_movies_watched: mate.reviews.count,
-        total_minutes_watched: total_minutes_watched(mate),
-        daily_minutes_watched: user_daily_minutes_watched(mate)
+        name: user.name,
+        total_movies_watched: user.reviews.count,
+        total_minutes_watched: total_minutes_watched(user),
+        daily_minutes_watched: user_daily_minutes_watched(user)
       }
     end
   end
