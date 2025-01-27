@@ -63,6 +63,10 @@ class UsersController < ApplicationController
 
     @user_daily_minutes_watched = user_daily_minutes_watched(@user)
     @mates_stats = mates_stats(@mates)
+
+    @mates_movies_watched = @mates.map { |mate| { name: mate.name, movies_watched: mate.reviews.count } }
+    
+    @mates_movies_watched << { name: @user.name, movies_watched: @total_movies_watched }
   end
 
   private

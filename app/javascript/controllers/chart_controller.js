@@ -3,26 +3,39 @@ import { Chart } from "chart.js/auto";
 
 export default class extends Controller {
   connect() {
+    const canvas = this.element.querySelector("canvas");
 
-    this.element.style.width = "400px";
-    this.element.style.height = "300px";
+    if (canvas) {
+      const data = JSON.parse(this.data.get("movies-watched"));
 
-    new Chart(this.element, {
-      type: "bar",
-      data: {
-        labels: ["Red", "Blue", "Yellow"],
-        datasets: [
-          {
-            label: "Test Dataset",
-            data: [10, 20, 30],
-            backgroundColor: ["red", "blue", "yellow"],
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false, 
-      }
-    });
+      // Extract names and movie counts
+      const labels = data.map(item => item.name);
+      const dataset = data.map(item => item.movies_watched);
+
+      canvas.style.width = "400px";
+      canvas.style.height = "300px";
+
+      new Chart(canvas, {
+        type: "bar",
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: "Movies Watched",
+              data: dataset,
+              backgroundColor: "rgba(75, 192, 192, 0.2)",
+              borderColor: "rgba(75, 192, 192, 1)",
+              borderWidth: 1
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+        }
+      });
+    } else {
+      console.error("Canvas element not found");
+    }
   }
 }

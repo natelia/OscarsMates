@@ -1,10 +1,14 @@
 <div class="container">
-
   <div class="text-center mb-5">
     <h3>Your Stats</h3>
     <p>Movies Watched: <strong><%= @total_movies_watched %></strong></p>
     <p>Total Minutes Watched: <strong><%= @total_minutes_watched %> mins</strong></p>
   </div>
+
+  <div data-controller="chart" data-chart-movies-watched="<%= @mates_movies_watched.to_json %>">
+    <canvas id="moviesChart"></canvas>
+  </div>
+</div>
 
   <div class="mb-5">
     <h3 class="text-center">Your Daily Stats</h3>
