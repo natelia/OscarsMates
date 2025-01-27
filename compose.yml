@@ -1,0 +1,14 @@
+version: "3.8"
+services:
+  web:
+    build: .
+    command: bash -c "./bin/dev"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    ports:
+      - 3001:3000
+    environment:
+      RAILS_ENV: development
+    restart: unless-stopped
+networks: {}
