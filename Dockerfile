@@ -13,6 +13,7 @@ WORKDIR /app
 COPY package.json yarn.lock ./
 # Install JS dependencies
 RUN yarn install
+RUN yarn global add esbuild
 # Copy Gemfile and install gems
 COPY Gemfile Gemfile.lock ./
 RUN bundle install
