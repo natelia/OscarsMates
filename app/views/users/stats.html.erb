@@ -5,8 +5,8 @@
     <p>Total Minutes Watched: <strong><%= @total_minutes_watched %> mins</strong></p>
   </div>
 
-  <div data-controller="chart" data-chart-movies-watched="<%= @mates_movies_watched.to_json %>">
-    <canvas id="moviesChart"></canvas>
+  <div data-controller="chart" data-chart-minutes-watched="<%= @mates_minutes_watched.to_json %>">
+    <canvas id="minutesChart"></canvas>
   </div>
 </div>
 

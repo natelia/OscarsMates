@@ -6,22 +6,22 @@ export default class extends Controller {
     const canvas = this.element.querySelector("canvas");
 
     if (canvas) {
-      const data = JSON.parse(this.data.get("movies-watched"));
+      const data = JSON.parse(this.data.get("minutes-watched"));
 
       // Extract names and movie counts
-      const labels = data.map(item => item.name);
-      const dataset = data.map(item => item.movies_watched);
+      const labels = data.map(item => item.date);
+      const dataset = data.map(item => item.minutes_watched);
 
       canvas.style.width = "400px";
       canvas.style.height = "300px";
-
+      console.log(this)
       new Chart(canvas, {
-        type: "bar",
+        type: "line",
         data: {
           labels: labels,
           datasets: [
             {
-              label: "Movies Watched",
+              label: "Minutes Watched",
               data: dataset,
               backgroundColor: "rgba(75, 192, 192, 0.2)",
               borderColor: "rgba(75, 192, 192, 1)",
