@@ -64,7 +64,15 @@ class UsersController < ApplicationController
     @user_daily_minutes_watched = user_daily_minutes_watched(@user)
     @mates_stats = mates_stats(@mates)
 
-    @mates_minutes_watched = user_daily_minutes_watched(@user).map { |day| { date: day.first, minutes_watched: day.last}}
+    @mates_minutes_watched = @mates_stats.flat_map do |mate|
+      mate[:daily_minutes_watched].map do |date, minutes|
+        { 
+          name: mate[:name],
+          date: date,
+          minutes_watched: minutes
+        }
+      end
+    end
   end
 
   private

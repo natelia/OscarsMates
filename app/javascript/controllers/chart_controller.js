@@ -8,26 +8,31 @@ export default class extends Controller {
     if (canvas) {
       const data = JSON.parse(this.data.get("minutes-watched"));
 
-      // Extract names and movie counts
-      const labels = data.map(item => item.date);
-      const dataset = data.map(item => item.minutes_watched);
+      // Group data by date and create datasets for each mate
+      const labels = [...new Set(data.map(item => item.date))];
+      const mates = [...new Set(data.map(item => item.name))];
+      
+      const datasets = mates.map(name => {
+        const mateData = data.filter(item => item.name === name);
+        return {
+          label: name,
+          data: labels.map(date => {
+            const entry = mateData.find(item => item.date === date);
+            return entry ? entry.minutes_watched : 0;
+          }),
+          borderColor: `rgba(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 192)}, ${Math.floor(Math.random() * 192)}, 1)`,
+          borderWidth: 1
+        };
+      });
 
       canvas.style.width = "400px";
       canvas.style.height = "300px";
-      console.log(this)
+      console.log(data)
       new Chart(canvas, {
         type: "line",
         data: {
           labels: labels,
-          datasets: [
-            {
-              label: "Minutes Watched",
-              data: dataset,
-              backgroundColor: "rgba(75, 192, 192, 0.2)",
-              borderColor: "rgba(75, 192, 192, 1)",
-              borderWidth: 1
-            },
-          ],
+          datasets: datasets
         },
         options: {
           responsive: true,
