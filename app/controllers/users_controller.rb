@@ -65,11 +65,16 @@ class UsersController < ApplicationController
     @mates_stats = mates_stats(@mates)
 
     @mates_minutes_watched = @mates_stats.flat_map do |mate|
-      mate[:daily_minutes_watched].map do |date, minutes|
+      dates = mate[:daily_minutes_watched].keys
+      next [] if dates.empty?
+      
+      date_range = (dates.min..dates.max).to_a
+      
+      date_range.map do |date|
         { 
           name: mate[:name],
           date: date,
-          minutes_watched: minutes
+          minutes_watched: mate[:daily_minutes_watched][date] || 0
         }
       end
     end
