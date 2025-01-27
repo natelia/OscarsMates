@@ -63,13 +63,12 @@ class UsersController < ApplicationController
 
     @mates_stats = mates_stats(@mates)
 
+    all_dates = @mates_stats.flat_map { |mate| mate[:daily_minutes_watched].keys }.uniq
+    date_range = (all_dates.min..all_dates.max).to_a
+
     @mates_minutes_watched = @mates_stats.flat_map do |mate|
-      dates = mate[:daily_minutes_watched].keys
-      next [] if dates.empty?
+      next [] if mate[:daily_minutes_watched].empty?
       
-      date_range = (dates.min..dates.max).to_a
-      
-    
       previous_value = 0
       date_range.map do |date|
         current_value = mate[:daily_minutes_watched][date] || previous_value
