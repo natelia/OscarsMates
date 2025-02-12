@@ -92,10 +92,10 @@ class UsersController < ApplicationController
   def user_daily_minutes_watched(user)
     daily_minutes = user.reviews
                        .joins(:movie)
-                       .group('DATE(reviews.created_at)')
+                       .group('reviews.watched_on')
                        .sum('movies.runtime')
-                       .transform_keys { |date_str| Date.parse(date_str) }
-    
+                       .transform_keys(&:to_date)
+  
     # Sort by date and calculate cumulative sum
     cumulative_sum = 0
     daily_minutes.sort.to_h.transform_values do |minutes|

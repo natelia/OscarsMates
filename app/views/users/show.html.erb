@@ -39,8 +39,8 @@
                     <%= link_to review.movie.title, review.movie %> - <%= pluralize(review.stars, 'star') %>
                   </span>
                   <span class="date text-muted">
-                     Watched on: 
-  <%= review.watched_on.present? ? review.watched_on.strftime('%B %d, %Y') : 'Date not specified' %>
+                    Watched on: 
+                    <%= review.watched_on.present? ? review.watched_on.strftime('%B %d, %Y') : review.created_at.strftime('%B %d, %Y') %>
                   </span>
                   <p>
                     <%= review.comment %>
