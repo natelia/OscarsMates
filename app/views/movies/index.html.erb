@@ -8,12 +8,26 @@
         <button class="btn btn-outline-dark" type="submit">Search</button>
       </form>
     
+    
        <% if current_user.present?%>
         <div class="filter-toggle text-center mb-4">
           <% if params[:filter] == 'unwatched' %>
             <%= link_to "<i class='bi bi-list'></i> Show All Movies".html_safe, movies_path, class: "btn btn-outline-dark" %>
           <% else %>
             <%= link_to "<i class='bi bi-eye-slash'></i> Show Unwatched".html_safe, movies_path(filter: 'unwatched'), class: "btn btn-outline-dark" %>
+          <% end %>
+        </div>
+
+        <div class="sort-options text-center mb-4">
+          <%= form_with(url: movies_path, method: :get, local: true) do %>
+            <%= select_tag :sort_by, options_for_select([
+              ['Sort by Duration', 'duration'],
+              ['Sort by Watched by Mates Count', 'watched_by_mates'],
+              ['Sort by Average Mates Rating', 'average_mates_rating'],
+              ['Sort by Most Nominated', 'most_nominated']
+            ], selected: params[:sort_by]), class: 'form-select' %>
+
+            <%= submit_tag 'Sort', class: 'btn btn-outline-dark' %>
           <% end %>
         </div>
       <% end %>
