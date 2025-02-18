@@ -9,7 +9,6 @@ class MoviesController < ApplicationController
     @movies = Movie.all
     @user_reviews = []
 
-
     if current_user
       @user_reviews = current_user.reviews.where(movie: @movies).index_by(&:movie_id)
       filter_unwatched_movies if params[:filter] == 'unwatched'
@@ -97,7 +96,7 @@ class MoviesController < ApplicationController
 
   def filter_unwatched_movies
     @movies = @movies.left_joins(:reviews)
-                     .where(reviews: { user_id: nil })
+                   .where.not(reviews: { user_id: current_user.id })
   end
 
   def search_movies
