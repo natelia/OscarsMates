@@ -8,12 +8,15 @@ class MoviesController < ApplicationController
   def index
     @movies = Movie.all
     @user_reviews = []
+
     if current_user
       @user_reviews = current_user.reviews.where(movie: @movies).index_by(&:movie_id)
       filter_unwatched_movies if params[:filter] == 'unwatched'
       calculate_progress
     end
+
     search_movies if params[:query].present?
+    sort_movies if params[:sort_by].present?
   end
 
   def show
@@ -62,7 +65,26 @@ class MoviesController < ApplicationController
     end
   end  
 
+ 
   private
+
+  def sort_movies
+    case params[:sort_by]
+    when 'duration'
+      @movies = @movies.order(:runtime)
+    when 'watched_by_mates'
+      mate_ids = current_user.following.pluck(:id)
+      @movies = @movies.joins(:reviews)
+                      .where(reviews: { user_id: mate_ids })
+                      .group('movies.id')
+                      .order('COUNT(reviews.id) DESC')
+    when 'most_nominated'
+      @movies = @movies.joins(:categories)
+                      .group('movies.id')
+                      .order('COUNT(categories.id) DESC')
+    end
+  end
+
 
   def set_movie
     @movie = Movie.find_by!(slug: params[:id])
@@ -74,7 +96,7 @@ class MoviesController < ApplicationController
 
   def filter_unwatched_movies
     @movies = @movies.left_joins(:reviews)
-                     .where(reviews: { user_id: nil })
+                   .where.not(reviews: { user_id: current_user.id })
   end
 
   def search_movies

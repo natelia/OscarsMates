@@ -92,7 +92,7 @@ class UsersController < ApplicationController
   def user_daily_minutes_watched(user)
     daily_minutes = user.reviews
                        .joins(:movie)
-                       .group('reviews.watched_on')
+                       .group('DATE(reviews.watched_on)')
                        .sum('movies.runtime')
                        .transform_keys(&:to_date)
   
