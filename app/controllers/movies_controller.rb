@@ -71,7 +71,7 @@ class MoviesController < ApplicationController
   def sort_movies
     case params[:sort_by]
     when 'duration'
-      @movies = @movies.order(:runtime)
+      @movies = @movies.order(runtime: :desc)
     when 'watched_by_mates'
       mate_ids = current_user.following.pluck(:id)
       @movies = @movies.joins(:reviews)
