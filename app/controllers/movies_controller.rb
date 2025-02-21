@@ -16,7 +16,7 @@ class MoviesController < ApplicationController
     end
 
     search_movies if params[:query].present?
-    sort_movies if params[:sort_by].present?
+    sort_movies
   end
 
   def show
@@ -69,19 +69,21 @@ class MoviesController < ApplicationController
   private
 
   def sort_movies
-    case params[:sort_by]
+    @movies = case params[:sort_by]
     when 'duration'
-      @movies = @movies.order(:runtime)
+      @movies.order(runtime: :desc)
     when 'watched_by_mates'
       mate_ids = current_user.following.pluck(:id)
-      @movies = @movies.joins(:reviews)
-                      .where(reviews: { user_id: mate_ids })
-                      .group('movies.id')
-                      .order('COUNT(reviews.id) DESC')
+      @movies.joins(:reviews)
+             .where(reviews: { user_id: mate_ids })
+             .group('movies.id')
+             .order('COUNT(reviews.id) DESC')
     when 'most_nominated'
-      @movies = @movies.joins(:categories)
-                      .group('movies.id')
-                      .order('COUNT(categories.id) DESC')
+      @movies.joins(:categories)
+             .group('movies.id')
+             .order('COUNT(categories.id) DESC')
+    else
+      @movies.order(:title)
     end
   end
 
