@@ -1,4 +1,5 @@
-![Screenshot](assets/images/screenshot.png)
+![image](https://github.com/user-attachments/assets/ad0937fd-8f2b-4e7c-a0ce-c4951af4f386)
+
 
 OscarsMates is a web app built with Ruby on Rails to help you track your journey through Oscar-nominated films. Whether you're catching up on the latest winners or just love watching movies, this app keeps you organized, lets you share your thoughts, and even lets you compete with friends to see who can watch the most!
 
