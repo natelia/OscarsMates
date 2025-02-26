@@ -35,6 +35,14 @@
     </div>
   </nav>
 
+  <div data-controller="confetti" data-confetti-enabled-value="<%= @all_movies_watched %>">
+    <% if @all_movies_watched %>
+      <div class="alert alert-success text-center">
+        Congratulations! You've watched all movies! 🎉
+      </div>
+    <% end %>
+  </div>
+
   <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
     <% @movies.each do |movie| %>
       <div class="col">
