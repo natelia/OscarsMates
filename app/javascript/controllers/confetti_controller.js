@@ -5,12 +5,14 @@ export default class extends Controller {
   static values = { enabled: Boolean }
 
   connect() {
+    console.log('Confetti controller connected, enabled:', this.enabledValue);
     if (this.enabledValue) {
       this.fireConfetti();
     }
   }
 
   fireConfetti() {
+    console.log('Firing confetti!');
     confetti({
       particleCount: 100,
       spread: 70,
