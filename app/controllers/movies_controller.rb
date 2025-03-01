@@ -17,6 +17,12 @@ class MoviesController < ApplicationController
 
     search_movies if params[:query].present?
     sort_movies
+
+    if current_user
+      @all_movies_watched = current_user.reviews.count == Movie.count
+    else
+      @all_movies_watched = false
+    end
   end
 
   def show
