@@ -15,10 +15,12 @@
         </div>
       </div>
 
-      <% if current_user.following.include?(@user) %>
-        <%= button_to 'Unfollow', unfollow_user_path(@user), method: :delete, class: "btn btn-danger", data: { disable_with: "Unfollowing..." } %>
-      <% else %>
-        <%= button_to 'Follow', follow_user_path(@user), method: :post, class: "btn btn-primary", data: { disable_with: "Following..." } %>
+      <% unless current_user?(@user) %>
+        <% if current_user.following.include?(@user) %>
+          <%= button_to 'Unfollow', unfollow_user_path(@user), method: :delete, class: "btn btn-danger", data: { disable_with: "Unfollowing..." } %>
+        <% else %>
+          <%= button_to 'Follow', follow_user_path(@user), method: :post, class: "btn btn-primary", data: { disable_with: "Following..." } %>
+        <% end %>
       <% end %>
     </div>
     
