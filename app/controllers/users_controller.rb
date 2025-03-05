@@ -16,7 +16,7 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
-    @reviews = @user.reviews
+    @reviews = @user.reviews.includes(:movie).order(watched_on: :desc, created_at: :desc)
     @favorite_movies = @user.favorite_movies
     total_movies = Movie.count
     watched_movies = @user.reviews.count
