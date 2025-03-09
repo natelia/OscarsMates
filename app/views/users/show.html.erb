@@ -36,17 +36,23 @@
           <div id="collapseReviews" class="accordion-collapse collapse" aria-labelledby="headingReviews" data-bs-parent="#reviewsAccordion">
             <div class="accordion-body">
               <% @reviews.each do |review| %>
-                <div class="review border p-3 my-3 rounded">
-                  <span class="title d-block mb-2">
-                    <%= link_to review.movie.title, review.movie %> - <%= pluralize(review.stars, 'star') %>
-                  </span>
-                  <span class="date text-muted">
-                    Watched on: 
-                    <%= review.watched_on.present? ? review.watched_on.strftime('%B %d, %Y') : review.created_at.strftime('%B %d, %Y') %>
-                  </span>
-                  <p>
-                    <%= review.comment %>
-                  </p>
+                <div class="d-flex align-items-center border p-3 my-3 rounded">
+                  <% if review.movie.picture_url.present? %>
+                    <img src="<%= review.movie.picture_url %>" alt="<%= review.movie.title %> Poster" class="me-3" width="60" height="90">
+                  <% end %>
+
+                  <div>
+                    <span class="d-block fw-bold">
+                      <%= link_to review.movie.title, review.movie, class: "text-decoration-none" %> -
+                      <span class="text-warning"><%= render_stars(review.stars) %></span>
+                    </span>
+                    <small class="text-muted d-block">
+                      Watched on: <%= review.watched_on || review.created_at.strftime('%B %d, %Y') %>
+                    </small>
+                    <p class="mb-0">
+                      <%= review.comment %>
+                    </p>
+                  </div>
                 </div>
               <% end %>
             </div>
