@@ -15,10 +15,12 @@
         </div>
       </div>
 
-      <% if current_user.following.include?(@user) %>
-        <%= button_to 'Unfollow', unfollow_user_path(@user), method: :delete, class: "btn btn-danger", data: { disable_with: "Unfollowing..." } %>
-      <% else %>
-        <%= button_to 'Follow', follow_user_path(@user), method: :post, class: "btn btn-primary", data: { disable_with: "Following..." } %>
+      <% unless current_user?(@user) %>
+        <% if current_user.following.include?(@user) %>
+          <%= button_to 'Unfollow', unfollow_user_path(@user), method: :delete, class: "btn btn-danger", data: { disable_with: "Unfollowing..." } %>
+        <% else %>
+          <%= button_to 'Follow', follow_user_path(@user), method: :post, class: "btn btn-primary", data: { disable_with: "Following..." } %>
+        <% end %>
       <% end %>
     </div>
     
@@ -28,23 +30,29 @@
         <div class="accordion-item">
           <h2 class="accordion-header" id="headingReviews">
             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseReviews" aria-expanded="false" aria-controls="collapseReviews">
-              Mate's Watched
+              Recently Watched
             </button>
           </h2>
           <div id="collapseReviews" class="accordion-collapse collapse" aria-labelledby="headingReviews" data-bs-parent="#reviewsAccordion">
             <div class="accordion-body">
               <% @reviews.each do |review| %>
-                <div class="review border p-3 my-3 rounded">
-                  <span class="title d-block mb-2">
-                    <%= link_to review.movie.title, review.movie %> - <%= pluralize(review.stars, 'star') %>
-                  </span>
-                  <span class="date text-muted">
-                    Watched on: 
-                    <%= review.watched_on.present? ? review.watched_on.strftime('%B %d, %Y') : review.created_at.strftime('%B %d, %Y') %>
-                  </span>
-                  <p>
-                    <%= review.comment %>
-                  </p>
+                <div class="d-flex align-items-center border p-3 my-3 rounded">
+                  <% if review.movie.picture_url.present? %>
+                    <img src="<%= review.movie.picture_url %>" alt="<%= review.movie.title %> Poster" class="me-3" width="60" height="90">
+                  <% end %>
+
+                  <div>
+                    <span class="d-block fw-bold">
+                      <%= link_to review.movie.title, review.movie, class: "text-decoration-none" %> -
+                       <span class="text-warning"><%= render_stars(review.stars) %></span>
+                    </span>
+                    <small class="text-muted d-block">
+                      Watched on: <%= review.watched_on || review.created_at.strftime('%B %d, %Y') %>
+                    </small>
+                    <p class="mb-0">
+                      <%= review.comment %>
+                    </p>
+                  </div>
                 </div>
               <% end %>
             </div>
@@ -58,16 +66,24 @@
         <div class="accordion-item">
           <h2 class="accordion-header" id="headingFavorites">
             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFavorites" aria-expanded="false" aria-controls="collapseFavorites">
-              Mate's Favorites
+              Favorite Movies
             </button>
           </h2>
           <div id="collapseFavorites" class="accordion-collapse collapse" aria-labelledby="headingFavorites" data-bs-parent="#favoritesAccordion">
             <div class="accordion-body">
               <ul class="list-group">
                 <% @favorite_movies.each do |movie| %>
-                  <li class="list-group-item">
-                    <%= link_to movie.title, movie %>
-                  </li>
+                  <div class="d-flex align-items-center border p-3 my-3 rounded">
+                    <% if movie.picture_url.present? %>
+                      <img src="<%= movie.picture_url %>" alt="<%= movie.title %> Poster" class="me-3" width="60" height="90">
+                    <% end %>
+
+                    <div>
+                      <span class="d-block fw-bold">
+                        <%= link_to movie.title, movie, class: "text-decoration-none" %>
+                      </span>
+                    </div>
+                  </div>
                 <% end %>
               </ul>
             </div>
@@ -75,6 +91,7 @@
         </div>
       </div>
     <% end %>
+
 
     <% if current_user?(@user) %>
       <div class="actions mb-4 text-center">
