@@ -18,9 +18,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     @reviews = @user.reviews.includes(:movie).order(watched_on: :desc, created_at: :desc)
     @favorite_movies = @user.favorite_movies
-    total_movies = Movie.count
-    watched_movies = @user.reviews.count
-    @progress = (watched_movies.to_f / total_movies) * 100
+    @progress = UserProgressService.new(@user).progress
   end
 
   def new
