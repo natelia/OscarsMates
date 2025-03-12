@@ -23,5 +23,8 @@ module OscarsMates
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    # Add services to autoload paths
+    config.autoload_paths += %W(#{config.root}/app/services)
   end
 end

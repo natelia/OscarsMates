@@ -56,67 +56,19 @@ class UsersController < ApplicationController
 
   def stats
     @user = current_user
-    @mates = @user.following
+    stats_service = UserStatsService.new(@user)
 
-    @total_movies_watched = @user.reviews.count
-    @total_minutes_watched = total_minutes_watched(@user)
-
-    @mates_stats = mates_stats(@mates)
-
-    all_dates = @mates_stats.flat_map { |mate| mate[:daily_minutes_watched].keys }.uniq
-    date_range = (all_dates.min..all_dates.max).to_a
-
-    @mates_minutes_watched = @mates_stats.flat_map do |mate|
-      next [] if mate[:daily_minutes_watched].empty?
-      
-      previous_value = 0
-      date_range.map do |date|
-        current_value = mate[:daily_minutes_watched][date] || previous_value
-        previous_value = current_value
-        { 
-          name: mate[:name],
-          date: date,
-          minutes_watched: current_value
-        }
-      end
-    end
+    @total_movies_watched = stats_service.user_stats[:total_movies_watched]
+    @total_minutes_watched = stats_service.user_stats[:total_minutes_watched]
+    @mates_stats = stats_service.mates_stats
   end
+
 
   private
 
   def require_correct_user
     @user = User.find(params[:id])
     redirect_to root_url, status: :see_other unless current_user?(@user)
-  end
-
-  def user_daily_minutes_watched(user)
-    daily_minutes = user.reviews
-                       .joins(:movie)
-                       .group('DATE(reviews.watched_on)')
-                       .sum('movies.runtime')
-                       .transform_keys(&:to_date)
-  
-    # Sort by date and calculate cumulative sum
-    cumulative_sum = 0
-    daily_minutes.sort.to_h.transform_values do |minutes|
-      cumulative_sum += minutes
-    end
-  end
-
-  def total_minutes_watched(user)
-    user.reviews.joins(:movie).sum('movies.runtime')
-  end
-
-  def mates_stats(mates)
-    all_users = [current_user] + mates
-    all_users.map do |user|
-      {
-        name: user.name,
-        total_movies_watched: user.reviews.count,
-        total_minutes_watched: total_minutes_watched(user),
-        daily_minutes_watched: user_daily_minutes_watched(user)
-      }
-    end
   end
 
   def user_params
