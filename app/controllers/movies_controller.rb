@@ -85,9 +85,7 @@ class MoviesController < ApplicationController
   end
 
   def calculate_progress
-    @watched_movies_count = current_user.reviews.count
-    @total_movies_count = Movie.count
-    @progress = @watched_movies_count.to_f / @total_movies_count * 100
+    @progress = UserProgressService.new(current_user).progress if current_user
   end
 
   def set_users_specific_data
