@@ -63,22 +63,7 @@ class MoviesController < ApplicationController
   private
 
   def sort_movies
-    @movies = case params[:sort_by]
-    when 'duration'
-      @movies.order(runtime: :desc)
-    when 'watched_by_mates'
-      mate_ids = current_user.following.pluck(:id)
-      @movies.joins(:reviews)
-             .where(reviews: { user_id: mate_ids })
-             .group('movies.id')
-             .order('COUNT(reviews.id) DESC')
-    when 'most_nominated'
-      @movies.joins(:categories)
-             .group('movies.id')
-             .order('COUNT(categories.id) DESC')
-    else
-      @movies.order(:title)
-    end
+    @movies = MovieSortingService.call(@movies, params[:sort_by], current_user)
   end
 
 
