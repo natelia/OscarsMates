@@ -17,7 +17,6 @@ Rails.application.routes.draw do
   resources :movies do
     resources :reviews, only: [:index, :new, :create, :destroy]
     resources :favorites, only: [:create, :destroy]
-    collection { post :import }
   end
 
   get 'signup' => 'users#new'
