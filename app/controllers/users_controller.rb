@@ -9,9 +9,7 @@ class UsersController < ApplicationController
     @users = User.all
     @total_movies_count = Movie.count
 
-    return unless params[:filter] == 'followed' && current_user
-
-    @users = current_user.following
+    @users = UserFilterService.new(current_user, params[:filter]).call
   end
 
   def show
