@@ -11,12 +11,12 @@ class MoviesController < ApplicationController
 
     if current_user
       @user_reviews = current_user.reviews.where(movie: @movies).index_by(&:movie_id)
-      filter_unwatched_movies if params[:filter] == 'unwatched'
       calculate_progress
     end
 
     search_movies if params[:query].present?
     sort_movies
+    filter_movies if params[:filter] == 'unwatched' && current_user
 
     if current_user
       @all_movies_watched = current_user.reviews.count == Movie.count
@@ -63,7 +63,7 @@ class MoviesController < ApplicationController
   private
 
   def sort_movies
-    @movies = MovieSortingService.call(@movies, params[:sort_by], current_user)
+    @movies = MovieSortingService.new(@movies, params[:sort_by], current_user).call
   end
 
 
@@ -75,9 +75,8 @@ class MoviesController < ApplicationController
     params.require(:movie).permit(:title, :english_title, :where_to_watch, :runtime, :rating, :url, :picture_url, genre_ids: [], category_ids: [])
   end
 
-  def filter_unwatched_movies
-    @movies = @movies.left_joins(:reviews)
-                   .where.not(reviews: { user_id: current_user.id })
+  def filter_movies
+    @movies = MovieFilteringService.new(@movies, current_user).filter_unwatched
   end
 
   def search_movies
