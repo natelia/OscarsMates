@@ -59,6 +59,11 @@ class UsersController < ApplicationController
     @mates_stats = stats_service.mates_stats
   end
 
+  def wall
+    followed_users = current_user.following
+    @reviews = Review.where(user: followed_users).order(created_at: :desc). includes(:user, :movie).limit(20)
+  end
+
 
   private
 
