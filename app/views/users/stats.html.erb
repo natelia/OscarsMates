@@ -11,6 +11,20 @@
 </div>
 
   <div class="mt-4">
-    <%= link_to "See the Latest Ratings from Your Mates →", wall_user_path(current_user), class: "btn btn-primary" %>
+    <h4>Latest Reviews from Your Mates</h4>
+    <% if @mates_reviews.any? %>
+      <ul class="list-group">
+        <% @mates_reviews.each do |review| %>
+          <li class="list-group-item">
+            <strong><%= review.user.name %></strong> watched 
+            <%= review.movie.title %> on 
+            <%= review.watched_on.strftime("%B %d, %Y") %>:
+            <%= review.comment %>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p>No reviews from your mates yet.</p>
+    <% end %>
   </div>
 </div>

@@ -57,16 +57,12 @@ class UsersController < ApplicationController
     @total_movies_watched = stats_service.user_stats[:total_movies_watched]
     @total_minutes_watched = stats_service.user_stats[:total_minutes_watched]
     @mates_stats = stats_service.mates_stats || []
-
-    # Add logging to verify the data
-    Rails.logger.info "Mates stats data: #{@mates_stats.inspect}"
+    
+    @mates_reviews = Review.where(user: @user.following)
+                          .order(created_at: :desc)
+                          .limit(5)
+                          .includes(:user, :movie)
   end
-
-  def wall
-    followed_users = current_user.following
-    @reviews = Review.where(user: followed_users).order(created_at: :desc). includes(:user, :movie).limit(20)
-  end
-
 
   private
 
