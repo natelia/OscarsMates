@@ -22,6 +22,10 @@ class UserStatsService
         daily_minutes_watched: user_daily_minutes_watched(user)
       }
     end
+    
+    # Add logging
+    Rails.logger.info "Processed mates stats: #{stats.inspect}"
+    
     process_mates_minutes_watched(stats)
   end
 
@@ -45,6 +49,8 @@ class UserStatsService
   end
   
   def process_mates_minutes_watched(stats)
+    return [] if stats.blank?
+
     all_dates = stats.flat_map { |mate| mate[:daily_minutes_watched].keys }.uniq
     date_range = (all_dates.min..all_dates.max).to_a
 

@@ -56,7 +56,10 @@ class UsersController < ApplicationController
 
     @total_movies_watched = stats_service.user_stats[:total_movies_watched]
     @total_minutes_watched = stats_service.user_stats[:total_minutes_watched]
-    @mates_stats = stats_service.mates_stats
+    @mates_stats = stats_service.mates_stats || []
+
+    # Add logging to verify the data
+    Rails.logger.info "Mates stats data: #{@mates_stats.inspect}"
   end
 
   def wall

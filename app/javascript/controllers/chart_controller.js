@@ -2,11 +2,19 @@ import { Controller } from "@hotwired/stimulus";
 import { Chart } from "chart.js/auto";
 
 export default class extends Controller {
+  static values = { minutesWatched: Array }
+
   connect() {
     const canvas = this.element.querySelector("canvas");
 
     if (canvas) {
-      const data = JSON.parse(this.data.get("minutes-watched"));
+      const data = this.minutesWatchedValue;
+
+      // Validate data
+      if (!data || !Array.isArray(data)) {
+        console.error("Invalid or missing data for chart");
+        return;
+      }
 
       // Group data by date and create datasets for each mate
       const labels = [...new Set(data.map(item => item.date))];
@@ -25,9 +33,12 @@ export default class extends Controller {
         };
       });
 
-      canvas.style.width = "400px";
-      canvas.style.height = "300px";
-      console.log(data)
+      // Style canvas
+      canvas.style.display = "block";
+      canvas.style.width = "100%";
+      canvas.style.height = "400px";
+
+      // Initialize chart
       new Chart(canvas, {
         type: "line",
         data: {
@@ -37,6 +48,12 @@ export default class extends Controller {
         options: {
           responsive: true,
           maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: true,
+              position: 'top'
+            }
+          }
         }
       });
     } else {

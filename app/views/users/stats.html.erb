@@ -5,9 +5,10 @@
     <p>Total Minutes Watched: <strong><%= @total_minutes_watched %> mins</strong></p>
   </div>
 
-  <div data-controller="chart" data-chart-minutes-watched="<%= @mates_minutes_watched.to_json %>">
-    <canvas id="minutesChart"></canvas>
-  </div>
+  <div data-controller="chart" 
+     data-chart-minutes-watched-value="<%= @mates_stats.to_json %>">
+  <canvas></canvas>
+</div>
 
   <div class="mt-4">
     <%= link_to "See the Latest Ratings from Your Mates →", wall_user_path(current_user), class: "btn btn-primary" %>
