@@ -19,6 +19,7 @@
             <strong><%= review.user.name %></strong> watched 
             <%= review.movie.title %> on 
             <%= review.watched_on.strftime("%B %d, %Y") %>:
+              Rating: <%= review.stars %>/10
             <%= review.comment %>
           </li>
         <% end %>
