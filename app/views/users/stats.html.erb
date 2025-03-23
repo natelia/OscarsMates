@@ -11,21 +11,25 @@
 </div>
 
   <div class="mt-4">
-    <h4>Latest Reviews from Your Mates</h4>
-    <% if @mates_reviews.any? %>
-      <ul class="list-group">
-        <% @mates_reviews.each do |review| %>
-          <li class="list-group-item">
-            <strong><%= review.user.name %></strong> watched 
-            <%= review.movie.title %> on 
-            <%= review.watched_on.strftime("%B %d, %Y") %>:
-              Rating: <%= review.stars %>/10
-            <%= review.comment %>
-          </li>
-        <% end %>
-      </ul>
-    <% else %>
-      <p>No reviews from your mates yet.</p>
-    <% end %>
-  </div>
+  <h4 class="mb-3 text-center">Latest Reviews from Your Mates</h4>
+  <% if @mates_reviews.any? %>
+    <ul class="list-group mx-auto" style="max-width: 600px;">
+      <% @mates_reviews.each do |review| %>
+        <li class="list-group-item">
+          <strong><%= review.user.name %></strong> watched <em><%= review.movie.title %></em> on 
+          <%= review.watched_on.strftime("%B %d, %Y") %>
+          <span class="badge bg-warning text-dark"><%= review.stars %>/10</span>
+          <% if review.comment.present? %>
+            <p class="mt-2 fst-italic">"<%= review.comment %>"</p>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p class="text-muted text-center">No reviews from your mates yet.</p>
+  <% end %>
+</div>
+
+
+
 </div>
