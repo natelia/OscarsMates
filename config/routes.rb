@@ -7,6 +7,7 @@ Rails.application.routes.draw do
     member do
       post 'follow', to: 'follows#create'
       delete 'unfollow', to: 'follows#destroy'
+      get 'wall', to: 'users#wall'
     end
 
     get 'stats', on: :collection
