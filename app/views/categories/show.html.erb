@@ -17,7 +17,16 @@
           <div class="card-body text-center">
             <h5 class="card-title mb-2"><%= movie.title %></h5>
             <p class="card-text mb-2">Mates rated this movie as <%= average_stars(movie) %> out of 5!</p>
-            <%= link_to "See More!", movie_path(movie), class: "btn btn-dark btn-sm" %>
+            <% if @user_reviews[movie.id] && @user_reviews[movie.id].stars.present? %>
+            <div class="badge bg-warning text-dark position-absolute top-0 start-0 m-2 p-2" style="font-size: 1rem; padding: 0.6rem;">
+              <%= @user_reviews[movie.id].stars%> ★
+            </div>
+          <% end %>
+
+          <div class="card-footer text-center bg-transparent border-0 pb-3">
+            <% review = @user_reviews[movie.id] %>
+           <%= watch_or_unwatch_button(movie,review) %>
+          </div>
           </div>
         </div>
       </div>

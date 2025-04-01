@@ -7,7 +7,9 @@ class CategoriesController < ApplicationController
   end
 
   def show
-    @movies = @category.movies
+    @category = Category.find(params[:id])
+    @movies = @category.movies.includes(:reviews)
+    @user_reviews = current_user ? current_user.reviews : []
   end
 
   def new
