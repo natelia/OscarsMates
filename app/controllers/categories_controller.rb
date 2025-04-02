@@ -7,7 +7,18 @@ class CategoriesController < ApplicationController
   end
 
   def show
-    @movies = @category.movies
+    @category = Category.find(params[:id])
+    @movies = @category.movies.includes(:reviews)
+    @user_reviews = current_user ? current_user.reviews.index_by(&:movie_id) : {}
+    
+    # Handle unwatched action
+    if params[:unwatched] && current_user
+      movie = Movie.find(params[:unwatched])
+      review = current_user.reviews.find_by(movie_id: movie.id)
+      review&.update(watched: false)
+      redirect_to category_path(@category), notice: "#{movie.title} marked as unwatched"
+      return
+    end
   end
 
   def new
