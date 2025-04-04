@@ -17,6 +17,7 @@ class UsersController < ApplicationController
     @reviews = @user.reviews.includes(:movie).order(watched_on: :desc, created_at: :desc)
     @favorite_movies = @user.favorite_movies
     @progress = UserProgressService.new(@user).progress
+    @top_rated_movies = @user.reviews.order(stars: :desc).limit(5).map(&:movie)
   end
 
   def new
