@@ -92,6 +92,37 @@
       </div>
     <% end %>
 
+    <% if @top_rated_movies.present? %>
+  <div class="accordion mb-4" id="topRatedAccordion">
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingTopRated">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTopRated" aria-expanded="false" aria-controls="collapseTopRated">
+          Top-Rated Movies
+        </button>
+      </h2>
+      <div id="collapseTopRated" class="accordion-collapse collapse" aria-labelledby="headingTopRated" data-bs-parent="#topRatedAccordion">
+        <div class="accordion-body">
+          <% @top_rated_movies.each do |movie| %>
+            <div class="d-flex align-items-center border p-3 my-3 rounded">
+              <% if movie.picture_url.present? %>
+                <img src="<%= movie.picture_url %>" alt="<%= movie.title %> Poster" class="me-3" width="60" height="90">
+              <% end %>
+
+              <div>
+                <span class="d-block fw-bold">
+                  <%= link_to movie.title, movie, class: "text-decoration-none" %> -
+                  <span class="text-warning"><%= render_stars(movie.reviews.find_by(user: @user).stars) %></span>
+                </span>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+
 
     <% if current_user?(@user) %>
       <div class="actions mb-4 text-center">
