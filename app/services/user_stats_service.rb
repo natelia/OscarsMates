@@ -52,7 +52,12 @@ class UserStatsService
     return [] if stats.blank?
 
     all_dates = stats.flat_map { |mate| mate[:daily_minutes_watched].keys }.uniq
-    date_range = (all_dates.min..all_dates.max).to_a
+    
+    if all_dates.empty?
+      date_range = (all_dates.min..all_dates.max)
+    else
+      date_range = (all_dates.min..all_dates.max).to_a
+    end
 
     stats.flat_map do |mate|
       next [] if mate[:daily_minutes_watched].empty?
