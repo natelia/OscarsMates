@@ -26,5 +26,7 @@ module OscarsMates
 
     # Add services to autoload paths
     config.autoload_paths += %W(#{config.root}/app/services)
+    config.autoload_paths << Rails.root.join('app/queries')
+
   end
 end

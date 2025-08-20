@@ -1,10 +1,11 @@
 class ListMoviesQuery
-attr_reader :query, :filter, :current_user
+attr_reader :query, :filter, :current_user, :sort_by
 
-  def initialize(query, filter, current_user)
+  def initialize(query, filter, current_user, sort_by)
     @query = query
     @filter = filter
     @current_user = current_user
+    @sort_by = sort_by
   end
 
   def results
@@ -27,7 +28,22 @@ attr_reader :query, :filter, :current_user
   end
 
   def sort_movies
-    @results = @results.order(:title)
+    case sort_by
+    when 'duration'
+      @results = @results.order(runtime: :desc)
+    when 'watched_by_mates'
+      mate_ids = current_user.following.pluck(:id)
+      @results = @results.joins(:reviews)
+                           .where(reviews: { user_id: mate_ids })
+                           .group('movies.id')
+                           .order('COUNT(reviews.id) DESC')
+    when 'most_nominated'
+      @results = @results.joins(:categories)
+            .group('movies.id')
+            .order('COUNT(categories.id) DESC')
+    else
+      @results = @results.order(:title)
+    end
   end
 
   def filter_movies
