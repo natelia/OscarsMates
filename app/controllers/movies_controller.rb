@@ -6,7 +6,7 @@ class MoviesController < ApplicationController
   before_action :set_movie, only: %i[show edit update destroy]
 
   def index
-    @movies = ListMoviesQuery.new(params[:query], params[:filter], current_user, params[:sort_by]).results
+    @movies = ListMoviesQuery.new(params, current_user).results
 
     @user_reviews = []
     if current_user

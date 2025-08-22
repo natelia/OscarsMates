@@ -11,10 +11,10 @@
     
        <% if current_user.present?%>
         <div class="filter-toggle text-center mb-4">
-          <% if params[:filter] == 'unwatched' %>
+          <% if params[:filter_by] == 'unwatched' %>
             <%= link_to "<i class='bi bi-list'></i> Show All Movies".html_safe, movies_path, class: "btn btn-outline-dark" %>
           <% else %>
-            <%= link_to "<i class='bi bi-eye-slash'></i> Show Unwatched".html_safe, movies_path(filter: 'unwatched'), class: "btn btn-outline-dark" %>
+            <%= link_to "<i class='bi bi-eye-slash'></i> Show Unwatched".html_safe, movies_path(filter_by: 'unwatched'), class: "btn btn-outline-dark" %>
           <% end %>
         </div>
 
