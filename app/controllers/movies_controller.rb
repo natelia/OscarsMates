@@ -6,17 +6,13 @@ class MoviesController < ApplicationController
   before_action :set_movie, only: %i[show edit update destroy]
 
   def index
-    @movies = Movie.all
-    @user_reviews = []
+    @movies = ListMoviesQuery.new(params, current_user).results
 
+    @user_reviews = []
     if current_user
       @user_reviews = current_user.reviews.where(movie: @movies).index_by(&:movie_id)
       calculate_progress
     end
-
-    search_movies if params[:query].present?
-    sort_movies
-    filter_movies if params[:filter] == 'unwatched' && current_user
 
     if current_user
       @all_movies_watched = current_user.reviews.count == Movie.count
