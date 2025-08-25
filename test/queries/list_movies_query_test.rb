@@ -42,10 +42,8 @@ class ListMoviesQueryTest < ActiveSupport::TestCase
     query = ListMoviesQuery.new({}, @user)
     results = query.results
 
-    titles = []
-    results.each do |movie|
-        titles << movie.title
-    end
+    titles = results.map(&:title)
+    
     assert_includes titles, "Star Wars"
     assert_includes titles, "Star Trek"
     assert_includes titles, "Avatar"
@@ -56,10 +54,8 @@ class ListMoviesQueryTest < ActiveSupport::TestCase
     query = ListMoviesQuery.new(params, @user)
     results = query.results
 
-    titles = []
-    results.each do |movie|
-        titles << movie.title
-    end
+   titles = results.map(&:title)
+
     assert_includes titles, "Star Wars"
     assert_includes titles, "Star Trek"
     refute_includes titles, "Avatar"
@@ -70,10 +66,8 @@ class ListMoviesQueryTest < ActiveSupport::TestCase
     query = ListMoviesQuery.new(params, @user)
     results = query.results
 
-    titles = []
-    results.each do |movie|
-        titles << movie.title
-    end
+    titles = results.map(&:title)
+
     assert_equal "Avatar", titles[0]
     assert_equal "Star Trek", titles[1]
     assert_equal "Star Wars", titles[2]
@@ -84,10 +78,7 @@ class ListMoviesQueryTest < ActiveSupport::TestCase
     query = ListMoviesQuery.new(params, @user)
     results = query.results
 
-    titles = []
-    results.each do |movie|
-        titles << movie.title
-    end
+    titles = results.map(&:title)
 
     refute_includes titles, @movie1.title
     assert_includes titles, @movie2.title
@@ -99,10 +90,8 @@ class ListMoviesQueryTest < ActiveSupport::TestCase
     query = ListMoviesQuery.new(params, @user)
     results = query.results
 
-    titles = []
-    results.each do |movie|
-        titles << movie.title
-    end
+   titles = results.map(&:title)
+   
     expected_order = ["Avatar", "Star Trek", "Star Wars"]
     assert_equal expected_order, titles
   end 

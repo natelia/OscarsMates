@@ -1,10 +1,12 @@
 require 'test_helper'
 
-class MoviesHelperTest < ActiveSupport::TestCase
+class MoviesHelperTest < ActionView::TestCase
   include MoviesHelper
   include ActionView::Helpers::TagHelper
   include ActionView::Helpers::TextHelper
   include ActionView::Helpers::NumberHelper 
+  include ActionView::Helpers::UrlHelper
+  include Rails.application.routes.url_helpers
 
   def setup
     @movie_no_reviews = Movie.create!(
@@ -27,8 +29,8 @@ class MoviesHelperTest < ActiveSupport::TestCase
       picture_url: "http://example.com/img.jpg"
     )
 
-    user = User.first
-    review = Review.create!(
+    user = User.first || User.create!(name: "Test", email: "test@example.com", password: "password")
+    @review = Review.create!(
       movie: @movie_with_reviews,
       user: user,
       stars: 3,
@@ -44,5 +46,15 @@ class MoviesHelperTest < ActiveSupport::TestCase
   def test_movie_with_reviews
     result = average_stars(@movie_with_reviews)
     assert_includes result, "3.0 stars"
+  end
+
+  def test_watched_button
+    result = watch_or_unwatch_button(@movie_no_reviews, nil)
+    assert_includes result, "Watched!"
+  end
+
+  def test_unwatched_button
+    result = watch_or_unwatch_button(@movie_with_reviews, @review)
+    assert_includes result, "Unwatch!"
   end
 end
