@@ -28,7 +28,7 @@ attr_reader :query, :user, :sort_by
   end
 
   def search_movies
-    @results = @results.where('title ILIKE ?', "%#{query}%")
+    @results = @results.where('title LIKE ?', "%#{query}%")
   end
 
   def sort_movies
