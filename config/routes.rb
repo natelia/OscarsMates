@@ -1,4 +1,4 @@
-require "sidekiq/web" # require the web UI
+require "sidekiq/web" 
 
 Rails.application.routes.draw do
   resources :categories
