@@ -58,11 +58,8 @@ class UsersController < ApplicationController
     @total_movies_watched = stats_service.user_stats[:total_movies_watched]
     @total_minutes_watched = stats_service.user_stats[:total_minutes_watched]
     @mates_stats = stats_service.mates_stats || []
-    
-    @mates_reviews = Review.where(user: @user.following)
-                          .order(created_at: :desc)
-                          .limit(5)
-                          .includes(:user, :movie)
+
+    @mates_reviews = MatesReviewsQuery.new(current_user).results
   end
 
   private
