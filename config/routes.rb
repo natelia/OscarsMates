@@ -1,7 +1,10 @@
+require "sidekiq/web" # require the web UI
+
 Rails.application.routes.draw do
   resources :categories
   resources :nominations
   resources :genres
+  mount Sidekiq::Web => "/sidekiq"
 
   resources :users do
     member do
