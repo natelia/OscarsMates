@@ -10,7 +10,7 @@ class MoviesController < ApplicationController
 
     @user_reviews = []
     if current_user
-      @user_reviews = current_user.reviews.where(movie: @movies).index_by(&:movie_id)
+      @user_reviews = UserMovieProgress.new(@movies, current_user).call
       calculate_progress
     end
 
