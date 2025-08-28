@@ -2,33 +2,10 @@ require 'test_helper'
 
 class MoviesHelperTest < ActionView::TestCase
   def setup
-    @movie_no_reviews = Movie.create!(
-      title: 'No Reviews',
-      english_title: 'NR',
-      where_to_watch: 'Cinema',
-      runtime: 90,
-      rating: 0,
-      url: 'http://example.com',
-      picture_url: 'http://example.com/img.jpg'
-    )
-
-    @movie_with_reviews = Movie.create!(
-      title: 'With Reviews',
-      english_title: 'WR',
-      where_to_watch: 'Cinema',
-      runtime: 90,
-      rating: 3,
-      url: 'http://example.com',
-      picture_url: 'http://example.com/img.jpg'
-    )
-
-    user = User.first || User.create!(name: 'Test', email: "test@example.com", password: "password")
-    @review = Review.create!(
-      movie: @movie_with_reviews,
-      user: user,
-      stars: 3,
-      watched_on: Date.today
-    )
+    @movie_no_reviews = create(:movie, title: 'movie_no_review')
+    @movie_with_reviews = create(:movie, title: 'movie_with_reviews')
+    @user = create(:user)
+    @review = create(:review, movie: @movie_with_reviews, user: @user, stars: 5)
   end
 
   def test_movie_no_reviews
@@ -38,7 +15,7 @@ class MoviesHelperTest < ActionView::TestCase
 
   def test_movie_with_reviews
     result = average_stars(@movie_with_reviews)
-    assert_includes result, '3.0 stars'
+    assert_includes result, '5.0 stars'
   end
 
   def test_watched_button
