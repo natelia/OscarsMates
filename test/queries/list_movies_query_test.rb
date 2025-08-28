@@ -3,39 +3,38 @@ require 'test_helper'
 class ListMoviesQueryTest < ActiveSupport::TestCase
   def setup
     Movie.destroy_all
-    @user = User.create!(name: "Test", email: "test@example.com", password: "password")
+    @user = User.create!(name: 'Test', email: 'test@example.com', password: "password")
     @movie1 = Movie.create!(
-      title: "Star Wars",
-      english_title: "Test1",
-      where_to_watch: "Cinema",
+      title: 'Star Wars',
+      english_title: 'Test1',
+      where_to_watch: 'Cinema',
       runtime: 100,
       rating: 5,
-      url: "http://example.com",
-      picture_url: "http://example.com/img.jpg"
+      url: 'http://example.com',
+      picture_url: 'http://example.com/img.jpg'
     )
 
     @movie2 = Movie.create!(
-      title: "Star Trek",
-      english_title: "Test2",
-      where_to_watch: "Cinema",
+      title: 'Star Trek',
+      english_title: 'Test2',
+      where_to_watch: 'Cinema',
       runtime: 120,
       rating: 7,
-      url: "http://example.com",
-      picture_url: "http://example.com/img.jpg"
+      url: 'http://example.com',
+      picture_url: 'http://example.com/img.jpg'
     )
 
     @movie3 = Movie.create!(
-      title: "Avatar",
-      english_title: "Test3",
-      where_to_watch: "Cinema",
+      title: 'Avatar',
+      english_title: 'Test3',
+      where_to_watch: 'Cinema',
       runtime: 140,
       rating: 9,
-      url: "http://example.com",
-      picture_url: "http://example.com/img.jpg"
+      url: 'http://example.com',
+      picture_url: 'http://example.com/img.jpg'
     )
 
-    Review.create!(movie: @movie1, user: @user, stars: 5, watched_on: 12-12-2012)
-
+    Review.create!(movie: @movie1, user: @user, stars: 5, watched_on: 12 - 12 - 2012)
   end
 
   def test_returns_all_movies
@@ -43,38 +42,38 @@ class ListMoviesQueryTest < ActiveSupport::TestCase
     results = query.results
 
     titles = results.map(&:title)
-    
-    assert_includes titles, "Star Wars"
-    assert_includes titles, "Star Trek"
-    assert_includes titles, "Avatar"
+
+    assert_includes titles, 'Star Wars'
+    assert_includes titles, 'Star Trek'
+    assert_includes titles, 'Avatar'
   end
 
   def test_returns_query_movies
-    params = { query: "Star"}
-    query = ListMoviesQuery.new(params, @user)
-    results = query.results
-
-   titles = results.map(&:title)
-
-    assert_includes titles, "Star Wars"
-    assert_includes titles, "Star Trek"
-    refute_includes titles, "Avatar"
-  end
-
-  def test_returns_sorted_movies
-    params = {sort_by: "duration"}
+    params = { query: 'Star' }
     query = ListMoviesQuery.new(params, @user)
     results = query.results
 
     titles = results.map(&:title)
 
-    assert_equal "Avatar", titles[0]
-    assert_equal "Star Trek", titles[1]
-    assert_equal "Star Wars", titles[2]
+    assert_includes titles, 'Star Wars'
+    assert_includes titles, 'Star Trek'
+    refute_includes titles, 'Avatar'
+  end
+
+  def test_returns_sorted_movies
+    params = {sort_by: 'duration' }
+    query = ListMoviesQuery.new(params, @user)
+    results = query.results
+
+    titles = results.map(&:title)
+
+    assert_equal 'Avatar', titles[0]
+    assert_equal 'Star Trek', titles[1]
+    assert_equal 'Star Wars', titles[2]
   end
 
   def test_returns_filtered_movies
-    params = {filter_by: "unwatched"}
+    params = { filter_by: 'unwatched' }
     query = ListMoviesQuery.new(params, @user)
     results = query.results
 
@@ -90,9 +89,9 @@ class ListMoviesQueryTest < ActiveSupport::TestCase
     query = ListMoviesQuery.new(params, @user)
     results = query.results
 
-   titles = results.map(&:title)
-   
-    expected_order = ["Avatar", "Star Trek", "Star Wars"]
+    titles = results.map(&:title)
+
+    expected_order = ['Avatar', 'Star Trek', 'Star Wars']
     assert_equal expected_order, titles
-  end 
+  end
 end
