@@ -3,49 +3,20 @@ require 'test_helper'
 class ListMoviesQueryTest < ActiveSupport::TestCase
   def setup
     Movie.destroy_all
-    @user = User.create!(name: 'Test', email: 'test@example.com', password: "password")
-    @movie1 = Movie.create!(
-      title: 'Star Wars',
-      english_title: 'Test1',
-      where_to_watch: 'Cinema',
-      runtime: 100,
-      rating: 5,
-      url: 'http://example.com',
-      picture_url: 'http://example.com/img.jpg'
-    )
-
-    @movie2 = Movie.create!(
-      title: 'Star Trek',
-      english_title: 'Test2',
-      where_to_watch: 'Cinema',
-      runtime: 120,
-      rating: 7,
-      url: 'http://example.com',
-      picture_url: 'http://example.com/img.jpg'
-    )
-
-    @movie3 = Movie.create!(
-      title: 'Avatar',
-      english_title: 'Test3',
-      where_to_watch: 'Cinema',
-      runtime: 140,
-      rating: 9,
-      url: 'http://example.com',
-      picture_url: 'http://example.com/img.jpg'
-    )
-
-    Review.create!(movie: @movie1, user: @user, stars: 5, watched_on: 12 - 12 - 2012)
+    @user = create(:user)
+    @movie1 = create(:movie, title: 'Star Wars', runtime: 100)
+    @movie2 = create(:movie, title: 'Star Trek', runtime: 120)
+    @movie3 = create(:movie, title: 'Avatar', runtime: 140)
+    @review = create(:review, movie: @movie1, user: @user)
   end
 
   def test_returns_all_movies
-    query = ListMoviesQuery.new({}, @user)
-    results = query.results
-
+    results = ListMoviesQuery.new({}, @user).results
     titles = results.map(&:title)
 
-    assert_includes titles, 'Star Wars'
-    assert_includes titles, 'Star Trek'
-    assert_includes titles, 'Avatar'
+    ['Star Wars', 'Star Trek', 'Avatar'].each do |title|
+      assert_includes titles, title
+    end
   end
 
   def test_returns_query_movies
