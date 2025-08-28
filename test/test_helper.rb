@@ -20,4 +20,8 @@ module ActiveSupport
     include ActionView::Helpers::UrlHelper
     include Rails.application.routes.url_helpers
   end
+
+  class ActiveSupport::TestCase
+    include FactoryBot::Syntax::Methods
+  end
 end
