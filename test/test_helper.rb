@@ -12,4 +12,12 @@ module ActiveSupport
 
     # Add more helper methods to be used by all tests here...
   end
+
+  class ActionView::TestCase
+    include ActionView::Helpers::TagHelper
+    include ActionView::Helpers::TextHelper
+    include ActionView::Helpers::NumberHelper
+    include ActionView::Helpers::UrlHelper
+    include Rails.application.routes.url_helpers
+  end
 end
