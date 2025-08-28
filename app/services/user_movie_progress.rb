@@ -5,13 +5,12 @@ class UserMovieProgress
   end
 
   def call
-    reviews_hash = {}
-    if @user
-      reviews = @user.reviews.where(movie: @movies)
-      reviews.each do |review|
-        reviews_hash[review.movie_id] = review
-      end
+    return {} unless @user
+
+    reviews = @user.reviews.where(movie: @movies)
+    review_pairs = reviews.map do |review|
+      [review.movie.id, review]
     end
-    reviews_hash
+    review_pairs.to_h
   end
 end
