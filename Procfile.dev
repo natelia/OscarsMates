@@ -1,4 +1,4 @@
 web: env RUBY_DEBUG_OPEN=true bin/rails server -b 0.0.0.0
 css: yarn watch:css
 js: yarn build --watch
-worker: sidekiq
+# worker: bundle exec sidekiq

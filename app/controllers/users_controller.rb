@@ -2,22 +2,23 @@
 # viewing user details, editing user profiles, and deleting users. It ensures
 # that only authenticated and authorized users can perform certain actions.
 class UsersController < ApplicationController
+  before_action :require_year, only: %i[index show stats]
   before_action :require_signin, except: %i[new create]
   before_action :require_correct_user, only: %i[edit update destroy]
 
   def index
     @users = User.all
-    @total_movies_count = Movie.count
+    @total_movies_count = Movie.for_year(current_year).count
 
     @users = UserFilterService.new(current_user, params[:filter]).call
   end
 
   def show
     @user = User.find(params[:id])
-    @reviews = @user.reviews.includes(:movie).order(watched_on: :desc, created_at: :desc)
-    @favorite_movies = @user.favorite_movies
-    @progress = UserProgressService.new(@user).progress
-    @top_rated_movies = @user.reviews.order(stars: :desc).limit(3).map(&:movie)
+    @reviews = @user.reviews_for_year(current_year).includes(:movie).order(watched_on: :desc, created_at: :desc)
+    @favorite_movies = @user.favorite_movies.for_year(current_year)
+    @progress = UserProgressService.new(@user, current_year).progress
+    @top_rated_movies = @user.reviews_for_year(current_year).order(stars: :desc).limit(3).map(&:movie)
   end
 
   def new
@@ -28,7 +29,7 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     if @user.save
       session[:user_id] = @user.id
-      redirect_to movies_path, notice: 'Thanks for signing up!'
+      redirect_to root_path, notice: 'Thanks for signing up!'
     else
       render :new, status: :unprocessable_entity
     end
@@ -38,7 +39,7 @@ class UsersController < ApplicationController
 
   def update
     if @user.update(user_params)
-      redirect_to @user, notice: 'Account successfully updated!'
+      redirect_to root_path, notice: 'Account successfully updated!'
     else
       render :edit, status: :unprocessable_entity
     end
@@ -47,19 +48,19 @@ class UsersController < ApplicationController
   def destroy
     @user.destroy
     session[:user_id] = nil
-    redirect_to movies_url, status: :see_other,
-                            alert: 'Account successfully deleted!'
+    redirect_to root_path, status: :see_other,
+                           alert: 'Account successfully deleted!'
   end
 
   def stats
     @user = current_user
-    stats_service = UserStatsService.new(@user)
+    stats_service = UserStatsService.new(@user, current_year)
 
     @total_movies_watched = stats_service.user_stats[:total_movies_watched]
     @total_minutes_watched = stats_service.user_stats[:total_minutes_watched]
     @mates_stats = stats_service.mates_stats || []
 
-    @mates_reviews = MatesReviewsQuery.new(current_user).results
+    @mates_reviews = MatesReviewsQuery.new(current_user, current_year).results
   end
 
   private

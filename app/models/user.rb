@@ -18,4 +18,14 @@ class User < ApplicationRecord
   validates :email, presence: true,
                     format: { with: /\S+@\S+/ },
                     uniqueness: { case_sensitive: false }
+
+  def reviews_for_year(year)
+    reviews.joins(movie: :nominations)
+           .where(nominations: { year: year })
+           .distinct
+  end
+
+  def watched_movies_count_for_year(year)
+    reviews_for_year(year).select(:movie_id).distinct.count
+  end
 end

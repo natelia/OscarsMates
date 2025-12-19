@@ -43,7 +43,7 @@
 
                   <div>
                     <span class="d-block fw-bold">
-                      <%= link_to review.movie.title, review.movie, class: "text-decoration-none" %> -
+                      <%= link_to review.movie.title, movie_path(year: params[:year], id: review.movie.id), class: "text-decoration-none" %> -
                        <span class="text-warning"><%= render_stars(review.stars) %></span>
                     </span>
                     <small class="text-muted d-block">
@@ -80,7 +80,7 @@
 
                     <div>
                       <span class="d-block fw-bold">
-                        <%= link_to movie.title, movie, class: "text-decoration-none" %>
+                        <%= link_to movie.title, movie_path(year: params[:year], id: movie.id), class: "text-decoration-none" %>
                       </span>
                     </div>
                   </div>
@@ -110,7 +110,7 @@
 
               <div>
                 <span class="d-block fw-bold">
-                  <%= link_to movie.title, movie, class: "text-decoration-none" %> -
+                  <%= link_to movie.title, movie_path(year: params[:year], id: movie.id), class: "text-decoration-none" %> -
                   <span class="text-warning"><%= render_stars(movie.reviews.find_by(user: @user).stars) %></span>
                 </span>
               </div>
@@ -127,7 +127,7 @@
     <% if current_user?(@user) %>
       <div class="actions mb-4 text-center">
         <%= link_to "Edit Account", edit_user_path(@user), class: "btn btn-warning me-2" %>
-        <%= link_to "Delete Account", @user, class: "btn btn-danger", 
+        <%= link_to "Delete Account", user_path(@user), class: "btn btn-danger", 
                       data: { turbo_method: :delete, turbo_confirm: "Permanently delete your account?!" } %>
       </div>
     <% end %>

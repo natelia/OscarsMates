@@ -1,6 +1,6 @@
 <section class="user-form py-5">
   <div class="container text-center">
-    <%= form_with model: user, local: true, class: "needs-validation" do |form| %>
+    <%= form_with model: user, url: user_path(user), local: true, class: "needs-validation" do |form| %>
       <%= render "shared/errors", object: user %>
 
       <div class="row mb-3">

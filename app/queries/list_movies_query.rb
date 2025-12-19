@@ -1,11 +1,12 @@
 class ListMoviesQuery
-attr_reader :query, :user, :sort_by
+attr_reader :query, :user, :sort_by, :year
 
-  def initialize(params, user)
+  def initialize(params, user, year)
     @query = params[:query]
     @only_unwatched = user && params[:filter_by] == 'unwatched'
     @sort_by = params[:sort_by]
     @user = user
+    @year = year
   end
 
   def results
@@ -18,13 +19,13 @@ attr_reader :query, :user, :sort_by
   end
 
   private
-  
+
   def only_unwatched?
     @only_unwatched
   end
 
   def prepare_collection
-    @results = Movie.all
+    @results = Movie.for_year(year)
   end
 
   def search_movies

@@ -17,6 +17,14 @@ class Movie < ApplicationRecord
   validates :url, presence: true
   validates :picture_url, presence: true
 
+  scope :for_year, ->(year) {
+    joins(:nominations).where(nominations: { year: year }).distinct
+  }
+
+  def self.available_years
+    Nomination.available_years
+  end
+
   def average_stars
     reviews.average(:stars) || 0.0
   end

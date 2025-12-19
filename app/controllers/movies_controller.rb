@@ -1,12 +1,13 @@
 # MoviesController handles the CRUD operations for movies in the application.
 # It allows users to view movies and admins to create, update, and delete movies.
 class MoviesController < ApplicationController
+  before_action :require_year
   before_action :require_signin, except: %i[index show]
   before_action :require_admin, except: %i[index show]
   before_action :set_movie, only: %i[show edit update destroy]
 
   def index
-    @movies = ListMoviesQuery.new(params, current_user).results
+    @movies = ListMoviesQuery.new(params, current_user, current_year).results
 
     @user_reviews = []
     if current_user
@@ -15,7 +16,7 @@ class MoviesController < ApplicationController
     end
 
     if current_user
-      @all_movies_watched = current_user.reviews.count == Movie.count
+      @all_movies_watched = current_user.watched_movies_count_for_year(current_year) == Movie.for_year(current_year).count
     else
       @all_movies_watched = false
     end
@@ -35,7 +36,7 @@ class MoviesController < ApplicationController
   def create
     @movie = Movie.new(movie_params)
     if @movie.save
-      redirect_to @movie, notice: 'Movie successfully created!'
+      redirect_to movie_path(@movie, year: current_year), notice: 'Movie successfully created!'
     else
       render :new, status: :unprocessable_entity
     end
@@ -45,7 +46,7 @@ class MoviesController < ApplicationController
 
   def update
     if @movie.update(movie_params)
-      redirect_to @movie, notice: 'Movie successfully updated!'
+      redirect_to movie_path(@movie, year: current_year), notice: 'Movie successfully updated!'
     else
       render :edit, status: :unprocessable_entity
     end
@@ -64,7 +65,7 @@ class MoviesController < ApplicationController
 
 
   def set_movie
-    @movie = Movie.find_by!(slug: params[:id])
+    @movie = Movie.for_year(current_year).find_by!(slug: params[:id])
   end
 
   def movie_params
@@ -80,7 +81,7 @@ class MoviesController < ApplicationController
   end
 
   def calculate_progress
-    @progress = UserProgressService.new(current_user).progress if current_user
+    @progress = UserProgressService.new(current_user, current_year).progress if current_user
   end
 
   def set_users_specific_data

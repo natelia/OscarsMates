@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_02_12_164639) do
+ActiveRecord::Schema[7.1].define(version: 2025_12_19_202853) do
   create_table "categories", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -68,8 +68,12 @@ ActiveRecord::Schema[7.1].define(version: 2025_02_12_164639) do
     t.integer "movie_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "year", default: 2025, null: false
     t.index ["category_id"], name: "index_nominations_on_category_id"
     t.index ["movie_id"], name: "index_nominations_on_movie_id"
+    t.index ["year", "category_id"], name: "index_nominations_on_year_and_category_id"
+    t.index ["year", "movie_id"], name: "index_nominations_on_year_and_movie_id"
+    t.index ["year"], name: "index_nominations_on_year"
   end
 
   create_table "reviews", force: :cascade do |t|

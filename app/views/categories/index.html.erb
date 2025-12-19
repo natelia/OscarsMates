@@ -22,11 +22,11 @@
       <div class="col-12 col-md-6 col-lg-4 mb-3">
         <div class="list-group text-center">
           <div class="list-group-item d-flex justify-content-between align-items-center">
-            <%= link_to category.name, category_path(category), class: "text-decoration-none text-dark fs-5 w-100" %>
+            <%= link_to category.name, category_path(year: params[:year], id: category.id), class: "text-decoration-none text-dark fs-5 w-100" %>
             <% if current_user&.admin? %>
               <div class="mt-2">
-                <%= link_to 'Edit', edit_category_path(category), class: 'btn btn-sm btn-outline-warning me-2' %>
-                <%= link_to 'Destroy', category_path(category), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, class: 'btn btn-sm btn-outline-danger' %>
+                <%= link_to 'Edit', edit_category_path(year: params[:year], id: category.id), class: 'btn btn-sm btn-outline-warning me-2' %>
+                <%= link_to 'Destroy', category_path(year: params[:year], id: category.id), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, class: 'btn btn-sm btn-outline-danger' %>
               </div>
             <% end %>
           </div>

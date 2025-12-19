@@ -1,0 +1,52 @@
+<section class="container mt-5 text-center">
+  <h1 class="display-4 mb-4">Oscar Mates</h1>
+  <p class="lead mb-5">Select an Oscar ceremony year</p>
+
+  <div class="row justify-content-center">
+    <% if @available_years.any? %>
+      <% @available_years.each do |year| %>
+        <div class="col-md-3 mb-4">
+          <%= link_to movies_path(year: year), class: "card text-decoration-none h-100", style: "transition: transform 0.2s;" do %>
+            <div class="card-body text-center">
+              <h2 class="card-title"><%= year %> Oscars</h2>
+              <p class="text-muted">
+                <%= Movie.for_year(year).count %> nominated movies
+              </p>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    <% else %>
+      <div class="col-md-8">
+        <div class="alert alert-info">
+          <p>No Oscar nominations have been added yet.</p>
+          <% if current_user_admin? %>
+            <p>As an admin, you can add nominations to get started.</p>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</section>
+
+<style>
+.card {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.card-body {
+  padding: 2rem;
+}
+
+.card-title {
+  color: #333;
+  margin-bottom: 1rem;
+}
+</style>

@@ -1,13 +1,15 @@
 class MatesReviewsQuery
-  def initialize(user, limit: 5)
+  def initialize(user, year, limit: 5)
     @user = user
+    @year = year
     @limit = limit
   end
 
   def results
-    Review.where(user: @user.following)
-                          .order(created_at: :desc)
-                          .limit(@limit)
-                          .includes(:user, :movie)
+    Review.joins(movie: :nominations)
+          .where(user: @user.following, nominations: { year: @year })
+          .order(created_at: :desc)
+          .limit(@limit)
+          .includes(:user, :movie)
   end
 end

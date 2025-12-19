@@ -1,6 +1,28 @@
 # ApplicationController is the base class for all controllers in the application.
 class ApplicationController < ActionController::Base
+  before_action :set_current_year
+
+  helper_method :current_year, :available_years
+
   private
+
+  def set_current_year
+    @current_year = params[:year]&.to_i
+  end
+
+  def current_year
+    @current_year
+  end
+
+  def available_years
+    @available_years ||= Nomination.available_years
+  end
+
+  def require_year
+    return if current_year.present?
+
+    redirect_to root_path, alert: 'Please select a year first'
+  end
 
   def require_signin
     return if current_user

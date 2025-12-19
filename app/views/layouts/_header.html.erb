@@ -1,31 +1,49 @@
 <header class="header bg-white py-3 border-bottom">
   <div class="container d-flex justify-content-between align-items-center">
     <h1 class="mb-0" style="font-size: 2rem; font-weight: 600;">
-      <%= link_to 'Oscars Mates', movies_path, style: "color: #333; text-decoration: none;" %>
+      <%= link_to 'Oscars Mates', root_path, style: "color: #333; text-decoration: none;" %>
     </h1>
 
     <nav class="d-flex align-items-center">
       <ul class="nav">
-        <li class="nav-item">
-          <%= link_to users_path, class: "nav-link text-dark", style: "color: #333; text-decoration: none;" do %>
-            <i class="bi bi-people"></i> Mates
-          <% end %>
-        </li>
+        <% if current_year.present? %>
+          <!-- Year Selector Dropdown -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-dark" href="#" id="yearDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: #333; text-decoration: none;">
+              <i class="bi bi-calendar"></i> <%= current_year %> Oscars
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="yearDropdown">
+              <% available_years.each do |year| %>
+                <li>
+                  <%= link_to "#{year} Oscars", movies_path(year: year), class: "dropdown-item #{'active' if year == current_year}" %>
+                </li>
+              <% end %>
+              <li><hr class="dropdown-divider"></li>
+              <li><%= link_to "Change Year", root_path, class: "dropdown-item" %></li>
+            </ul>
+          </li>
 
-        <li class="nav-item">
-        <%= link_to stats_users_path, class: "nav-link stats-button", style: "color: #333; text-decoration: none;" do %>
-          <i class="bi bi-bar-chart"></i> Stats
-        <% end %>
-        </li>
-      
-        <% if current_user&.admin? %>
           <li class="nav-item">
-            <%= link_to raw("<i class='bi bi-list-ul'></i> Manage Categories"), categories_path, class: "nav-link text-dark", style: "color: #333; text-decoration: none;" %>
+            <%= link_to users_path(year: current_year), class: "nav-link text-dark", style: "color: #333; text-decoration: none;" do %>
+              <i class="bi bi-people"></i> Mates
+            <% end %>
           </li>
-        <% else %>
+
           <li class="nav-item">
-            <%= link_to 'Categories', categories_path, class: 'nav-link text-dark', style: "color: #333; text-decoration: none;" %>
+          <%= link_to stats_users_path(year: current_year), class: "nav-link stats-button", style: "color: #333; text-decoration: none;" do %>
+            <i class="bi bi-bar-chart"></i> Stats
+          <% end %>
           </li>
+
+          <% if current_user&.admin? %>
+            <li class="nav-item">
+              <%= link_to raw("<i class='bi bi-list-ul'></i> Manage Categories"), categories_path(year: current_year), class: "nav-link text-dark", style: "color: #333; text-decoration: none;" %>
+            </li>
+          <% else %>
+            <li class="nav-item">
+              <%= link_to 'Categories', categories_path(year: current_year), class: 'nav-link text-dark', style: "color: #333; text-decoration: none;" %>
+            </li>
+          <% end %>
         <% end %>
 
         <% if current_user %>
@@ -35,7 +53,7 @@
           </a>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
             <li>
-              <%= link_to "My Profile", user_path(current_user), class: "dropdown-item", style: "color: #333; text-decoration: none;" %>
+              <%= link_to "My Profile", current_year.present? ? user_path(current_user, year: current_year) : new_user_path, class: "dropdown-item", style: "color: #333; text-decoration: none;" %>
             </li>
             <li>
               <%= link_to "Account Settings", edit_user_path(current_user), class: "dropdown-item", style: "color: #333; text-decoration: none;" %>

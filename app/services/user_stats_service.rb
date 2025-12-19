@@ -1,11 +1,12 @@
 class UserStatsService
-  def initialize(user)
+  def initialize(user, year)
     @user = user
+    @year = year
   end
 
   def user_stats
     {
-      total_movies_watched: @user.reviews.count,
+      total_movies_watched: @user.watched_movies_count_for_year(@year),
       total_minutes_watched: total_minutes_watched(@user)
     }
   end
@@ -17,31 +18,31 @@ class UserStatsService
     stats = all_users.map do |user|
       {
         name: user.name,
-        total_movies_watched: user.reviews.count,
+        total_movies_watched: user.watched_movies_count_for_year(@year),
         total_minutes_watched: total_minutes_watched(user),
         daily_minutes_watched: user_daily_minutes_watched(user)
       }
     end
-    
+
     # Add logging
     Rails.logger.info "Processed mates stats: #{stats.inspect}"
-    
+
     process_mates_minutes_watched(stats)
   end
 
   private
 
   def total_minutes_watched(user)
-    user.reviews.joins(:movie).sum('movies.runtime')
+    user.reviews_for_year(@year).joins(:movie).sum('movies.runtime')
   end
 
   def user_daily_minutes_watched(user)
-    daily_minutes = user.reviews
-                       .joins(:movie)
-                       .group('DATE(reviews.watched_on)')
-                       .sum('movies.runtime')
-                       .transform_keys(&:to_date)
-  
+    daily_minutes = user.reviews_for_year(@year)
+                        .joins(:movie)
+                        .group('DATE(reviews.watched_on)')
+                        .sum('movies.runtime')
+                        .transform_keys(&:to_date)
+
     cumulative_sum = 0
     daily_minutes.sort.to_h.transform_values do |minutes|
       cumulative_sum += minutes

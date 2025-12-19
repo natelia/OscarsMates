@@ -5,12 +5,12 @@ module ApplicationHelper
 
   def watch_or_unwatch_button(movie, review)
     if review
-      link_to 'Unwatch', movie_review_path(movie, review),
+      link_to 'Unwatch', movie_review_path(movie, review, year: current_year),
               method: :delete,
               data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' },
               class: 'btn btn-outline-danger btn-sm'
     else
-      link_to 'Watched!', new_movie_review_path(movie),
+      link_to 'Watched!', new_movie_review_path(movie, year: current_year),
               class: 'btn btn-outline-primary btn-sm'
     end
   end

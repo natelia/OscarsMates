@@ -18,7 +18,7 @@
       <% @users.each do |user| %>
         <div class="list-group-item d-flex justify-content-between align-items-center p-3 shadow-sm rounded mb-3">
           <div class="user-info flex-grow-1">
-            <%= link_to user, class: "text-decoration-none text-dark" do %>
+            <%= link_to user_path(year: params[:year], id: user.id), class: "text-decoration-none text-dark" do %>
               <h5 class="mb-1"><%= user.name %></h5>
               <p class="mb-1"><small class="text-muted"><%= pluralize(user.reviews.count, 'movie') %> rated</small></p>
               <% progress = (user.reviews.count.to_f / @total_movies_count) * 100 %>
@@ -29,9 +29,9 @@
           <div class="user-actions">
             <% if user != current_user %>
               <% if current_user.following.include?(user) %>
-                <%= button_to 'Unfollow', unfollow_user_path(user), method: :delete, class: "btn btn-danger btn-sm", data: { disable_with: "Unfollowing..." } %>
+                <%= button_to 'Unfollow', unfollow_user_path(year: params[:year], id: user.id), method: :delete, class: "btn btn-danger btn-sm", data: { disable_with: "Unfollowing..." } %>
               <% else %>
-                <%= button_to 'Follow', follow_user_path(user), method: :post, class: "btn btn-primary btn-sm", data: { disable_with: "Following..." } %>
+                <%= button_to 'Follow', follow_user_path(year: params[:year], id: user.id), method: :post, class: "btn btn-primary btn-sm", data: { disable_with: "Following..." } %>
               <% end %>
             <% end %>
           </div>
