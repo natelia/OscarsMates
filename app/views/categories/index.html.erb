@@ -3,15 +3,15 @@
 
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h1 class="display-4 mb-0">
-    <%= link_to "Categories", categories_path, class: "text-decoration-none text-dark" %>
+    <%= link_to "Categories", categories_path(year: current_year), class: "text-decoration-none text-dark" %>
     </h1>
     <div class="d-flex align-items-center">
-      <form class="d-flex ms-3" role="search" method="get" action="<%= categories_path %>">
+      <form class="d-flex ms-3" role="search" method="get" action="<%= categories_path(year: current_year) %>">
       <input class="form-control form-control-md" type="search" name="query" placeholder="Search categories..." aria-label="Search" value="<%= params[:query] %>">
       <button class="btn btn-outline-secondary btn-md ms-2" type="submit">Search</button>
       </form>
       <% if current_user&.admin? %>
-        <%= link_to 'New Category', new_category_path, class: 'btn btn-primary ms-3 rounded-pill' %>
+        <%= link_to 'New Category', new_category_path(year: current_year), class: 'btn btn-primary ms-3 rounded-pill' %>
       <% end %>
     </div>
   </div>
@@ -22,11 +22,11 @@
       <div class="col-12 col-md-6 col-lg-4 mb-3">
         <div class="list-group text-center">
           <div class="list-group-item d-flex justify-content-between align-items-center">
-            <%= link_to category.name, category_path(year: params[:year], id: category.id), class: "text-decoration-none text-dark fs-5 w-100" %>
+            <%= link_to category.name, category_path(year: current_year, id: category.id), class: "text-decoration-none text-dark fs-5 w-100" %>
             <% if current_user&.admin? %>
               <div class="mt-2">
-                <%= link_to 'Edit', edit_category_path(year: params[:year], id: category.id), class: 'btn btn-sm btn-outline-warning me-2' %>
-                <%= link_to 'Destroy', category_path(year: params[:year], id: category.id), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, class: 'btn btn-sm btn-outline-danger' %>
+                <%= link_to 'Edit', edit_category_path(year: current_year, id: category.id), class: 'btn btn-sm btn-outline-warning me-2' %>
+                <%= link_to 'Destroy', category_path(year: current_year, id: category.id), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, class: 'btn btn-sm btn-outline-danger' %>
               </div>
             <% end %>
           </div>

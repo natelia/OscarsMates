@@ -1,10 +1,10 @@
 require "sidekiq/web" # require the web UI
 
 Rails.application.routes.draw do
-  # Year selection landing page
-  root 'years#index'
+  # Root redirects to movies (will auto-select latest year)
+  root 'movies#index'
 
-  # Year-scoped resources
+  # Year-scoped resources (content that varies by year)
   scope '/:year', constraints: { year: /\d{4}/ } do
     resources :movies do
       resources :reviews, only: [:index, :new, :create, :destroy]
@@ -13,20 +13,17 @@ Rails.application.routes.draw do
 
     resources :categories
 
-    # Year-scoped user routes (viewing users, stats)
-    resources :users, only: [:index, :show] do
-      member do
-        post 'follow', to: 'follows#create'
-        delete 'unfollow', to: 'follows#destroy'
-        get 'wall', to: 'users#wall'
-      end
-      get 'stats', on: :collection
-    end
+    # Only stats is year-scoped
+    get 'stats', to: 'users#stats', as: :stats_users
   end
 
-  # Non-year-scoped routes
-  # User account management (no year needed)
-  resources :users, only: [:new, :create, :edit, :update, :destroy]
+  # User profiles (NOT year-scoped)
+  resources :users do
+    member do
+      post 'follow', to: 'follows#create'
+      delete 'unfollow', to: 'follows#destroy'
+    end
+  end
 
   resources :nominations
   resources :genres

@@ -1,54 +1,91 @@
-<section class="user-list py-5">
-  <div class="container mt-4">
-    <div class="text-center mb-4">
-      <h1>
-        <%= pluralize(@users.size, "Mate") %>
+<main class="mates-page">
+  <div class="container py-4">
+    <%# Header %>
+    <header class="text-center mb-4">
+      <h1 class="page-title mb-2">
+        <i class="bi bi-people-fill me-2"></i>
+        Oscar Mates
       </h1>
+      <p class="text-muted">
+        <%= pluralize(@users.size, 'mate') %> tracking <%= @year %> nominees
+      </p>
+    </header>
+
+    <%# Filter Toggle %>
+    <div class="text-center mb-4">
+      <div class="btn-group" role="group" aria-label="Filter users">
+        <% if params[:filter] == 'followed' %>
+          <%= link_to users_path, class: "btn btn-outline-oscar" do %>
+            <i class="bi bi-people"></i> All Mates
+          <% end %>
+          <span class="btn btn-oscar">
+            <i class="bi bi-heart-fill"></i> Following
+          </span>
+        <% else %>
+          <span class="btn btn-oscar">
+            <i class="bi bi-people"></i> All Mates
+          </span>
+          <%= link_to users_path(filter: 'followed'), class: "btn btn-outline-oscar" do %>
+            <i class="bi bi-heart"></i> Following
+          <% end %>
+        <% end %>
+      </div>
     </div>
 
-    <div class="filter-toggle text-center mb-4">
-      <% if params[:filter] == 'followed' %>
-        <%= link_to "<i class='bi bi-people'></i> Show All Users".html_safe, users_path, class: "btn btn-outline-dark" %>
-      <% else %>
-        <%= link_to "<i class='bi bi-heart'></i> Show Followed".html_safe, users_path(filter: 'followed'), class: "btn btn-outline-primary" %>
+    <% if @users.any? %>
+      <%# Top Watchers Podium (only show when not filtering) %>
+      <% unless params[:filter] == 'followed' %>
+        <%= render 'top_watchers',
+            top_watchers: @top_watchers,
+            total_movies: @total_movies_count,
+            year: @year %>
       <% end %>
-    </div>
 
-    <div class="list-group">
-      <% @users.each do |user| %>
-        <div class="list-group-item d-flex justify-content-between align-items-center p-3 shadow-sm rounded mb-3">
-          <div class="user-info flex-grow-1">
-            <%= link_to user_path(year: params[:year], id: user.id), class: "text-decoration-none text-dark" do %>
-              <h5 class="mb-1"><%= user.name %></h5>
-              <p class="mb-1"><small class="text-muted"><%= pluralize(user.reviews.count, 'movie') %> rated</small></p>
-              <% progress = (user.reviews.count.to_f / @total_movies_count) * 100 %>
-              <p class="mb-0"><small class="text-muted">Progress: <%= number_to_percentage(progress, precision: 0) %> watched</small></p>
-            <% end %>
-          </div>
+      <%# All Mates Section %>
+      <% users_to_show = params[:filter] == 'followed' ? @users : @remaining_users %>
 
-          <div class="user-actions">
-            <% if user != current_user %>
-              <% if current_user.following.include?(user) %>
-                <%= button_to 'Unfollow', unfollow_user_path(year: params[:year], id: user.id), method: :delete, class: "btn btn-danger btn-sm", data: { disable_with: "Unfollowing..." } %>
-              <% else %>
-                <%= button_to 'Follow', follow_user_path(year: params[:year], id: user.id), method: :post, class: "btn btn-primary btn-sm", data: { disable_with: "Following..." } %>
-              <% end %>
-            <% end %>
-          </div>
+      <% if users_to_show.any? %>
+        <% unless params[:filter] == 'followed' %>
+          <h4 class="mb-4 text-center text-muted">
+            <i class="bi bi-grid me-2"></i>
+            All Mates
+          </h4>
+        <% end %>
+
+        <div class="mates-grid">
+          <% users_to_show.each_with_index do |user, index| %>
+            <div class="animate-fade-in-up animate-delay-<%= [index + 1, 12].min %>">
+              <%= render 'mate_card',
+                  user: user,
+                  total_movies: @total_movies_count,
+                  year: @year,
+                  current_user: current_user,
+                  rank: params[:filter] == 'followed' ? nil : (index + 4) %>
+            </div>
+          <% end %>
         </div>
       <% end %>
-    </div>
+
+    <% else %>
+      <%# Empty State %>
+      <div class="empty-state">
+        <div class="empty-icon">
+          <i class="bi bi-people"></i>
+        </div>
+        <h3>No mates found</h3>
+        <p>
+          <% if params[:filter] == 'followed' %>
+            You're not following anyone yet. Start following mates to see them here!
+          <% else %>
+            Be the first to join the Oscar watching party!
+          <% end %>
+        </p>
+        <% if params[:filter] == 'followed' %>
+          <%= link_to users_path, class: "btn btn-oscar" do %>
+            <i class="bi bi-people me-1"></i> Browse All Mates
+          <% end %>
+        <% end %>
+      </div>
+    <% end %>
   </div>
-</section>
-
-
-<style>
- 
-  .list-group-item {
-    transition: transform 0.2s, box-shadow 0.2s;
-  }
-  .list-group-item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  }
-</style>
+</main>

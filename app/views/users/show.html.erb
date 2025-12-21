@@ -43,7 +43,7 @@
 
                   <div>
                     <span class="d-block fw-bold">
-                      <%= link_to review.movie.title, movie_path(year: params[:year], id: review.movie.id), class: "text-decoration-none" %> -
+                      <%= link_to review.movie.title, movie_path(year: current_year, id: review.movie.id), class: "text-decoration-none" %> -
                        <span class="text-warning"><%= render_stars(review.stars) %></span>
                     </span>
                     <small class="text-muted d-block">
@@ -80,7 +80,7 @@
 
                     <div>
                       <span class="d-block fw-bold">
-                        <%= link_to movie.title, movie_path(year: params[:year], id: movie.id), class: "text-decoration-none" %>
+                        <%= link_to movie.title, movie_path(year: current_year, id: movie.id), class: "text-decoration-none" %>
                       </span>
                     </div>
                   </div>
@@ -110,7 +110,7 @@
 
               <div>
                 <span class="d-block fw-bold">
-                  <%= link_to movie.title, movie_path(year: params[:year], id: movie.id), class: "text-decoration-none" %> -
+                  <%= link_to movie.title, movie_path(year: current_year, id: movie.id), class: "text-decoration-none" %> -
                   <span class="text-warning"><%= render_stars(movie.reviews.find_by(user: @user).stars) %></span>
                 </span>
               </div>

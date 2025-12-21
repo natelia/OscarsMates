@@ -1,0 +1,89 @@
+<%# Movie Card Partial - Netflix-style with hover actions %>
+<%# Local variables: movie, review (optional), show_actions (default true) %>
+<% review ||= nil %>
+<% show_actions = local_assigns.fetch(:show_actions, true) %>
+
+<div class="movie-card"
+     data-controller="movie-card"
+     data-movie-id="<%= movie.id %>"
+     id="movie-card-<%= movie.id %>">
+
+  <%# User's rating badge %>
+  <% if review&.stars.present? %>
+    <div class="movie-card-badge animate-float">
+      <%= review.stars %> <i class="bi bi-star-fill"></i>
+    </div>
+  <% end %>
+
+  <%# Movie poster %>
+  <% if movie.picture_url.present? %>
+    <img src="<%= movie.picture_url %>"
+         alt="<%= movie.title %>"
+         class="movie-card-poster"
+         loading="lazy">
+  <% else %>
+    <div class="movie-card-poster d-flex align-items-center justify-content-center bg-gold-light">
+      <i class="bi bi-film text-gold" style="font-size: 3rem;"></i>
+    </div>
+  <% end %>
+
+  <%# Title overlay (always visible) %>
+  <div class="movie-card-title">
+    <h5><%= movie.title %></h5>
+    <div class="movie-rating">
+      <% if movie.average_stars.zero? %>
+        <span class="text-muted">No ratings yet</span>
+      <% else %>
+        <i class="bi bi-star-fill"></i>
+        <%= number_with_precision(movie.average_stars, precision: 1) %>/5 from mates
+      <% end %>
+    </div>
+  </div>
+
+  <%# Hover overlay with actions %>
+  <% if show_actions && current_user %>
+    <div class="movie-card-overlay">
+      <div class="movie-card-actions">
+        <%# Quick star rating %>
+        <div class="star-rating mb-3"
+             data-controller="quick-rating"
+             data-quick-rating-movie-id-value="<%= movie.id %>"
+             data-quick-rating-current-value="<%= review&.stars || 0 %>"
+             data-quick-rating-has-review-value="<%= review.present? %>"
+             data-quick-rating-review-id-value="<%= review&.id %>">
+          <% (1..5).each do |star| %>
+            <span class="star <%= 'filled' if review&.stars.to_i >= star %>"
+                  data-quick-rating-target="star"
+                  data-star-value="<%= star %>">
+              <i class="bi bi-star<%= '-fill' if review&.stars.to_i >= star %>"></i>
+            </span>
+          <% end %>
+        </div>
+
+        <%# Action buttons %>
+        <div class="d-flex gap-2 justify-content-center">
+          <%= link_to movie_path(movie, year: current_year), class: "btn btn-oscar btn-sm" do %>
+            <i class="bi bi-info-circle"></i> Details
+          <% end %>
+
+          <% if review %>
+            <%= button_to movie_review_path(movie, review, year: current_year),
+                method: :delete,
+                class: "btn btn-outline-light btn-sm",
+                data: { turbo_confirm: "Remove from watched?" } do %>
+              <i class="bi bi-eye-slash"></i> Unwatch
+            <% end %>
+          <% else %>
+            <%= link_to new_movie_review_path(movie, year: current_year), class: "btn btn-coral btn-sm" do %>
+              <i class="bi bi-check-circle"></i> Watched
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% else %>
+    <%# For non-logged-in users, just link to movie %>
+    <a href="<%= movie_path(movie, year: current_year) %>" class="movie-card-overlay" style="background: transparent;">
+    </a>
+  <% end %>
+</div>

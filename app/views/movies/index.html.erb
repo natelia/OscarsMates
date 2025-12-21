@@ -1,121 +1,157 @@
 <a id="top"></a>
 
-<section class="container mt-5">
-  <!-- Year Heading -->
-  <div class="text-center mb-4">
-    <h2><%= current_year %> Oscar Nominees</h2>
-    <p class="text-muted">Films from <%= current_year - 1 %></p>
-  </div>
+<main class="movies-page">
+  <div class="container py-4">
+    <%# Hero Section %>
+    <header class="text-center mb-4">
+      <h1 class="page-title mb-2"><%= current_year %> Oscar Nominees</h1>
+      <p class="text-muted">
+        <i class="bi bi-film me-1"></i>
+        <%= pluralize(@movies.count, 'film') %> from <%= current_year - 1 %>
+        <% if current_user && @progress %>
+          <span class="mx-2">|</span>
+          <i class="bi bi-check-circle me-1 text-gold"></i>
+          <%= number_to_percentage(@progress, precision: 0) %> watched
+        <% end %>
+      </p>
+    </header>
 
-  <nav class="navbar navbar-expand-lg navbar-light mb-4">
-    <div class="container-fluid">
-      <form class="d-flex" role="search" action="<%= movies_path(year: current_year) %>" method="get">
-        <input class="form-control me-2" type="search" name="query" placeholder="Look for a Movie!" aria-label="Search" value="<%= params[:query] %>">
-        <button class="btn btn-outline-dark" type="submit">Search</button>
+    <%# Toolbar %>
+    <div class="toolbar">
+      <%# Search %>
+      <form class="d-flex flex-grow-1" role="search" action="<%= movies_path(year: current_year) %>" method="get" style="max-width: 400px;">
+        <input class="form-control search-input me-2"
+               type="search"
+               name="query"
+               placeholder="Search movies..."
+               aria-label="Search"
+               value="<%= params[:query] %>">
+        <button class="btn btn-oscar" type="submit">
+          <i class="bi bi-search"></i>
+        </button>
       </form>
 
-
-       <% if current_user.present?%>
-        <div class="filter-toggle text-center mb-4">
+      <% if current_user.present? %>
+        <div class="d-flex gap-2 flex-wrap">
+          <%# Filter Toggle %>
           <% if params[:filter_by] == 'unwatched' %>
-            <%= link_to "<i class='bi bi-list'></i> Show All Movies".html_safe, movies_path(year: current_year), class: "btn btn-outline-dark" %>
+            <%= link_to movies_path(year: current_year), class: "btn btn-outline-oscar" do %>
+              <i class="bi bi-grid-3x3-gap"></i> All Movies
+            <% end %>
           <% else %>
-            <%= link_to "<i class='bi bi-eye-slash'></i> Show Unwatched".html_safe, movies_path(year: current_year, filter_by: 'unwatched'), class: "btn btn-outline-dark" %>
+            <%= link_to movies_path(year: current_year, filter_by: 'unwatched'), class: "btn btn-outline-oscar" do %>
+              <i class="bi bi-eye-slash"></i> Unwatched
+            <% end %>
+          <% end %>
+
+          <%# Sort Dropdown %>
+          <%= form_tag movies_path(year: current_year), method: :get, class: "d-inline" do %>
+            <%= select_tag :sort_by,
+                options_for_select([
+                  ['Default', ''],
+                  ['By Length', 'duration'],
+                  ['Popular with Mates', 'watched_by_mates'],
+                  ['Most Nominated', 'most_nominated']
+                ], params[:sort_by]),
+                onchange: 'this.form.submit()',
+                class: 'form-select form-select-sm',
+                style: 'width: auto;' %>
+            <%= hidden_field_tag :query, params[:query] if params[:query].present? %>
+            <%= hidden_field_tag :filter_by, params[:filter_by] if params[:filter_by].present? %>
           <% end %>
         </div>
-
-         <div class="sort-options text-center mb-4">
-          <%= form_tag movies_path(year: current_year), method: :get do %>
-            <%= select_tag :sort_by, options_for_select([
-              ['Sort by Movie Length', 'duration'],
-              ['Sort by Watched by Mates', 'watched_by_mates'],
-              ['Sort by Most Nominated', 'most_nominated']
-            ], params[:sort_by]), onchange: 'this.form.submit()', class: 'form-select' %>
-
-            <%= hidden_field_tag :query, params[:query] %>
-            <%= hidden_field_tag :filter, params[:filter] %>
-          <% end %>
-        </div>
-
       <% end %>
     </div>
-  </nav>
 
-  <div data-controller="confetti" data-confetti-enabled-value="<%= @all_movies_watched %>">
-    <% if @all_movies_watched %>
-      <div class="alert alert-success text-center">
-        Congratulations! You've watched all movies! 🎉
-      </div>
-    <% end %>
-  </div>
-
-  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
-    <% @movies.each do |movie| %>
-      <div class="col">
-        <div class="card movie-card h-100 position-relative">
-          <%= link_to movie_path(movie, year: current_year), style: "text-decoration: none; color: inherit;" do %>
-            <% if movie.picture_url.present? %>
-              <picture>
-                <img src="<%= movie.picture_url %>" class="card-img-top" alt="<%= movie.title %>">
-              </picture>
-            <% else %>
-              <picture>
-                <img src="placeholder_image_url.jpg" class="card-img-top" alt="Placeholder">
-              </picture>
-            <% end %>
-            <div class="card-body text-center">
-              <h5 class="card-title mb-2"><%= movie.title %></h5>
-              <p class="card-text mb-2">Mates' rating: <%= average_stars(movie) %>/10</p>
-            </div>
-          <% end %>
-
-          <% if @user_reviews[movie.id] && @user_reviews[movie.id].stars.present? %>
-            <div class="badge bg-warning text-dark position-absolute top-0 start-0 m-2 p-2" style="font-size: 1rem; padding: 0.6rem;">
-              <%= @user_reviews[movie.id].stars%> ★
-            </div>
-          <% end %>
-
-          <div class="card-footer text-center bg-transparent border-0 pb-3">
-            <% review = @user_reviews[movie.id] %>
-           <%= watch_or_unwatch_button(movie,review) %>
-          </div>
+    <%# Celebration %>
+    <div data-controller="confetti" data-confetti-enabled-value="<%= @all_movies_watched %>">
+      <% if @all_movies_watched %>
+        <div class="alert bg-gold-light text-center rounded-oscar mb-4 animate-fade-in-up">
+          <i class="bi bi-trophy-fill text-gold me-2" style="font-size: 1.5rem;"></i>
+          <strong>Congratulations!</strong> You've watched all <%= current_year %> Oscar nominees!
         </div>
+      <% end %>
+    </div>
+
+    <%# Movie Grid %>
+    <% if @movies.any? %>
+      <div class="movies-grid">
+        <% @movies.each_with_index do |movie, index| %>
+          <div class="animate-fade-in-up animate-delay-<%= [index + 1, 12].min %>">
+            <%= render 'movie_card', movie: movie, review: @user_reviews[movie.id] %>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <%# Empty State %>
+      <div class="empty-state">
+        <div class="empty-icon">
+          <i class="bi bi-film"></i>
+        </div>
+        <h3>No movies found</h3>
+        <p>
+          <% if params[:query].present? %>
+            No results for "<%= params[:query] %>". Try a different search.
+          <% elsif params[:filter_by] == 'unwatched' %>
+            You've watched everything! Amazing!
+          <% else %>
+            No movies available for this year yet.
+          <% end %>
+        </p>
+        <% if params[:query].present? || params[:filter_by].present? %>
+          <%= link_to "Clear Filters", movies_path(year: current_year), class: "btn btn-oscar" %>
+        <% end %>
+      </div>
+    <% end %>
+
+    <%# Admin Button %>
+    <% if current_user_admin? %>
+      <div class="text-center mt-4">
+        <%= link_to new_movie_path(year: current_year), class: "btn btn-outline-oscar" do %>
+          <i class="bi bi-plus-circle me-1"></i> Add New Movie
+        <% end %>
       </div>
     <% end %>
   </div>
 
-  <% if @movies.empty? %>
-  <div class="text-center">
-    <p>No movies found for "<%= params[:query] %>". Try a different search or browse all movies!</p>
-    <%= link_to "Clear Filters", movies_path(year: current_year), class: "btn btn-outline-dark mt-2" %>
-  </div>
-<% end %>
-
-
-  <% if current_user_admin? %>
-    <div class="text-center mt-3">
-      <%= link_to "New Movie", new_movie_path(year: current_year), class: "btn btn-outline-dark mt-3" %>
-    </div>
-  <% end %>
-  <a href="#" id="back-to-top" class="btn btn-dark" style="position: fixed; bottom: 20px; right: 20px; display: block;">
-  Back to Top
-</a>
-
-</section>
+  <%# Back to Top %>
+  <a href="#top" class="btn btn-oscar back-to-top" title="Back to top">
+    <i class="bi bi-chevron-up"></i>
+  </a>
+</main>
 
 <style>
-.movie-card {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+.back-to-top {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--card-shadow-lg);
+  z-index: 100;
+  opacity: 0.9;
+  transition: var(--transition-smooth);
 }
 
-.movie-card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+.back-to-top:hover {
+  opacity: 1;
+  transform: translateY(-4px);
 }
 
-.card-img-top {
-  object-fit: cover;
-  height: 260px; 
-  width: 100%;
+/* Toolbar responsive */
+@media (max-width: 768px) {
+  .toolbar {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .toolbar form {
+    width: 100% !important;
+    max-width: none !important;
+  }
 }
 </style>

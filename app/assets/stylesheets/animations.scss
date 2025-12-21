@@ -1,0 +1,325 @@
+// OscarsMates Animations
+// Playful micro-interactions and transitions
+
+// ===================================
+// Keyframe Animations
+// ===================================
+
+// Progress bar fill animation
+@keyframes progressFill {
+  from {
+    width: 0;
+  }
+  to {
+    width: var(--progress, 0%);
+  }
+}
+
+// Star pulse when selected
+@keyframes starPulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.3);
+  }
+}
+
+// Subtle bounce
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+// Fade in up
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Fade in scale
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+// Shimmer loading effect
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+// Gentle float
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+// Crown glow for #1 position
+@keyframes crownGlow {
+  0%, 100% {
+    filter: drop-shadow(0 0 3px rgba(212, 175, 55, 0.5));
+  }
+  50% {
+    filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.8));
+  }
+}
+
+// Icon spin on hover
+@keyframes iconSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// Heart beat
+@keyframes heartbeat {
+  0%, 100% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(1.1);
+  }
+  50% {
+    transform: scale(1);
+  }
+  75% {
+    transform: scale(1.1);
+  }
+}
+
+// ===================================
+// Animation Classes
+// ===================================
+
+// Apply to elements that should animate on page load
+.animate-fade-in-up {
+  animation: fadeInUp 0.5s ease-out forwards;
+}
+
+.animate-fade-in-scale {
+  animation: fadeInScale 0.4s ease-out forwards;
+}
+
+// Staggered delays for list items
+@for $i from 1 through 20 {
+  .animate-delay-#{$i} {
+    animation-delay: #{$i * 0.05}s;
+    opacity: 0;
+  }
+}
+
+// Progress bar that animates when visible
+.progress-animated {
+  .progress-fill {
+    animation: progressFill 1s ease-out forwards;
+    animation-delay: 0.3s;
+  }
+}
+
+// Star that pulses when clicked
+.star-pulse {
+  animation: starPulse 0.3s ease-out;
+}
+
+// Floating animation (for badges, icons)
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+// Crown animation for top user
+.crown-animated {
+  animation: crownGlow 2s ease-in-out infinite;
+}
+
+// Bounce on hover
+.hover-bounce {
+  transition: transform 0.3s ease;
+
+  &:hover {
+    animation: bounce 0.5s ease;
+  }
+}
+
+// Icon spin on hover
+.hover-spin {
+  transition: transform 0.3s ease;
+
+  &:hover {
+    animation: iconSpin 0.6s ease-out;
+  }
+}
+
+// Heart beat on hover (for favorites)
+.hover-heartbeat {
+  &:hover {
+    animation: heartbeat 0.6s ease;
+  }
+}
+
+// ===================================
+// Loading States
+// ===================================
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--oscar-gold-light) 25%,
+    #fff 50%,
+    var(--oscar-gold-light) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: var(--border-radius-sm);
+}
+
+.skeleton-text {
+  height: 1rem;
+  margin-bottom: 0.5rem;
+
+  &.short {
+    width: 60%;
+  }
+
+  &.medium {
+    width: 80%;
+  }
+}
+
+.skeleton-circle {
+  border-radius: 50%;
+}
+
+.skeleton-card {
+  aspect-ratio: 2 / 3;
+  border-radius: var(--border-radius-md);
+}
+
+// ===================================
+// Transition Utilities
+// ===================================
+
+.transition-fast {
+  transition: all 0.15s ease;
+}
+
+.transition-smooth {
+  transition: var(--transition-smooth);
+}
+
+.transition-bounce {
+  transition: var(--transition-bounce);
+}
+
+// ===================================
+// Hover Effects
+// ===================================
+
+// Scale up slightly
+.hover-scale {
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+}
+
+// Scale up more dramatically
+.hover-scale-lg {
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
+// Lift with shadow
+.hover-lift {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--card-shadow-hover);
+  }
+}
+
+// Subtle lift
+.hover-lift-sm {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--card-shadow);
+  }
+}
+
+// Gold border on hover
+.hover-gold-border {
+  border: 2px solid transparent;
+  transition: border-color 0.3s ease;
+
+  &:hover {
+    border-color: var(--oscar-gold);
+  }
+}
+
+// ===================================
+// Mobile Touch Feedback
+// ===================================
+
+@media (hover: none) {
+  // On touch devices, use active states instead of hover
+
+  .movie-card:active {
+    transform: scale(0.98);
+  }
+
+  .category-card:active {
+    transform: scale(0.98);
+  }
+
+  .mate-card:active {
+    transform: scale(0.98);
+  }
+}
+
+// ===================================
+// Reduced Motion
+// ===================================
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

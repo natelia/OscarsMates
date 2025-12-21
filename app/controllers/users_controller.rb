@@ -2,23 +2,31 @@
 # viewing user details, editing user profiles, and deleting users. It ensures
 # that only authenticated and authorized users can perform certain actions.
 class UsersController < ApplicationController
-  before_action :require_year, only: %i[index show stats]
+  before_action :require_year, only: %i[stats]
   before_action :require_signin, except: %i[new create]
   before_action :require_correct_user, only: %i[edit update destroy]
 
   def index
     @users = User.all
-    @total_movies_count = Movie.for_year(current_year).count
+    @year = current_year || default_year
+    @total_movies_count = Movie.for_year(@year).count
 
     @users = UserFilterService.new(current_user, params[:filter]).call
+
+    # Calculate top watchers for podium display
+    @top_watchers = @users.sort_by { |u| -u.watched_movies_count_for_year(@year) }.first(3)
+
+    # Exclude top watchers from main list to avoid duplication
+    @remaining_users = @users - @top_watchers
   end
 
   def show
     @user = User.find(params[:id])
-    @reviews = @user.reviews_for_year(current_year).includes(:movie).order(watched_on: :desc, created_at: :desc)
-    @favorite_movies = @user.favorite_movies.for_year(current_year)
-    @progress = UserProgressService.new(@user, current_year).progress
-    @top_rated_movies = @user.reviews_for_year(current_year).order(stars: :desc).limit(3).map(&:movie)
+    year = current_year || default_year
+    @reviews = @user.reviews_for_year(year).includes(:movie).order(watched_on: :desc, created_at: :desc)
+    @favorite_movies = @user.favorite_movies.for_year(year)
+    @progress = UserProgressService.new(@user, year).progress
+    @top_rated_movies = @user.reviews_for_year(year).order(stars: :desc).limit(3).map(&:movie)
   end
 
   def new

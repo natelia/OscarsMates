@@ -2,16 +2,24 @@
 class ApplicationController < ActionController::Base
   before_action :set_current_year
 
-  helper_method :current_year, :available_years
+  helper_method :current_year, :available_years, :default_year
 
   private
 
   def set_current_year
-    @current_year = params[:year]&.to_i
+    @current_year = params[:year]&.to_i if params[:year].present?
+    # Store in session for persistence across non-year-scoped pages
+    session[:selected_year] = @current_year if @current_year.present?
+    # Use session year as fallback
+    @current_year ||= session[:selected_year]&.to_i if session[:selected_year].present?
   end
 
   def current_year
     @current_year
+  end
+
+  def default_year
+    @default_year ||= Nomination.available_years.first || 2025
   end
 
   def available_years
@@ -21,7 +29,7 @@ class ApplicationController < ActionController::Base
   def require_year
     return if current_year.present?
 
-    redirect_to root_path, alert: 'Please select a year first'
+    redirect_to movies_path(year: default_year), alert: 'Please select a year first'
   end
 
   def require_signin

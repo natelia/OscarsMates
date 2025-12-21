@@ -1,0 +1,80 @@
+<%# Mate Card Partial %>
+<%# Local variables: user, total_movies, year, current_user, rank (optional) %>
+<% rank ||= nil %>
+<% progress = user_progress_for_year(user, year, total_movies) %>
+<% watched_count = user.watched_movies_count_for_year(year) %>
+<% last_movie = last_watched_movie(user, year) %>
+
+<div class="mate-card card-lift">
+  <%# Avatar %>
+  <div class="avatar-circle" style="background-color: <%= avatar_color(user.name) %>;">
+    <%= avatar_initials(user.name) %>
+  </div>
+
+  <%# User Info %>
+  <div class="flex-grow-1">
+    <div class="d-flex justify-content-between align-items-start mb-2">
+      <div>
+        <%= link_to user_path(user), class: "text-decoration-none" do %>
+          <h5 class="mb-0" style="color: var(--charcoal);">
+            <%= user.name %>
+            <% if rank %>
+              <span class="ms-1"><%= rank_badge(rank) %></span>
+            <% end %>
+          </h5>
+        <% end %>
+        <small class="text-muted">
+          <%= pluralize(watched_count, 'movie') %> watched
+        </small>
+      </div>
+
+      <%# Follow/Unfollow Button %>
+      <% if current_user && user != current_user %>
+        <% if current_user.following.include?(user) %>
+          <%= button_to unfollow_user_path(user),
+              method: :delete,
+              class: "btn btn-sm btn-outline-danger",
+              data: { disable_with: "..." } do %>
+            <i class="bi bi-person-dash"></i>
+          <% end %>
+        <% else %>
+          <%= button_to follow_user_path(user),
+              method: :post,
+              class: "btn btn-sm btn-oscar",
+              data: { disable_with: "..." } do %>
+            <i class="bi bi-person-plus"></i>
+          <% end %>
+        <% end %>
+      <% end %>
+    </div>
+
+    <%# Progress Bar %>
+    <div class="progress-bar-oscar progress-animated mb-2">
+      <div class="progress-fill" style="--progress: <%= progress %>%; width: <%= progress %>%;"></div>
+    </div>
+    <div class="d-flex justify-content-between align-items-center">
+      <small class="text-muted">
+        <%= number_to_percentage(progress, precision: 0) %> complete
+      </small>
+
+      <%# Last Watched Movie (mini poster) %>
+      <% if last_movie %>
+        <%= link_to movie_path(last_movie, year: year), class: "d-flex align-items-center text-decoration-none", title: "Last watched: #{last_movie.title}" do %>
+          <small class="text-muted me-2">Last:</small>
+          <% if last_movie.picture_url.present? %>
+            <img src="<%= last_movie.picture_url %>"
+                 alt="<%= last_movie.title %>"
+                 class="rounded"
+                 style="width: 32px; height: 48px; object-fit: cover;"
+                 loading="lazy">
+          <% else %>
+            <div class="rounded bg-gold-light d-flex align-items-center justify-content-center"
+                 style="width: 32px; height: 48px;">
+              <i class="bi bi-film text-gold" style="font-size: 0.75rem;"></i>
+            </div>
+          <% end %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>

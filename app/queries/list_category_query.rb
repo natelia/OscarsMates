@@ -8,7 +8,7 @@ class ListCategoryQuery
     categories = if @query.blank?
                    Category.all
                  else
-                   Category.where('name LIKE ?', "%#{@query}%")
+                   Category.where('categories.name LIKE ?', "%#{@query}%")
                  end
 
     # Only return categories that have nominations in the selected year

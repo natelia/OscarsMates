@@ -1,7 +1,7 @@
 # MoviesController handles the CRUD operations for movies in the application.
 # It allows users to view movies and admins to create, update, and delete movies.
 class MoviesController < ApplicationController
-  before_action :require_year
+  before_action :ensure_year_selected
   before_action :require_signin, except: %i[index show]
   before_action :require_admin, except: %i[index show]
   before_action :set_movie, only: %i[show edit update destroy]
@@ -54,10 +54,16 @@ class MoviesController < ApplicationController
 
   def destroy
     @movie.destroy
-    redirect_to root_path, status: :see_other, alert: 'Movie successfully deleted!'
-  end 
-  
+    redirect_to movies_path(year: current_year), status: :see_other, alert: 'Movie successfully deleted!'
+  end
+
   private
+
+  def ensure_year_selected
+    return if current_year.present?
+
+    redirect_to movies_path(year: default_year)
+  end
 
   def sort_movies
     @movies = MovieSortingService.new(@movies, params[:sort_by], current_user).call
