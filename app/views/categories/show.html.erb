@@ -1,60 +1,37 @@
-<div class="container my-5">
-  <h1 class="display-4 mb-4"><%= @category.name %></h1>
+<main class="categories-page">
+  <div class="container py-5">
+    <div class="page-header mb-4">
+      <h1 class="page-title"><%= @category.name %></h1>
+      <p class="text-secondary"><%= pluralize(@movies.count, 'movie') %> in this category</p>
+    </div>
 
-  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
-    <% @movies.each do |movie| %>
-      <div class="col">
-        <div class="card movie-card h-100">
-          <% if movie.picture_url.present? %>
-            <picture>
-              <img src="<%= movie.picture_url %>" class="card-img-top" alt="<%= movie.title %>">
-            </picture>
-          <% else %>
-            <picture>
-              <img src="placeholder_image_url.jpg" class="card-img-top" alt="Placeholder">
-            </picture>
-          <% end %>
-          <div class="card-body text-center">
-            <h5 class="card-title mb-2"><%= movie.title %></h5>
-            <p class="card-text mb-2">Mates rated this movie as <%= average_stars(movie) %> out of 5!</p>
-            <% if @user_reviews[movie.id] && @user_reviews[movie.id].stars.present? %>
-            <div class="badge bg-warning text-dark position-absolute top-0 start-0 m-2 p-2" style="font-size: 1rem; padding: 0.6rem;">
-              <%= @user_reviews[movie.id].stars%> ★
-            </div>
-          <% end %>
-
-          <div class="card-footer text-center bg-transparent border-0 pb-3">
-            <% review = @user_reviews[movie.id] %>
-           <%= watch_or_unwatch_button(movie,review) %>
+    <% if @movies.any? %>
+      <div class="movies-grid">
+        <% @movies.each_with_index do |movie, index| %>
+          <div class="animate-fade-in-up animate-delay-<%= [index + 1, 12].min %>">
+            <%= render 'movies/movie_card', movie: movie, review: @user_reviews[movie.id] %>
           </div>
-          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="empty-state">
+        <div class="empty-icon">
+          <i class="bi bi-film"></i>
         </div>
+        <h3>No movies in this category</h3>
+        <p>There are no movies for this category yet.</p>
       </div>
     <% end %>
+
+    <div class="d-flex gap-2 mt-4">
+      <%= link_to categories_path(year: current_year), class: 'btn btn-outline-oscar' do %>
+        <i class="bi bi-arrow-left me-1"></i> Back to Categories
+      <% end %>
+      <% if current_user_admin? %>
+        <%= link_to edit_category_path(@category, year: current_year), class: 'btn btn-outline-oscar' do %>
+          <i class="bi bi-pencil me-1"></i> Edit Category
+        <% end %>
+      <% end %>
+    </div>
   </div>
-
-  <div class="mt-4">
-    <% if current_user&.admin? %>
-      <%= link_to 'Edit Category', edit_category_path(@category, year: current_year), class: 'btn btn-warning' %>
-    <% end %>
-    <%= link_to 'Back to Categories', categories_path(year: current_year), class: 'btn btn-secondary' %>
-    <%= link_to 'Home Page', root_path, class: 'btn btn-warning' %>
-  </div>
-</div>
-
-<style>
-.movie-card {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.movie-card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.card-img-top {
-  object-fit: cover;
-  height: 260px; 
-  width: 100%;
-}
-</style>
+</main>

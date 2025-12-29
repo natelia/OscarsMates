@@ -1,55 +1,58 @@
-<div class="container my-4">
-  <%= link_to "Home Page", root_path, class: "btn btn-outline-dark me-2" %>
+<main class="categories-page">
+  <div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div>
+        <h1 class="page-title mb-0">Categories</h1>
+        <p class="text-secondary mb-0"><%= current_year %> Academy Awards</p>
+      </div>
 
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1 class="display-4 mb-0">
-    <%= link_to "Categories", categories_path(year: current_year), class: "text-decoration-none text-dark" %>
-    </h1>
-    <div class="d-flex align-items-center">
-      <form class="d-flex ms-3" role="search" method="get" action="<%= categories_path(year: current_year) %>">
-      <input class="form-control form-control-md" type="search" name="query" placeholder="Search categories..." aria-label="Search" value="<%= params[:query] %>">
-      <button class="btn btn-outline-secondary btn-md ms-2" type="submit">Search</button>
-      </form>
-      <% if current_user&.admin? %>
-        <%= link_to 'New Category', new_category_path(year: current_year), class: 'btn btn-primary ms-3 rounded-pill' %>
-      <% end %>
+      <div class="d-flex align-items-center gap-3">
+        <form class="search-form" role="search" action="<%= categories_path(year: current_year) %>" method="get">
+          <i class="bi bi-search search-icon"></i>
+          <input class="search-input"
+                 type="search"
+                 name="query"
+                 placeholder="Search..."
+                 aria-label="Search"
+                 value="<%= params[:query] %>">
+        </form>
+
+        <% if current_user_admin? %>
+          <%= link_to new_category_path(year: current_year), class: "btn btn-oscar btn-sm" do %>
+            <i class="bi bi-plus"></i>
+          <% end %>
+        <% end %>
+      </div>
     </div>
-  </div>
 
-  <% if @categories.present? %>
-  <div class="row justify-content-center">
-    <% @categories.each do |category| %>
-      <div class="col-12 col-md-6 col-lg-4 mb-3">
-        <div class="list-group text-center">
-          <div class="list-group-item d-flex justify-content-between align-items-center">
-            <%= link_to category.name, category_path(year: current_year, id: category.id), class: "text-decoration-none text-dark fs-5 w-100" %>
-            <% if current_user&.admin? %>
-              <div class="mt-2">
-                <%= link_to 'Edit', edit_category_path(year: current_year, id: category.id), class: 'btn btn-sm btn-outline-warning me-2' %>
-                <%= link_to 'Destroy', category_path(year: current_year, id: category.id), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, class: 'btn btn-sm btn-outline-danger' %>
-              </div>
-            <% end %>
-          </div>
+    <% if @categories.any? %>
+      <div class="category-cards-grid">
+        <% @categories.each do |category| %>
+          <% movie_count = category.movies.for_year(current_year).count %>
+          <%= link_to category_path(category, year: current_year), class: "category-card-mini" do %>
+            <i class="bi <%= category_icon(category.name) %> category-card-icon"></i>
+            <span class="category-card-name"><%= category.name %></span>
+            <span class="category-card-count"><%= movie_count %></span>
+          <% end %>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="empty-state">
+        <div class="empty-icon">
+          <i class="bi bi-award"></i>
         </div>
+        <h3>No categories found</h3>
+        <p>
+          <% if params[:query].present? %>
+            No results for "<%= params[:query] %>".
+          <% else %>
+            No categories available yet.
+          <% end %>
+        </p>
+        <% if params[:query].present? %>
+          <%= link_to "Clear", categories_path(year: current_year), class: "btn btn-oscar btn-sm" %>
+        <% end %>
       </div>
     <% end %>
   </div>
-<% else %>
-  <p class="text-muted text-center">No categories found. Try adjusting your search.</p>
-<% end %>
-</div>
-
-<style>
-  .list-group-item {
-    transition: background-color 0.3s, box-shadow 0.3s;
-    background-color: #fff;
-    border-radius: 8px;
-    padding: 15px;
-    border: 1px solid #dee2e6;
-  }
-
-  .list-group-item:hover {
-    background-color: #f8f9fa;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-</style>
+</main>
