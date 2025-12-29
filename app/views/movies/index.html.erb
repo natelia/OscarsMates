@@ -1,61 +1,53 @@
 <a id="top"></a>
 
 <main class="movies-page">
-  <div class="container py-4">
-    <%# Hero Section %>
-    <header class="text-center mb-4">
-      <h1 class="page-title mb-2"><%= current_year %> Oscar Nominees</h1>
-      <p class="text-muted">
-        <i class="bi bi-film me-1"></i>
-        <%= pluralize(@movies.count, 'film') %> from <%= current_year - 1 %>
-        <% if current_user && @progress %>
-          <span class="mx-2">|</span>
-          <i class="bi bi-check-circle me-1 text-gold"></i>
-          <%= number_to_percentage(@progress, precision: 0) %> watched
-        <% end %>
-      </p>
-    </header>
+  <div class="container py-5">
 
     <%# Toolbar %>
     <div class="toolbar">
       <%# Search %>
-      <form class="d-flex flex-grow-1" role="search" action="<%= movies_path(year: current_year) %>" method="get" style="max-width: 400px;">
-        <input class="form-control search-input me-2"
-               type="search"
-               name="query"
-               placeholder="Search movies..."
-               aria-label="Search"
-               value="<%= params[:query] %>">
-        <button class="btn btn-oscar" type="submit">
-          <i class="bi bi-search"></i>
-        </button>
-      </form>
-
-      <% if current_user.present? %>
-        <div class="d-flex gap-2 flex-wrap">
-          <%# Filter Toggle %>
-          <% if params[:filter_by] == 'unwatched' %>
-            <%= link_to movies_path(year: current_year), class: "btn btn-outline-oscar" do %>
-              <i class="bi bi-grid-3x3-gap"></i> All Movies
-            <% end %>
-          <% else %>
-            <%= link_to movies_path(year: current_year, filter_by: 'unwatched'), class: "btn btn-outline-oscar" do %>
-              <i class="bi bi-eye-slash"></i> Unwatched
+      <div class="search-wrapper">
+        <form class="search-form" role="search" action="<%= movies_path(year: current_year) %>" method="get">
+          <i class="bi bi-search search-icon"></i>
+          <input class="search-input"
+                 type="search"
+                 name="query"
+                 placeholder="Search movies..."
+                 aria-label="Search"
+                 value="<%= params[:query] %>">
+          <% if params[:query].present? %>
+            <%= link_to movies_path(year: current_year, filter_by: params[:filter_by], sort_by: params[:sort_by]), class: "search-clear" do %>
+              <i class="bi bi-x"></i>
             <% end %>
           <% end %>
+        </form>
+      </div>
+
+      <% if current_user.present? %>
+        <div class="toolbar-actions">
+          <%# Filter buttons %>
+          <div class="filter-group">
+            <%= link_to movies_path(year: current_year, sort_by: params[:sort_by]),
+                class: "filter-btn #{params[:filter_by].blank? ? 'active' : ''}" do %>
+              All
+            <% end %>
+            <%= link_to movies_path(year: current_year, filter_by: 'unwatched', sort_by: params[:sort_by]),
+                class: "filter-btn #{params[:filter_by] == 'unwatched' ? 'active' : ''}" do %>
+              Unwatched
+            <% end %>
+          </div>
 
           <%# Sort Dropdown %>
-          <%= form_tag movies_path(year: current_year), method: :get, class: "d-inline" do %>
+          <%= form_tag movies_path(year: current_year), method: :get, class: "sort-form" do %>
             <%= select_tag :sort_by,
                 options_for_select([
                   ['Default', ''],
-                  ['By Length', 'duration'],
-                  ['Popular with Mates', 'watched_by_mates'],
+                  ['Duration', 'duration'],
+                  ['Popular', 'watched_by_mates'],
                   ['Most Nominated', 'most_nominated']
                 ], params[:sort_by]),
                 onchange: 'this.form.submit()',
-                class: 'form-select form-select-sm',
-                style: 'width: auto;' %>
+                class: 'sort-select' %>
             <%= hidden_field_tag :query, params[:query] if params[:query].present? %>
             <%= hidden_field_tag :filter_by, params[:filter_by] if params[:filter_by].present? %>
           <% end %>

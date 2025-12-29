@@ -49,7 +49,7 @@
           <div class="d-flex justify-content-between align-items-center mb-3">
             <div>
               <%= average_stars(@movie) %>
-              <%= link_to pluralize(@movie.reviews.size, "review"), movie_reviews_path(@movie), class: "ms-2" %>
+              <%= link_to pluralize(@movie.reviews.size, "review"), movie_reviews_path(@movie, year: params[:year]), class: "ms-2" %>
             </div>
 
             <% if current_user %>
@@ -66,7 +66,7 @@
                       <ul class="list-group list-group-flush small-text">
                         <% @fans.each do |user| %>
                           <li class="list-group-item">
-                            <%= link_to user.name, user %>
+                            <%= link_to user.name, user_path(user) %>
                           </li>
                         <% end %>
                       </ul>
@@ -82,15 +82,15 @@
         <!-- Additional Actions -->
         <ul class="list-group">
           <li class="list-group-item">
-            <%= link_to "Home Page", root_path, class: "btn btn-outline-dark w-100" %>
+            <%= link_to "Home Page", movies_path(year: params[:year]), class: "btn btn-outline-dark w-100" %>
           </li>
 
           <% if current_user_admin? %>
             <li class="list-group-item">
-              <%= link_to "Edit", edit_movie_path(@movie), class: "btn btn-outline-dark w-100" %>
+              <%= link_to "Edit", edit_movie_path(@movie, year: params[:year]), class: "btn btn-outline-dark w-100" %>
             </li>
             <li class="list-group-item">
-              <%= link_to "Destroy", movie_path(@movie), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, class: "btn btn-outline-danger w-100" %>
+              <%= link_to "Destroy", movie_path(@movie, year: params[:year]), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, class: "btn btn-outline-danger w-100" %>
             </li>
           <% end %>
         </ul>

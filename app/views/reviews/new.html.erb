@@ -1,12 +1,12 @@
 <section class="new-review py-5">
   <div class="container">
     <h1 class="mt-4 mb-3 text-center">
-      <%= link_to @movie.title, @movie, style: "text-decoration: none; color: #555555;" %>
+      <%= link_to @movie.title, movie_path(@movie, year: params[:year]), style: "text-decoration: none; color: #555555;" %>
     </h1>
 
     <div class="row justify-content-center">
       <div class="col-md-8">
-        <%= form_with(model: [@movie, @review], class: "mb-4") do |f| %>
+        <%= form_with(model: [@movie, @review], url: movie_reviews_path(@movie, year: params[:year]), class: "mb-4") do |f| %>
           <%= render "shared/errors", object: @review %>
 
           <% if f.object.errors[:stars].any? %>
@@ -44,7 +44,7 @@
         <% end %>
 
         <div class="mt-4 text-center">
-          <%= link_to "Back to Movie Details", @movie, class: "btn btn-outline-dark" %>
+          <%= link_to "Back to Movie Details", movie_path(@movie, year: params[:year]), class: "btn btn-outline-dark" %>
         </div>
       </div>
     </div>

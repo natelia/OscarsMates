@@ -116,6 +116,114 @@
 }
 
 // ===================================
+// Oscar-Themed Animations
+// ===================================
+
+// Sparkle effect
+@keyframes sparkle {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+// Shimmer border effect
+@keyframes shimmerBorder {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+// Star floating
+@keyframes starFloat {
+  0%, 100% {
+    transform: translateY(-50%) rotate(0deg);
+    opacity: 0.15;
+  }
+  50% {
+    transform: translateY(-55%) rotate(10deg);
+    opacity: 0.25;
+  }
+}
+
+// Trophy bounce
+@keyframes trophyBounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  25% {
+    transform: translateY(-3px) rotate(-5deg);
+  }
+  75% {
+    transform: translateY(-3px) rotate(5deg);
+  }
+}
+
+// Dropdown fade in
+@keyframes dropdownFade {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Progress bar sparkle move
+@keyframes sparkleMove {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+// Gold pulse glow
+@keyframes goldPulse {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(212, 175, 55, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.6);
+  }
+}
+
+// Gentle wiggle for icons
+@keyframes gentleWiggle {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-3deg);
+  }
+  75% {
+    transform: rotate(3deg);
+  }
+}
+
+// Nav item entrance
+@keyframes navSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// ===================================
 // Animation Classes
 // ===================================
 
@@ -181,6 +289,65 @@
 .hover-heartbeat {
   &:hover {
     animation: heartbeat 0.6s ease;
+  }
+}
+
+// ===================================
+// Oscar Animation Classes
+// ===================================
+
+// Apply gold pulse to interactive elements
+.animate-gold-pulse {
+  animation: goldPulse 2s ease-in-out infinite;
+}
+
+// Gentle wiggle for icons
+.hover-wiggle {
+  &:hover i {
+    animation: gentleWiggle 0.5s ease-in-out;
+  }
+}
+
+// Nav items animate in sequence
+.nav-animated {
+  .nav-item {
+    animation: navSlideIn 0.4s ease-out forwards;
+    opacity: 0;
+
+    @for $i from 1 through 8 {
+      &:nth-child(#{$i}) {
+        animation-delay: #{$i * 0.08}s;
+      }
+    }
+  }
+}
+
+// Toolbar slide-in from top
+.toolbar-animated {
+  animation: fadeInUp 0.4s ease-out;
+}
+
+// Button hover sparkle effect
+.btn-sparkle {
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, transparent 70%);
+    transform: translate(-50%, -50%);
+    transition: width 0.3s ease, height 0.3s ease;
+    border-radius: 50%;
+  }
+
+  &:hover::before {
+    width: 200px;
+    height: 200px;
   }
 }
 
