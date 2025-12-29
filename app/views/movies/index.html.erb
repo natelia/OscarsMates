@@ -25,32 +25,93 @@
 
       <% if current_user.present? %>
         <div class="toolbar-actions">
-          <%# Filter buttons %>
-          <div class="filter-group">
-            <%= link_to movies_path(year: current_year, sort_by: params[:sort_by]),
-                class: "filter-btn #{params[:filter_by].blank? ? 'active' : ''}" do %>
-              All
-            <% end %>
-            <%= link_to movies_path(year: current_year, filter_by: 'unwatched', sort_by: params[:sort_by]),
-                class: "filter-btn #{params[:filter_by] == 'unwatched' ? 'active' : ''}" do %>
-              Unwatched
-            <% end %>
+          <%# Filter Dropdown %>
+          <div class="dropdown">
+            <button class="toolbar-dropdown-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="bi bi-funnel"></i>
+              <span><%= filter_label(params[:filter_by]) %></span>
+              <i class="bi bi-chevron-down"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-filter">
+              <li>
+                <%= link_to movies_path(year: current_year, sort_by: params[:sort_by], query: params[:query]),
+                    class: "dropdown-item #{'active' if params[:filter_by].blank?}" do %>
+                  <i class="bi bi-grid"></i> All Movies
+                <% end %>
+              </li>
+              <li>
+                <%= link_to movies_path(year: current_year, filter_by: 'unwatched', sort_by: params[:sort_by], query: params[:query]),
+                    class: "dropdown-item #{'active' if params[:filter_by] == 'unwatched'}" do %>
+                  <i class="bi bi-eye-slash"></i> Unwatched
+                <% end %>
+              </li>
+              <li>
+                <%= link_to movies_path(year: current_year, filter_by: 'watched', sort_by: params[:sort_by], query: params[:query]),
+                    class: "dropdown-item #{'active' if params[:filter_by] == 'watched'}" do %>
+                  <i class="bi bi-eye"></i> Watched
+                <% end %>
+              </li>
+            </ul>
           </div>
 
           <%# Sort Dropdown %>
-          <%= form_tag movies_path(year: current_year), method: :get, class: "sort-form" do %>
-            <%= select_tag :sort_by,
-                options_for_select([
-                  ['Default', ''],
-                  ['Duration', 'duration'],
-                  ['Popular', 'watched_by_mates'],
-                  ['Most Nominated', 'most_nominated']
-                ], params[:sort_by]),
-                onchange: 'this.form.submit()',
-                class: 'sort-select' %>
-            <%= hidden_field_tag :query, params[:query] if params[:query].present? %>
-            <%= hidden_field_tag :filter_by, params[:filter_by] if params[:filter_by].present? %>
-          <% end %>
+          <div class="dropdown">
+            <button class="toolbar-dropdown-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="bi bi-sort-down"></i>
+              <span><%= sort_label(params[:sort_by]) %></span>
+              <i class="bi bi-chevron-down"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-sort">
+              <li>
+                <%= link_to movies_path(year: current_year, sort_by: '', filter_by: params[:filter_by], query: params[:query]),
+                    class: "dropdown-item #{'active' if params[:sort_by].blank?}" do %>
+                  <i class="bi bi-sort-alpha-down"></i> A-Z
+                <% end %>
+              </li>
+              <li><hr class="dropdown-divider"></li>
+              <li class="dropdown-header">By Rating</li>
+              <li>
+                <%= link_to movies_path(year: current_year, sort_by: 'my_rating', filter_by: params[:filter_by], query: params[:query]),
+                    class: "dropdown-item #{'active' if params[:sort_by] == 'my_rating'}" do %>
+                  <i class="bi bi-star"></i> My Rating
+                <% end %>
+              </li>
+              <li>
+                <%= link_to movies_path(year: current_year, sort_by: 'imdb_rating', filter_by: params[:filter_by], query: params[:query]),
+                    class: "dropdown-item #{'active' if params[:sort_by] == 'imdb_rating'}" do %>
+                  <i class="bi bi-film"></i> IMDB Rating
+                <% end %>
+              </li>
+              <li><hr class="dropdown-divider"></li>
+              <li class="dropdown-header">By Duration</li>
+              <li>
+                <%= link_to movies_path(year: current_year, sort_by: 'duration', filter_by: params[:filter_by], query: params[:query]),
+                    class: "dropdown-item #{'active' if params[:sort_by] == 'duration'}" do %>
+                  <i class="bi bi-hourglass-top"></i> Longest First
+                <% end %>
+              </li>
+              <li>
+                <%= link_to movies_path(year: current_year, sort_by: 'shortest', filter_by: params[:filter_by], query: params[:query]),
+                    class: "dropdown-item #{'active' if params[:sort_by] == 'shortest'}" do %>
+                  <i class="bi bi-hourglass-bottom"></i> Shortest First
+                <% end %>
+              </li>
+              <li><hr class="dropdown-divider"></li>
+              <li class="dropdown-header">By Popularity</li>
+              <li>
+                <%= link_to movies_path(year: current_year, sort_by: 'watched_by_mates', filter_by: params[:filter_by], query: params[:query]),
+                    class: "dropdown-item #{'active' if params[:sort_by] == 'watched_by_mates'}" do %>
+                  <i class="bi bi-people"></i> Mates' Rating
+                <% end %>
+              </li>
+              <li>
+                <%= link_to movies_path(year: current_year, sort_by: 'most_nominated', filter_by: params[:filter_by], query: params[:query]),
+                    class: "dropdown-item #{'active' if params[:sort_by] == 'most_nominated'}" do %>
+                  <i class="bi bi-trophy"></i> Most Nominated
+                <% end %>
+              </li>
+            </ul>
+          </div>
         </div>
       <% end %>
     </div>

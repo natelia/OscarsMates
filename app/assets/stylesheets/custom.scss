@@ -877,6 +877,96 @@ a {
   }
 }
 
+// Toolbar dropdown button
+.toolbar-dropdown-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-full);
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+
+  &:hover {
+    border-color: var(--text-tertiary);
+    color: var(--text-primary);
+  }
+
+  &:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.1);
+  }
+
+  .bi-chevron-down {
+    font-size: 0.65rem;
+    opacity: 0.5;
+  }
+}
+
+// Filter/Sort dropdown menus
+.dropdown-menu-filter,
+.dropdown-menu-sort {
+  min-width: 180px;
+  padding: var(--spacing-xs);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+
+  .dropdown-header {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: var(--spacing-sm) var(--spacing-md) var(--spacing-xs);
+  }
+
+  .dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: 0.85rem;
+    color: var(--text-primary);
+    border-radius: var(--radius-sm);
+
+    i {
+      font-size: 0.9rem;
+      color: var(--text-tertiary);
+      width: 16px;
+      text-align: center;
+    }
+
+    &:hover {
+      background: var(--bg-primary);
+
+      i {
+        color: var(--text-secondary);
+      }
+    }
+
+    &.active {
+      background: var(--accent-light);
+      font-weight: 500;
+
+      i {
+        color: var(--accent);
+      }
+    }
+  }
+
+  .dropdown-divider {
+    margin: var(--spacing-xs) 0;
+    border-color: var(--border-color-light);
+  }
+}
+
 // Responsive toolbar
 @media (max-width: 640px) {
   .toolbar {
@@ -890,7 +980,13 @@ a {
   }
 
   .toolbar-actions {
-    justify-content: space-between;
+    justify-content: flex-start;
+    gap: var(--spacing-sm);
+  }
+
+  .toolbar-dropdown-btn {
+    flex: 1;
+    justify-content: center;
   }
 }
 

@@ -14,4 +14,34 @@ module MoviesHelper
       link_to 'Watched!', new_movie_review_path(movie, year: current_year), class: 'btn btn-outline-primary btn-sm'
     end
   end
+
+  def filter_label(filter_by)
+    case filter_by
+    when 'unwatched'
+      'Unwatched'
+    when 'watched'
+      'Watched'
+    else
+      'All'
+    end
+  end
+
+  def sort_label(sort_by)
+    case sort_by
+    when 'my_rating'
+      'My Rating'
+    when 'imdb_rating'
+      'IMDB'
+    when 'duration'
+      'Longest'
+    when 'shortest'
+      'Shortest'
+    when 'watched_by_mates'
+      'Mates'
+    when 'most_nominated'
+      'Nominations'
+    else
+      'A-Z'
+    end
+  end
 end
