@@ -44,21 +44,16 @@
   <% if show_actions && current_user %>
     <div class="movie-card-overlay">
       <div class="movie-card-actions">
-        <%# Quick star rating %>
-        <div class="star-rating mb-3"
-             data-controller="quick-rating"
-             data-quick-rating-movie-id-value="<%= movie.id %>"
-             data-quick-rating-current-value="<%= review&.stars || 0 %>"
-             data-quick-rating-has-review-value="<%= review.present? %>"
-             data-quick-rating-review-id-value="<%= review&.id %>">
-          <% (1..5).each do |star| %>
-            <span class="star <%= 'filled' if review&.stars.to_i >= star %>"
-                  data-quick-rating-target="star"
-                  data-star-value="<%= star %>">
-              <i class="bi bi-star<%= '-fill' if review&.stars.to_i >= star %>"></i>
-            </span>
-          <% end %>
-        </div>
+        <%# Show rating only for already rated movies %>
+        <% if review&.stars.present? %>
+          <div class="your-rating-display mb-3">
+            <span class="your-rating-label">Your rating</span>
+            <div class="rating-value">
+              <i class="bi bi-star-fill"></i>
+              <span><%= review.stars %>/10</span>
+            </div>
+          </div>
+        <% end %>
 
         <%# Action buttons %>
         <div class="d-flex gap-2 justify-content-center">

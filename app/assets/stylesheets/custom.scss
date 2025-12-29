@@ -378,6 +378,35 @@ a {
   }
 }
 
+// Rating display (read-only, for already rated movies)
+.your-rating-display {
+  text-align: center;
+
+  .your-rating-label {
+    display: block;
+    font-size: 0.65rem;
+    color: rgba(255, 255, 255, 0.6);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 2px;
+  }
+
+  .rating-value {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: white;
+
+    i {
+      color: var(--oscar-gold);
+      font-size: 1rem;
+    }
+  }
+}
+
 // ===================================
 // Buttons - Clean & Minimal
 // ===================================
