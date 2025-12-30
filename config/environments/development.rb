@@ -11,6 +11,9 @@ Rails.application.configure do
   # Do not eager load code on boot.
   config.eager_load = false
 
+  # Allow custom host from environment variable (for external access)
+  config.hosts << ENV["APP_HOST"] if ENV["APP_HOST"].present?
+
   # Show full error reports.
   config.consider_all_requests_local = true
 

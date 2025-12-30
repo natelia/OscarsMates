@@ -49,7 +49,11 @@ Rails.application.configure do
   # config.assume_ssl = true
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
-  config.force_ssl = true
+  # Disabled - SSL handled by reverse proxy
+  config.force_ssl = false
+
+  # Allow custom host from environment variable
+  config.hosts << ENV["APP_HOST"] if ENV["APP_HOST"].present?
 
   # Log to STDOUT by default
   config.logger = ActiveSupport::Logger.new(STDOUT)
@@ -93,5 +97,5 @@ Rails.application.configure do
   #   /.*\.example\.com/ # Allow requests from subdomains like `www.example.com`
   # ]
   # Skip DNS rebinding protection for the default health check endpoint.
-  # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
+  config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
 end
