@@ -13,4 +13,28 @@ services:
     tty: true
     stdin_open: true
     restart: unless-stopped
+
+  backup:
+    image: alpine:latest
+    volumes:
+      - ./storage:/data/storage:ro
+      - ${BACKUP_PATH}:/backups
+    command: |
+      sh -c "
+        echo 'Backup service started'
+        while true; do
+          DATE=$$(date +%Y%m%d_%H%M%S)
+          for db in /data/storage/*.sqlite3; do
+            if [ -f \"\$$db\" ]; then
+              BASENAME=$$(basename \"\$$db\" .sqlite3)
+              cp \"\$$db\" \"/backups/\$${BASENAME}_\$${DATE}.sqlite3\"
+              echo \"Backed up: \$${BASENAME}_\$${DATE}.sqlite3\"
+            fi
+          done
+          find /backups -name '*.sqlite3' -mtime +7 -delete
+          echo 'Cleanup complete. Sleeping for 24 hours...'
+          sleep 86400
+        done
+      "
+    restart: unless-stopped
 networks: {}
