@@ -1,6 +1,9 @@
 require "sidekiq/web" # require the web UI
 
 Rails.application.routes.draw do
+  # Health check endpoint for Docker
+  get "up" => "rails/health#show", as: :rails_health_check
+
   # Root redirects to movies (will auto-select latest year)
   root 'movies#index'
 
