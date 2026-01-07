@@ -1,0 +1,61 @@
+require 'rails_helper'
+
+RSpec.describe 'Reviews', type: :request do
+  let(:user) { create(:user) }
+  let(:category) { create(:category) }
+  let(:movie) { create(:movie) }
+  let!(:nomination) { create(:nomination, movie: movie, category: category, year: 2025) }
+
+  def sign_in(user)
+    post create_session_path, params: { email: user.email, password: 'password' }
+  end
+
+  describe 'POST /:year/movies/:movie_id/reviews' do
+    let(:valid_params) do
+      {
+        review: {
+          stars: 8,
+          watched_on: Date.today
+        }
+      }
+    end
+
+    context 'when not logged in' do
+      it 'redirects to signin' do
+        post "/2025/movies/#{movie.slug}/reviews", params: valid_params
+
+        expect(response).to redirect_to(new_session_path)
+      end
+    end
+
+    context 'when logged in' do
+      before { sign_in(user) }
+
+      it 'creates a new review' do
+        expect {
+          post "/2025/movies/#{movie.slug}/reviews", params: valid_params
+        }.to change(Review, :count).by(1)
+      end
+
+      it 'redirects to the movie' do
+        post "/2025/movies/#{movie.slug}/reviews", params: valid_params
+
+        expect(response).to have_http_status(:redirect)
+      end
+    end
+  end
+
+  describe 'DELETE /:year/movies/:movie_id/reviews/:id' do
+    let!(:review) { create(:review, user: user, movie: movie) }
+
+    context 'when logged in as review owner' do
+      before { sign_in(user) }
+
+      it 'deletes the review' do
+        expect {
+          delete "/2025/movies/#{movie.slug}/reviews/#{review.id}"
+        }.to change(Review, :count).by(-1)
+      end
+    end
+  end
+end
