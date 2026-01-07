@@ -1,9 +1,9 @@
 source "https://rubygems.org"
 
-ruby "3.2.2"
+ruby "3.3.6"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem "rails", "~> 7.1.3"
+gem "rails", "~> 7.1.5"
 
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
@@ -31,9 +31,6 @@ gem "jbuilder"
 # gem "redis", ">= 4.0.1"
 
 gem 'cssbundling-rails'
-
-gem 'bootstrap', '~> 5.1.3'
-
 gem 'jsbundling-rails'
 
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
