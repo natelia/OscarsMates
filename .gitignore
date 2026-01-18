@@ -42,3 +42,6 @@
 
 # Ignore test coverage reports
 /coverage
+
+# Ignore security scan reports
+brakeman-report.html

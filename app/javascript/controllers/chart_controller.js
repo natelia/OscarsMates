@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus";
 import { Chart } from "chart.js/auto";
 
 export default class extends Controller {
-  static values = { minutesWatched: Array }
+  static values = { minutesWatched: Array };
 
   connect() {
     const canvas = this.element.querySelector("canvas");
@@ -17,19 +17,19 @@ export default class extends Controller {
       }
 
       // Group data by date and create datasets for each mate
-      const labels = [...new Set(data.map(item => item.date))];
-      const mates = [...new Set(data.map(item => item.name))];
-      
-      const datasets = mates.map(name => {
-        const mateData = data.filter(item => item.name === name);
+      const labels = [...new Set(data.map((item) => item.date))];
+      const mates = [...new Set(data.map((item) => item.name))];
+
+      const datasets = mates.map((name) => {
+        const mateData = data.filter((item) => item.name === name);
         return {
           label: name,
-          data: labels.map(date => {
-            const entry = mateData.find(item => item.date === date);
+          data: labels.map((date) => {
+            const entry = mateData.find((item) => item.date === date);
             return entry ? entry.minutes_watched : 0;
           }),
           borderColor: `rgba(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 192)}, ${Math.floor(Math.random() * 192)}, 1)`,
-          borderWidth: 1
+          borderWidth: 1,
         };
       });
 
@@ -43,7 +43,7 @@ export default class extends Controller {
         type: "line",
         data: {
           labels: labels,
-          datasets: datasets
+          datasets: datasets,
         },
         options: {
           responsive: true,
@@ -51,10 +51,10 @@ export default class extends Controller {
           plugins: {
             legend: {
               display: true,
-              position: 'top'
-            }
-          }
-        }
+              position: "top",
+            },
+          },
+        },
       });
     } else {
       console.error("Canvas element not found");
