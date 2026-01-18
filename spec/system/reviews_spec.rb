@@ -27,7 +27,7 @@ RSpec.describe 'Reviews', type: :system do
       visit "/2025/movies/#{movie.slug}/reviews/new"
 
       choose 'star_8'
-      fill_in 'Date Watched', with: Date.today.to_s
+      fill_in 'Date Watched', with: Time.zone.today.to_s
       click_button 'Mark as Watched'
 
       expect(page).to have_content('Thanks for your review')

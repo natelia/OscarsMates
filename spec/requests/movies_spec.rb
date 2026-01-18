@@ -13,7 +13,7 @@ RSpec.describe 'Movies', type: :request do
 
   describe 'GET /:year/movies' do
     it 'returns success when year is specified' do
-      get "/2025/movies"
+      get '/2025/movies'
 
       expect(response).to have_http_status(:ok)
       expect(response.body).to include(movie.title)
@@ -23,7 +23,7 @@ RSpec.describe 'Movies', type: :request do
       before { sign_in(user) }
 
       it 'shows movies list' do
-        get "/2025/movies"
+        get '/2025/movies'
 
         expect(response).to have_http_status(:ok)
       end
@@ -42,7 +42,7 @@ RSpec.describe 'Movies', type: :request do
   describe 'GET /:year/movies/new' do
     context 'when not logged in' do
       it 'redirects to signin' do
-        get "/2025/movies/new"
+        get '/2025/movies/new'
 
         expect(response).to redirect_to(new_session_path)
       end
@@ -52,7 +52,7 @@ RSpec.describe 'Movies', type: :request do
       before { sign_in(user) }
 
       it 'redirects with unauthorized message' do
-        get "/2025/movies/new"
+        get '/2025/movies/new'
 
         expect(response).to redirect_to(root_path)
       end
@@ -62,7 +62,7 @@ RSpec.describe 'Movies', type: :request do
       before { sign_in(admin) }
 
       it 'returns success' do
-        get "/2025/movies/new"
+        get '/2025/movies/new'
 
         expect(response).to have_http_status(:ok)
       end
@@ -88,13 +88,13 @@ RSpec.describe 'Movies', type: :request do
       before { sign_in(admin) }
 
       it 'creates a new movie' do
-        expect {
-          post "/2025/movies", params: valid_params
-        }.to change(Movie, :count).by(1)
+        expect do
+          post '/2025/movies', params: valid_params
+        end.to change(Movie, :count).by(1)
       end
 
       it 'redirects to the new movie' do
-        post "/2025/movies", params: valid_params
+        post '/2025/movies', params: valid_params
 
         expect(response).to have_http_status(:redirect)
       end

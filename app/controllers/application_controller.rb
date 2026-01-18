@@ -14,9 +14,7 @@ class ApplicationController < ActionController::Base
     @current_year ||= session[:selected_year]&.to_i if session[:selected_year].present?
   end
 
-  def current_year
-    @current_year
-  end
+  attr_reader :current_year
 
   def default_year
     @default_year ||= Nomination.available_years.first || 2025
@@ -58,7 +56,8 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user_admin?
-    current_user&.admin? # if current_user is nil, the safe navigation operator &. will prevent a NoMethodError and return nil instead
+    # Safe navigation prevents NoMethodError when current_user is nil
+    current_user&.admin?
   end
 
   helper_method :current_user_admin?

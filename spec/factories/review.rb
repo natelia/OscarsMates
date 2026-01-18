@@ -2,7 +2,7 @@ FactoryBot.define do
   factory :review do
     association :movie
     association :user
-    watched_on { Date.today }
+    watched_on { Time.zone.today }
     stars { 7 }
 
     trait :with_comment do

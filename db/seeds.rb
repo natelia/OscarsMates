@@ -5,12 +5,12 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
-puts 'Creating User...'
+Rails.logger.debug 'Creating User...'
 User.destroy_all
 User.create(name: 'admin', email: 'admin@example.com', password: 'password', admin: true)
 User.create(name: 'user', email: 'user@example.com', password: 'password', admin: false)
 
-puts 'Creating Categories...'
+Rails.logger.debug 'Creating Categories...'
 Category.destroy_all
 categories = [
   { name: 'Best Picture' },
@@ -42,7 +42,7 @@ categories.each do |category|
   Category.create!(category)
 end
 
-puts 'Creating Genres...'
+Rails.logger.debug 'Creating Genres...'
 Genre.destroy_all
 genres = [
   { name: 'Action' },
@@ -62,7 +62,7 @@ genres.each do |genre|
   Genre.create!(genre)
 end
 
-puts 'Creating Movies...'
+Rails.logger.debug 'Creating Movies...'
 Movie.destroy_all
 movies = [
   {

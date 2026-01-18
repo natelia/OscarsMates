@@ -1,0 +1,81 @@
+inherit_from: .rubocop_todo.yml
+
+plugins:
+  - rubocop-rails
+  - rubocop-rspec
+  - rubocop-performance
+
+AllCops:
+  NewCops: enable
+  TargetRubyVersion: 3.3
+  SuggestExtensions: false
+  Exclude:
+    - 'db/schema.rb'
+    - 'db/migrate/*'
+    - 'bin/*'
+    - 'node_modules/**/*'
+    - 'vendor/**/*'
+    - 'tmp/**/*'
+    - 'log/**/*'
+    - 'storage/**/*'
+
+# Disable documentation requirement for classes
+Style/Documentation:
+  Enabled: false
+
+# Disable frozen string literal comment requirement
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+# Allow longer blocks in specs and routes
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*'
+    - 'config/routes.rb'
+    - 'config/environments/*.rb'
+
+# Set reasonable line length
+Layout/LineLength:
+  Max: 120
+  Exclude:
+    - 'config/initializers/*'
+
+# Allow multiple expectations in specs
+RSpec/MultipleExpectations:
+  Enabled: false
+
+# Allow longer examples
+RSpec/ExampleLength:
+  Max: 15
+
+# Allow nested groups in specs
+RSpec/NestedGroups:
+  Max: 4
+
+# Disable context wording requirement
+RSpec/ContextWording:
+  Enabled: false
+
+# Allow any method length in controllers
+Metrics/MethodLength:
+  Exclude:
+    - 'db/migrate/*'
+  Max: 20
+
+# Allow multiple memoized helpers
+RSpec/MultipleMemoizedHelpers:
+  Enabled: false
+
+# Rails-specific settings
+Rails/SkipsModelValidations:
+  Enabled: false
+
+Rails/OutputSafety:
+  Enabled: true
+
+# Performance cops
+Performance/DeletePrefix:
+  Enabled: true
+
+Performance/DeleteSuffix:
+  Enabled: true

@@ -65,9 +65,9 @@ RSpec.describe 'Users', type: :request do
     end
 
     it 'creates a new user' do
-      expect {
+      expect do
         post users_path, params: valid_params
-      }.to change(User, :count).by(1)
+      end.to change(User, :count).by(1)
     end
 
     it 'logs in the new user' do

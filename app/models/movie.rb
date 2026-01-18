@@ -17,7 +17,7 @@ class Movie < ApplicationRecord
   validates :url, presence: true
   validates :picture_url, presence: true
 
-  scope :for_year, ->(year) {
+  scope :for_year, lambda { |year|
     joins(:nominations).where(nominations: { year: year }).distinct
   }
 

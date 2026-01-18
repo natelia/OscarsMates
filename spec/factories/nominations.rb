@@ -2,7 +2,7 @@ FactoryBot.define do
   factory :nomination do
     association :movie
     association :category
-    name { "Best Performance" }
+    name { 'Best Performance' }
     year { 2025 }
 
     trait :year_2024 do
