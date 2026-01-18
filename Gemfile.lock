@@ -265,6 +265,8 @@ GEM
       rspec-mocks (~> 3.13)
       rspec-support (~> 3.13)
     rspec-support (3.13.6)
+    rspec_junit_formatter (0.6.0)
+      rspec-core (>= 2, < 4, != 2.12.0)
     rubocop (1.82.1)
       json (~> 2.3)
       language_server-protocol (~> 3.17.0.2)
@@ -371,6 +373,7 @@ DEPENDENCIES
   puma (>= 5.0)
   rails (~> 7.1.5)
   rspec-rails (~> 6.0)
+  rspec_junit_formatter
   rubocop
   rubocop-performance
   rubocop-rails
