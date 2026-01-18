@@ -74,9 +74,9 @@ class ListMoviesQuery
 
     # Only show movies the user has rated, sorted by their rating
     @results = @results
-      .joins(:reviews)
-      .where(reviews: { user_id: user.id })
-      .order('reviews.stars DESC, movies.title ASC')
+               .joins(:reviews)
+               .where(reviews: { user_id: user.id })
+               .order('reviews.stars DESC, movies.title ASC')
   end
 
   def sort_by_mates_watched
@@ -87,19 +87,19 @@ class ListMoviesQuery
 
     # Subquery to get average rating from mates for each movie
     mates_avg = Review
-      .where(user_id: mate_ids)
-      .group(:movie_id)
-      .select('movie_id, AVG(stars) as avg_rating')
+                .where(user_id: mate_ids)
+                .group(:movie_id)
+                .select('movie_id, AVG(stars) as avg_rating')
 
     @results = @results
-      .joins("LEFT JOIN (#{mates_avg.to_sql}) AS mates_reviews ON movies.id = mates_reviews.movie_id")
-      .order(Arel.sql('mates_reviews.avg_rating DESC NULLS LAST, movies.title ASC'))
+               .joins("LEFT JOIN (#{mates_avg.to_sql}) AS mates_reviews ON movies.id = mates_reviews.movie_id")
+               .order(Arel.sql('mates_reviews.avg_rating DESC NULLS LAST, movies.title ASC'))
   end
 
   def sort_by_nominations
     @results = @results
-      .joins(:categories)
-      .group('movies.id')
-      .order('COUNT(categories.id) DESC')
+               .joins(:categories)
+               .group('movies.id')
+               .order('COUNT(categories.id) DESC')
   end
 end

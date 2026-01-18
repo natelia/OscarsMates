@@ -16,17 +16,20 @@ module UsersHelper
 
   def avatar_color(name)
     return AVATAR_COLORS.first if name.blank?
+
     index = name.bytes.sum % AVATAR_COLORS.length
     AVATAR_COLORS[index]
   end
 
   def avatar_initials(name)
     return '?' if name.blank?
+
     name.split.map(&:first).first(2).join.upcase
   end
 
   def user_progress_for_year(user, year, total_movies)
     return 0 if total_movies.zero?
+
     watched = user.watched_movies_count_for_year(year)
     ((watched.to_f / total_movies) * 100).round(1)
   end

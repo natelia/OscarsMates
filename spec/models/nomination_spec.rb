@@ -48,7 +48,7 @@ RSpec.describe Nomination, type: :model do
     end
 
     it 'returns distinct years in descending order' do
-      result = Nomination.available_years
+      result = described_class.available_years
 
       expect(result).to eq([2025, 2024, 2023])
     end

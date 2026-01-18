@@ -48,26 +48,26 @@ class UserStatsService
       cumulative_sum += minutes
     end
   end
-  
+
   def process_mates_minutes_watched(stats)
     return [] if stats.blank?
 
     all_dates = stats.flat_map { |mate| mate[:daily_minutes_watched].keys }.uniq
-    
-    if all_dates.empty?
-      date_range = (all_dates.min..all_dates.max)
-    else
-      date_range = (all_dates.min..all_dates.max).to_a
-    end
+
+    date_range = if all_dates.empty?
+                   (all_dates.min..all_dates.max)
+                 else
+                   (all_dates.min..all_dates.max).to_a
+                 end
 
     stats.flat_map do |mate|
       next [] if mate[:daily_minutes_watched].empty?
-      
+
       previous_value = 0
       date_range.map do |date|
         current_value = mate[:daily_minutes_watched][date] || previous_value
         previous_value = current_value
-        { 
+        {
           name: mate[:name],
           date: date,
           minutes_watched: current_value

@@ -7,7 +7,9 @@ module CategoriesHelper
     return 'bi-pencil-fill' if name_lower.include?('screenplay') || name_lower.include?('writing')
     return 'bi-camera-reels-fill' if name_lower.include?('cinematography')
     return 'bi-scissors' if name_lower.include?('editing')
-    return 'bi-music-note-beamed' if name_lower.include?('music') || name_lower.include?('score') || name_lower.include?('song')
+    if name_lower.include?('music') || name_lower.include?('score') || name_lower.include?('song')
+      return 'bi-music-note-beamed'
+    end
     return 'bi-volume-up-fill' if name_lower.include?('sound')
     return 'bi-brush-fill' if name_lower.include?('design') || name_lower.include?('art')
     return 'bi-stars' if name_lower.include?('visual') || name_lower.include?('effects')

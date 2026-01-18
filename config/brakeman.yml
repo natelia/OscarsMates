@@ -1,0 +1,11 @@
+---
+# Brakeman configuration
+# See: https://brakemanscanner.org/docs/options/
+
+# Skip checks
+:skip_checks:
+  - CheckEOLRails
+
+# Ignore files
+:skip_files:
+  - lib/tasks/

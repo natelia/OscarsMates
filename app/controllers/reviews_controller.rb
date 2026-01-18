@@ -21,7 +21,7 @@ class ReviewsController < ApplicationController
       redirect_to movies_path(year: current_year),
                   notice: 'Thanks for your review!'
     else
-      render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_content
     end
   end
 

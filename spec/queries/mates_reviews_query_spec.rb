@@ -50,7 +50,7 @@ RSpec.describe MatesReviewsQuery do
 
     context 'with limit parameter' do
       let!(:reviews) do
-        6.times.map do |i|
+        Array.new(6) do |i|
           movie = create(:movie, title: "Movie #{i + 10}")
           create(:nomination, movie: movie, category: category, year: 2025)
           create(:review, user: mate1, movie: movie, created_at: i.days.ago)

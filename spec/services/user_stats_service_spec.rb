@@ -10,8 +10,8 @@ RSpec.describe UserStatsService do
 
   describe '#user_stats' do
     context 'when user has watched movies' do
-      let!(:review1) { create(:review, user: user, movie: movie1, watched_on: Date.today) }
-      let!(:review2) { create(:review, user: user, movie: movie2, watched_on: Date.today) }
+      let!(:review1) { create(:review, user: user, movie: movie1, watched_on: Time.zone.today) }
+      let!(:review2) { create(:review, user: user, movie: movie2, watched_on: Time.zone.today) }
 
       it 'returns total movies watched and total minutes watched' do
         service = described_class.new(user, 2025)
@@ -38,15 +38,15 @@ RSpec.describe UserStatsService do
   describe '#mates_stats' do
     let(:mate) { create(:user, name: 'Mate') }
     let!(:follow) { create(:follow, follower: user, followed: mate) }
-    let!(:mate_review) { create(:review, user: mate, movie: movie1, watched_on: Date.today) }
-    let!(:user_review) { create(:review, user: user, movie: movie2, watched_on: Date.today) }
+    let!(:mate_review) { create(:review, user: mate, movie: movie1, watched_on: Time.zone.today) }
+    let!(:user_review) { create(:review, user: user, movie: movie2, watched_on: Time.zone.today) }
 
     it 'returns stats for user and their mates' do
       service = described_class.new(user, 2025)
 
       result = service.mates_stats
 
-      names = result.map { |r| r[:name] }.uniq
+      names = result.pluck(:name).uniq
       expect(names).to include(user.name, mate.name)
     end
 

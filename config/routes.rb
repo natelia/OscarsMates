@@ -1,8 +1,8 @@
-require "sidekiq/web" # require the web UI
+require 'sidekiq/web' # require the web UI
 
 Rails.application.routes.draw do
   # Health check endpoint for Docker
-  get "up" => "rails/health#show", as: :rails_health_check
+  get 'up' => 'rails/health#show', as: :rails_health_check
 
   # Root redirects to movies (will auto-select latest year)
   root 'movies#index'
@@ -10,8 +10,8 @@ Rails.application.routes.draw do
   # Year-scoped resources (content that varies by year)
   scope '/:year', constraints: { year: /\d{4}/ } do
     resources :movies do
-      resources :reviews, only: [:index, :new, :create, :destroy]
-      resources :favorites, only: [:create, :destroy]
+      resources :reviews, only: %i[index new create destroy]
+      resources :favorites, only: %i[create destroy]
     end
 
     resources :categories
@@ -30,7 +30,7 @@ Rails.application.routes.draw do
 
   resources :nominations
   resources :genres
-  mount Sidekiq::Web => "/sidekiq"
+  mount Sidekiq::Web => '/sidekiq'
 
   get 'signup' => 'users#new'
   get '/session', to: 'sessions#new', as: :new_session

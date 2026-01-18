@@ -15,7 +15,7 @@ RSpec.describe 'Reviews', type: :request do
       {
         review: {
           stars: 8,
-          watched_on: Date.today
+          watched_on: Time.zone.today
         }
       }
     end
@@ -32,9 +32,9 @@ RSpec.describe 'Reviews', type: :request do
       before { sign_in(user) }
 
       it 'creates a new review' do
-        expect {
+        expect do
           post "/2025/movies/#{movie.slug}/reviews", params: valid_params
-        }.to change(Review, :count).by(1)
+        end.to change(Review, :count).by(1)
       end
 
       it 'redirects to the movie' do
@@ -52,9 +52,9 @@ RSpec.describe 'Reviews', type: :request do
       before { sign_in(user) }
 
       it 'deletes the review' do
-        expect {
+        expect do
           delete "/2025/movies/#{movie.slug}/reviews/#{review.id}"
-        }.to change(Review, :count).by(-1)
+        end.to change(Review, :count).by(-1)
       end
     end
   end

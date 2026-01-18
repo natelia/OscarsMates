@@ -3,7 +3,7 @@ class Category < ApplicationRecord
   has_many :movies, through: :nominations
   validates :name, presence: true
 
-  scope :for_year, ->(year) {
+  scope :for_year, lambda { |year|
     joins(:nominations).where(nominations: { year: year }).distinct
   }
 end

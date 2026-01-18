@@ -12,13 +12,13 @@ class MovieSortingService
     when 'watched_by_mates'
       mate_ids = @user.following.pluck(:id)
       @movies.joins(:reviews)
-            .where(reviews: { user_id: mate_ids })
-            .group('movies.id')
-            .order('COUNT(reviews.id) DESC')
+             .where(reviews: { user_id: mate_ids })
+             .group('movies.id')
+             .order('COUNT(reviews.id) DESC')
     when 'most_nominated'
       @movies.joins(:categories)
-            .group('movies.id')
-            .order('COUNT(categories.id) DESC')
+             .group('movies.id')
+             .order('COUNT(categories.id) DESC')
     else
       @movies.order(:title)
     end

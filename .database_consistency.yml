@@ -1,0 +1,32 @@
+# Database Consistency Configuration
+# See: https://github.com/djezzzl/database_consistency
+
+# Enable all checkers by default
+enabled: true
+
+# Database-specific settings
+DatabaseConsistency:
+  # Log level: debug, info, warn, error
+  log_level: warn
+
+# Checker configurations
+ColumnPresenceChecker:
+  enabled: true
+
+MissingIndexChecker:
+  enabled: true
+
+MissingUniqueIndexChecker:
+  enabled: true
+
+ForeignKeyChecker:
+  enabled: true
+
+RedundantIndexChecker:
+  enabled: true
+
+ThreeStateBooleanChecker:
+  enabled: true
+
+NullConstraintChecker:
+  enabled: true

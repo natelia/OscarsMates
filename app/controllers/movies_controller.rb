@@ -15,11 +15,13 @@ class MoviesController < ApplicationController
       calculate_progress
     end
 
-    if current_user
-      @all_movies_watched = current_user.watched_movies_count_for_year(current_year) == Movie.for_year(current_year).count
-    else
-      @all_movies_watched = false
-    end
+    @all_movies_watched = if current_user
+                            watched = current_user.watched_movies_count_for_year(current_year)
+                            total = Movie.for_year(current_year).count
+                            watched == total
+                          else
+                            false
+                          end
   end
 
   def show
@@ -33,22 +35,22 @@ class MoviesController < ApplicationController
     @movie = Movie.new
   end
 
+  def edit; end
+
   def create
     @movie = Movie.new(movie_params)
     if @movie.save
       redirect_to movie_path(@movie, year: current_year), notice: 'Movie successfully created!'
     else
-      render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_content
     end
   end
-
-  def edit; end
 
   def update
     if @movie.update(movie_params)
       redirect_to movie_path(@movie, year: current_year), notice: 'Movie successfully updated!'
     else
-      render :edit, status: :unprocessable_entity
+      render :edit, status: :unprocessable_content
     end
   end
 
@@ -69,13 +71,13 @@ class MoviesController < ApplicationController
     @movies = MovieSortingService.new(@movies, params[:sort_by], current_user).call
   end
 
-
   def set_movie
     @movie = Movie.for_year(current_year).find_by!(slug: params[:id])
   end
 
   def movie_params
-    params.require(:movie).permit(:title, :english_title, :where_to_watch, :runtime, :rating, :url, :picture_url, genre_ids: [], category_ids: [])
+    params.require(:movie).permit(:title, :english_title, :where_to_watch, :runtime, :rating, :url, :picture_url,
+                                  genre_ids: [], category_ids: [])
   end
 
   def filter_movies

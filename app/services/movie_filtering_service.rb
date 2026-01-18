@@ -1,5 +1,4 @@
 class MovieFilteringService
-
   def initialize(movies, user)
     @movies = movies
     @user = user

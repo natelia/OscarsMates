@@ -36,7 +36,7 @@ RSpec.describe Category, type: :model do
 
     describe '.for_year' do
       it 'returns categories with nominations in the given year' do
-        result = Category.for_year(2025)
+        result = described_class.for_year(2025)
 
         expect(result).to include(category1)
         expect(result).not_to include(category2)

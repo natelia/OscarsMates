@@ -1,7 +1,7 @@
 class CategoriesController < ApplicationController
   before_action :require_year
-  before_action :require_admin, only: [:new, :create, :edit, :update, :destroy]
-  before_action :set_category, only: [:show, :edit, :update, :destroy]
+  before_action :require_admin, only: %i[new create edit update destroy]
+  before_action :set_category, only: %i[show edit update destroy]
 
   def index
     @categories = ListCategoryQuery.new(params, current_year).results
@@ -13,18 +13,20 @@ class CategoriesController < ApplicationController
     @user_reviews = current_user ? current_user.reviews.index_by(&:movie_id) : {}
 
     # Handle unwatched action
-    if params[:unwatched] && current_user
-      movie = Movie.find(params[:unwatched])
-      review = current_user.reviews.find_by(movie_id: movie.id)
-      review&.update(watched: false)
-      redirect_to category_path(@category, year: current_year), notice: "#{movie.title} marked as unwatched"
-      return
-    end
+    return unless params[:unwatched] && current_user
+
+    movie = Movie.find(params[:unwatched])
+    review = current_user.reviews.find_by(movie_id: movie.id)
+    review&.update(watched: false)
+    redirect_to category_path(@category, year: current_year), notice: "#{movie.title} marked as unwatched"
+    nil
   end
 
   def new
     @category = Category.new
   end
+
+  def edit; end
 
   def create
     @category = Category.new(category_params)
@@ -34,8 +36,6 @@ class CategoriesController < ApplicationController
       render :new
     end
   end
-
-  def edit; end
 
   def update
     if @category.update(category_params)
