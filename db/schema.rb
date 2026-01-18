@@ -10,9 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_12_19_202853) do
+ActiveRecord::Schema[7.1].define(version: 2026_01_18_154529) do
   create_table "categories", force: :cascade do |t|
-    t.string "name"
+    t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -36,30 +36,33 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_19_202853) do
   end
 
   create_table "follows", force: :cascade do |t|
-    t.integer "follower_id"
-    t.integer "followed_id"
+    t.integer "follower_id", null: false
+    t.integer "followed_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["followed_id"], name: "index_follows_on_followed_id"
     t.index ["follower_id", "followed_id"], name: "index_follows_on_follower_id_and_followed_id", unique: true
   end
 
   create_table "genres", force: :cascade do |t|
-    t.string "name"
+    t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_genres_on_name", unique: true
   end
 
   create_table "movies", force: :cascade do |t|
-    t.string "title"
-    t.string "english_title"
-    t.string "where_to_watch"
-    t.integer "runtime"
-    t.float "rating"
-    t.string "url"
-    t.string "picture_url"
+    t.string "title", null: false
+    t.string "english_title", null: false
+    t.string "where_to_watch", null: false
+    t.integer "runtime", null: false
+    t.float "rating", null: false
+    t.string "url", null: false
+    t.string "picture_url", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "slug"
+    t.index ["title"], name: "index_movies_on_title", unique: true
   end
 
   create_table "nominations", force: :cascade do |t|
@@ -73,7 +76,6 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_19_202853) do
     t.index ["movie_id"], name: "index_nominations_on_movie_id"
     t.index ["year", "category_id"], name: "index_nominations_on_year_and_category_id"
     t.index ["year", "movie_id"], name: "index_nominations_on_year_and_movie_id"
-    t.index ["year"], name: "index_nominations_on_year"
   end
 
   create_table "reviews", force: :cascade do |t|
@@ -82,26 +84,31 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_19_202853) do
     t.integer "movie_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "user_id"
+    t.integer "user_id", null: false
     t.date "watched_on", null: false
     t.index ["movie_id"], name: "index_reviews_on_movie_id"
+    t.index ["user_id"], name: "index_reviews_on_user_id"
     t.index ["watched_on"], name: "index_reviews_on_watched_on"
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "name"
-    t.string "email"
+    t.string "name", null: false
+    t.string "email", null: false
     t.string "password_digest"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "admin", default: false
+    t.boolean "admin", default: false, null: false
+    t.index "LOWER(email)", name: "index_users_on_lower_email", unique: true
   end
 
   add_foreign_key "characterizations", "genres"
   add_foreign_key "characterizations", "movies"
   add_foreign_key "favorites", "movies"
   add_foreign_key "favorites", "users"
+  add_foreign_key "follows", "users", column: "followed_id"
+  add_foreign_key "follows", "users", column: "follower_id"
   add_foreign_key "nominations", "categories"
   add_foreign_key "nominations", "movies"
   add_foreign_key "reviews", "movies"
+  add_foreign_key "reviews", "users"
 end
