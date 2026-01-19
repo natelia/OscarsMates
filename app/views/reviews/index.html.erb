@@ -1,27 +1,27 @@
-<section class="reviews py-5">
-  <div class="container">
-    <h3 class="text-center mt-4 mb-4">
-      Reviews for <%= link_to @movie.title, @movie, class: "movie-title" %>
+<section class="reviews py-10">
+  <div class="container mx-auto px-4">
+    <h3 class="text-center text-xl font-semibold text-slate-900">
+      Reviews for <%= link_to @movie.title, @movie, class: "text-slate-600 hover:text-slate-800" %>
     </h3>
 
-    <div class="btn-container text-center mb-4">
-      <%= link_to "Home Page", root_path, class: "btn btn-outline-dark me-2" %>
-      <%= link_to "Movie Details", @movie, class: "btn btn-outline-dark" %>
+    <div class="mt-4 flex flex-wrap justify-center gap-2">
+      <%= link_to "Home Page", root_path, class: "inline-flex items-center rounded-md border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100" %>
+      <%= link_to "Movie Details", @movie, class: "inline-flex items-center rounded-md border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100" %>
     </div>
 
-    <ul class="list-group">
+    <ul class="mx-auto mt-6 max-w-3xl space-y-3">
       <% @reviews.reverse_each do |review| %>
-        <li class="list-group-item">
-          <div class="review text-center">
+        <li class="rounded-lg border border-slate-200 bg-white px-4 py-3 text-center">
+          <div class="review">
             <div class="stars">
               <%= render_stars(review.stars) %>
             </div>
             <div class="info">
-              <p class="mb-1">
-                <%= link_to review.user.name, review.user, class: "text-decoration-none text-dark" %><br>
-                <small class="text-muted"><%= time_ago_in_words(review.created_at) %> ago</small>
+              <p class="mt-2 text-sm">
+                <%= link_to review.user.name, review.user, class: "font-semibold text-slate-900 hover:text-slate-700" %><br>
+                <small class="text-slate-500"><%= time_ago_in_words(review.created_at) %> ago</small>
               </p>
-              <p class="comment mb-0">
+              <p class="comment mt-2 text-sm text-slate-600">
                 <%= review.comment %>
               </p>
             </div>
@@ -31,14 +31,3 @@
     </ul>
   </div>
 </section>
-
-<style>
-  .movie-title {
-    color: #6c757d;
-    text-decoration: none;
-  }
-
-  .movie-title:hover {
-    color: #5a6268;
-  }
-</style>

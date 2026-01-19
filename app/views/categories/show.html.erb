@@ -1,5 +1,5 @@
 <main class="categories-page">
-  <div class="container py-5">
+  <div class="container mx-auto px-4 py-8">
     <div class="page-header mb-4">
       <h1 class="page-title"><%= @category.name %></h1>
       <p class="text-secondary"><%= pluralize(@movies.count, 'movie') %> in this category</p>
@@ -23,13 +23,13 @@
       </div>
     <% end %>
 
-    <div class="d-flex gap-2 mt-4">
-      <%= link_to categories_path(year: current_year), class: 'btn btn-outline-oscar' do %>
-        <i class="bi bi-arrow-left me-1"></i> Back to Categories
+    <div class="mt-4 flex flex-wrap gap-2">
+      <%= link_to categories_path(year: current_year), class: 'btn-outline-oscar' do %>
+        <i class="bi bi-arrow-left mr-1"></i> Back to Categories
       <% end %>
       <% if current_user_admin? %>
-        <%= link_to edit_category_path(@category, year: current_year), class: 'btn btn-outline-oscar' do %>
-          <i class="bi bi-pencil me-1"></i> Edit Category
+        <%= link_to edit_category_path(@category, year: current_year), class: 'btn-outline-oscar' do %>
+          <i class="bi bi-pencil mr-1"></i> Edit Category
         <% end %>
       <% end %>
     </div>

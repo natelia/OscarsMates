@@ -1,25 +1,26 @@
 <header class="site-header">
-  <div class="container">
+  <div class="container mx-auto px-4">
     <div class="header-inner">
       <%= link_to root_path, class: "logo" do %>
         <i class="bi bi-trophy-fill"></i>
         <span>OscarsMates</span>
       <% end %>
 
-      <button class="menu-toggle d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+      <button class="menu-toggle lg:hidden" type="button" data-hs-collapse="#mainNav" aria-controls="mainNav" aria-label="Toggle navigation">
         <i class="bi bi-list"></i>
       </button>
 
-      <nav class="main-nav collapse d-lg-flex" id="mainNav">
+      <nav class="main-nav hs-collapse hidden lg:flex" id="mainNav">
         <% selected_year = current_year || default_year %>
 
         <ul class="nav-links">
           <% if available_years.any? %>
-            <li class="dropdown">
-              <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                <%= selected_year %> Oscars
-              </a>
-              <ul class="dropdown-menu">
+            <li class="hs-dropdown relative">
+              <button type="button" class="nav-link hs-dropdown-toggle flex items-center gap-2">
+                <span><%= selected_year %> Oscars</span>
+                <i class="bi bi-chevron-down text-xs opacity-60"></i>
+              </button>
+              <ul class="dropdown-menu hs-dropdown-menu transition-[opacity,margin] duration-200 opacity-0 hs-dropdown-open:opacity-100 hidden mt-2 w-48">
                 <% available_years.each do |year| %>
                   <li><%= link_to year, movies_path(year: year), class: "dropdown-item #{'active' if year == selected_year}" %></li>
                 <% end %>
@@ -33,12 +34,13 @@
 
         <div class="header-actions">
           <% if current_user %>
-            <div class="dropdown">
-              <a href="#" class="user-menu dropdown-toggle" data-bs-toggle="dropdown">
+            <div class="hs-dropdown relative">
+              <button type="button" class="user-menu hs-dropdown-toggle">
                 <span class="avatar"><%= current_user.name[0].upcase %></span>
-                <span class="d-none d-md-inline"><%= current_user.name %></span>
-              </a>
-              <ul class="dropdown-menu dropdown-menu-end">
+                <span class="hidden md:inline"><%= current_user.name %></span>
+                <i class="bi bi-chevron-down text-xs opacity-60"></i>
+              </button>
+              <ul class="dropdown-menu hs-dropdown-menu transition-[opacity,margin] duration-200 opacity-0 hs-dropdown-open:opacity-100 hidden mt-2 w-48 right-0">
                 <li><%= link_to "Profile", user_path(current_user), class: "dropdown-item" %></li>
                 <li><%= link_to "Settings", edit_user_path(current_user), class: "dropdown-item" %></li>
                 <li><hr class="dropdown-divider"></li>

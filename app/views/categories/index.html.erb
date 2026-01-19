@@ -1,12 +1,12 @@
 <main class="categories-page">
-  <div class="container py-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
+  <div class="container mx-auto px-4 py-8">
+    <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between mb-4">
       <div>
         <h1 class="page-title mb-0">Categories</h1>
         <p class="text-secondary mb-0"><%= current_year %> Academy Awards</p>
       </div>
 
-      <div class="d-flex align-items-center gap-3">
+      <div class="flex flex-wrap items-center gap-3">
         <form class="search-form" role="search" action="<%= categories_path(year: current_year) %>" method="get">
           <i class="bi bi-search search-icon"></i>
           <input class="search-input"
@@ -18,7 +18,7 @@
         </form>
 
         <% if current_user_admin? %>
-          <%= link_to new_category_path(year: current_year), class: "btn btn-oscar btn-sm" do %>
+          <%= link_to new_category_path(year: current_year), class: "btn-oscar btn-sm" do %>
             <i class="bi bi-plus"></i>
           <% end %>
         <% end %>
@@ -50,7 +50,7 @@
           <% end %>
         </p>
         <% if params[:query].present? %>
-          <%= link_to "Clear", categories_path(year: current_year), class: "btn btn-oscar btn-sm" %>
+          <%= link_to "Clear", categories_path(year: current_year), class: "btn-oscar btn-sm" %>
         <% end %>
       </div>
     <% end %>

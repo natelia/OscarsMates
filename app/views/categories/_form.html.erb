@@ -1,28 +1,24 @@
-<div class="container mt-5">
-  <div class="row justify-content-center">
-    <div class="col-md-6 text-center">
-      <%= form_with(model: @category, local: true) do |form| %>
-        <% if @category.errors.any? %>
-          <div id="error_explanation" class="alert alert-danger">
-            <h4 class="alert-heading"><%= pluralize(@category.errors.count, "error") %> prohibited this category from being saved:</h4>
-            <ul>
-              <% @category.errors.full_messages.each do |message| %>
-                <li><%= message %></li>
-              <% end %>
-            </ul>
-          </div>
-        <% end %>
+<div class="mx-auto max-w-xl">
+  <%= form_with(model: @category, local: true, class: "space-y-6") do |form| %>
+    <% if @category.errors.any? %>
+      <div id="error_explanation" class="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+        <h4 class="font-semibold"><%= pluralize(@category.errors.count, "error") %> prohibited this category from being saved:</h4>
+        <ul class="mt-2 list-disc space-y-1 pl-5">
+          <% @category.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
 
-        <div class="mb-3 text-center">
-          <%= form.label :name, class: 'form-label' %>
-          <%= form.text_field :name, class: 'form-control w-75 mx-auto', placeholder: 'Enter category name' %>
-        </div>
-
-        <div class="d-flex justify-content-between">
-          <%= link_to 'Back', categories_path, class: 'btn btn-secondary' %>
-          <%= form.submit 'Save Category', class: 'btn btn-primary' %>
-        </div>
-      <% end %>
+    <div class="text-center">
+      <%= form.label :name, class: 'text-sm font-semibold text-slate-700' %>
+      <%= form.text_field :name, class: 'mt-2 w-full rounded-md border-slate-200 bg-white px-3 py-2 text-sm shadow-sm focus:border-slate-400 focus:ring-slate-300', placeholder: 'Enter category name' %>
     </div>
-  </div>
+
+    <div class="flex items-center justify-between">
+      <%= link_to 'Back', categories_path, class: 'inline-flex items-center rounded-md border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100' %>
+      <%= form.submit 'Save Category', class: 'inline-flex items-center rounded-md bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800' %>
+    </div>
+  <% end %>
 </div>

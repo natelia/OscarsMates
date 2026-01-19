@@ -1,9 +1,9 @@
 <main class="mates-page">
-  <div class="container py-4">
+  <div class="container mx-auto px-4 py-6">
     <%# Header %>
     <header class="text-center mb-4">
       <h1 class="page-title mb-2">
-        <i class="bi bi-people-fill me-2"></i>
+        <i class="bi bi-people-fill mr-2"></i>
         Oscar Mates
       </h1>
       <p class="text-muted">
@@ -13,19 +13,19 @@
 
     <%# Filter Toggle %>
     <div class="text-center mb-4">
-      <div class="btn-group" role="group" aria-label="Filter users">
+      <div class="inline-flex flex-wrap items-center gap-2" role="group" aria-label="Filter users">
         <% if params[:filter] == 'followed' %>
-          <%= link_to users_path, class: "btn btn-outline-oscar" do %>
+          <%= link_to users_path, class: "btn-outline-oscar" do %>
             <i class="bi bi-people"></i> All Mates
           <% end %>
-          <span class="btn btn-oscar">
+          <span class="btn-oscar">
             <i class="bi bi-heart-fill"></i> Following
           </span>
         <% else %>
-          <span class="btn btn-oscar">
+          <span class="btn-oscar">
             <i class="bi bi-people"></i> All Mates
           </span>
-          <%= link_to users_path(filter: 'followed'), class: "btn btn-outline-oscar" do %>
+          <%= link_to users_path(filter: 'followed'), class: "btn-outline-oscar" do %>
             <i class="bi bi-heart"></i> Following
           <% end %>
         <% end %>
@@ -47,7 +47,7 @@
       <% if users_to_show.any? %>
         <% unless params[:filter] == 'followed' %>
           <h4 class="mb-4 text-center text-muted">
-            <i class="bi bi-grid me-2"></i>
+            <i class="bi bi-grid mr-2"></i>
             All Mates
           </h4>
         <% end %>
@@ -81,8 +81,8 @@
           <% end %>
         </p>
         <% if params[:filter] == 'followed' %>
-          <%= link_to users_path, class: "btn btn-oscar" do %>
-            <i class="bi bi-people me-1"></i> Browse All Mates
+          <%= link_to users_path, class: "btn-oscar" do %>
+            <i class="bi bi-people mr-1"></i> Browse All Mates
           <% end %>
         <% end %>
       </div>
