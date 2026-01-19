@@ -1,0 +1,63 @@
+version: 2
+updates:
+  # Ruby dependencies
+  - package-ecosystem: "bundler"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "ruby"
+    groups:
+      rails:
+        patterns:
+          - "rails*"
+          - "activerecord*"
+          - "activesupport*"
+          - "actionpack*"
+          - "actionview*"
+          - "activejob*"
+          - "actionmailer*"
+      development-tools:
+        patterns:
+          - "rubocop*"
+          - "rspec*"
+          - "factory_bot*"
+      hotwire:
+        patterns:
+          - "turbo-rails"
+          - "stimulus-rails"
+
+  # JavaScript dependencies
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "javascript"
+    groups:
+      hotwire:
+        patterns:
+          - "@hotwired/*"
+      bootstrap:
+        patterns:
+          - "bootstrap*"
+      linting:
+        patterns:
+          - "eslint*"
+          - "prettier*"
+
+  # GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    open-pull-requests-limit: 3
+    labels:
+      - "dependencies"
+      - "ci"
