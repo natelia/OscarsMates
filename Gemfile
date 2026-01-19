@@ -87,4 +87,4 @@ group :test do
   gem 'simplecov', require: false
 end
 
-gem 'sidekiq', '~> 7.3'
+gem 'sidekiq', '~> 8.1'
