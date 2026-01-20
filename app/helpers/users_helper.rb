@@ -27,10 +27,14 @@ module UsersHelper
     name.split.map(&:first).first(2).join.upcase
   end
 
-  def user_progress_for_year(user, year, total_movies)
+  def user_progress_for_year(user, year, total_movies, watched_counts: nil)
     return 0 if total_movies.zero?
 
-    watched = user.watched_movies_count_for_year(year)
+    watched = if watched_counts
+                watched_counts[user.id] || 0
+              else
+                user.watched_movies_count_for_year(year)
+              end
     ((watched.to_f / total_movies) * 100).round(1)
   end
 

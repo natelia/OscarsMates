@@ -8,9 +8,6 @@ class UserMovieProgress
     return {} unless @user
 
     reviews = @user.reviews.where(movie: @movies)
-    review_pairs = reviews.map do |review|
-      [review.movie.id, review]
-    end
-    review_pairs.to_h
+    reviews.index_by(&:movie_id)
   end
 end

@@ -1,8 +1,9 @@
 <%# Mate Card Partial %>
-<%# Local variables: user, total_movies, year, current_user, rank (optional) %>
+<%# Local variables: user, total_movies, year, current_user, rank (optional), watched_counts (optional) %>
 <% rank ||= nil %>
-<% progress = user_progress_for_year(user, year, total_movies) %>
-<% watched_count = user.watched_movies_count_for_year(year) %>
+<% watched_counts ||= nil %>
+<% progress = user_progress_for_year(user, year, total_movies, watched_counts: watched_counts) %>
+<% watched_count = watched_counts ? (watched_counts[user.id] || 0) : user.watched_movies_count_for_year(year) %>
 <% last_movie = last_watched_movie(user, year) %>
 
 <div class="mate-card card-lift">

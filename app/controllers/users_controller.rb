@@ -13,8 +13,15 @@ class UsersController < ApplicationController
 
     @users = UserFilterService.new(current_user, params[:filter]).call
 
-    # Calculate top watchers for podium display
-    @top_watchers = @users.sort_by { |u| -u.watched_movies_count_for_year(@year) }.first(3)
+    # Precompute watched counts for all users to avoid N+1 queries
+    @watched_counts = Review.joins(movie: :nominations)
+                            .where(nominations: { year: @year })
+                            .group(:user_id)
+                            .distinct
+                            .count(:movie_id)
+
+    # Calculate top watchers for podium display using precomputed counts
+    @top_watchers = @users.sort_by { |u| -(@watched_counts[u.id] || 0) }.first(3)
 
     # Exclude top watchers from main list to avoid duplication
     @remaining_users = @users - @top_watchers

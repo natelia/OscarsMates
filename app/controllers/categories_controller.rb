@@ -5,6 +5,10 @@ class CategoriesController < ApplicationController
 
   def index
     @categories = ListCategoryQuery.new(params, current_year).results
+    # Precompute movie counts to avoid N+1 queries in the view
+    @movie_counts = Nomination.where(year: current_year)
+                              .group(:category_id)
+                              .count
   end
 
   def show

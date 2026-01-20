@@ -38,7 +38,7 @@ RSpec.describe Review, type: :model do
       duplicate_review = build(:review, user: user, movie: movie)
 
       expect(duplicate_review).not_to be_valid
-      expect(duplicate_review.errors[:base]).to include('You have already reviewed this movie')
+      expect(duplicate_review.errors[:user_id]).to include('has already reviewed this movie')
     end
   end
 

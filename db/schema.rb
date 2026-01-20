@@ -10,11 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_01_18_154529) do
+ActiveRecord::Schema[7.1].define(version: 2026_01_19_074640) do
   create_table "categories", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_categories_on_name", unique: true
   end
 
   create_table "characterizations", force: :cascade do |t|
@@ -23,6 +24,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_01_18_154529) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["genre_id"], name: "index_characterizations_on_genre_id"
+    t.index ["movie_id", "genre_id"], name: "index_characterizations_on_movie_id_and_genre_id", unique: true
     t.index ["movie_id"], name: "index_characterizations_on_movie_id"
   end
 
@@ -32,6 +34,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_01_18_154529) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["movie_id"], name: "index_favorites_on_movie_id"
+    t.index ["user_id", "movie_id"], name: "index_favorites_on_user_id_and_movie_id", unique: true
     t.index ["user_id"], name: "index_favorites_on_user_id"
   end
 
@@ -62,6 +65,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_01_18_154529) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "slug"
+    t.index ["slug"], name: "index_movies_on_slug", unique: true
     t.index ["title"], name: "index_movies_on_title", unique: true
   end
 
@@ -73,6 +77,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_01_18_154529) do
     t.datetime "updated_at", null: false
     t.integer "year", default: 2025, null: false
     t.index ["category_id"], name: "index_nominations_on_category_id"
+    t.index ["movie_id", "category_id", "year"], name: "index_nominations_on_movie_category_year", unique: true
     t.index ["movie_id"], name: "index_nominations_on_movie_id"
     t.index ["year", "category_id"], name: "index_nominations_on_year_and_category_id"
     t.index ["year", "movie_id"], name: "index_nominations_on_year_and_movie_id"
@@ -87,6 +92,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_01_18_154529) do
     t.integer "user_id", null: false
     t.date "watched_on", null: false
     t.index ["movie_id"], name: "index_reviews_on_movie_id"
+    t.index ["user_id", "movie_id"], name: "index_reviews_on_user_id_and_movie_id", unique: true
     t.index ["user_id"], name: "index_reviews_on_user_id"
     t.index ["watched_on"], name: "index_reviews_on_watched_on"
   end

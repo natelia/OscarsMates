@@ -38,7 +38,8 @@
         <%= render 'top_watchers',
             top_watchers: @top_watchers,
             total_movies: @total_movies_count,
-            year: @year %>
+            year: @year,
+            watched_counts: @watched_counts %>
       <% end %>
 
       <%# All Mates Section %>
@@ -60,7 +61,8 @@
                   total_movies: @total_movies_count,
                   year: @year,
                   current_user: current_user,
-                  rank: params[:filter] == 'followed' ? nil : (index + 4) %>
+                  rank: params[:filter] == 'followed' ? nil : (index + 4),
+                  watched_counts: @watched_counts %>
             </div>
           <% end %>
         </div>

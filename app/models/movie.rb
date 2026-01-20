@@ -1,6 +1,7 @@
 # Represents a movie in the application
 class Movie < ApplicationRecord
-  before_save :set_slug
+  before_validation :set_slug
+
   has_many :reviews, dependent: :destroy
   has_many :favorites, dependent: :destroy
   has_many :fans, through: :favorites, source: :user
@@ -16,6 +17,7 @@ class Movie < ApplicationRecord
   validates :rating, presence: true, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 10 }
   validates :url, presence: true
   validates :picture_url, presence: true
+  validates :slug, presence: true, uniqueness: true
 
   scope :for_year, lambda { |year|
     joins(:nominations).where(nominations: { year: year }).distinct
@@ -26,7 +28,13 @@ class Movie < ApplicationRecord
   end
 
   def average_stars
-    reviews.average(:stars) || 0.0
+    if reviews.loaded?
+      return 0.0 if reviews.empty?
+
+      reviews.sum(&:stars).to_f / reviews.size
+    else
+      reviews.average(:stars) || 0.0
+    end
   end
 
   def to_param
@@ -36,6 +44,6 @@ class Movie < ApplicationRecord
   private
 
   def set_slug
-    self.slug = title.parameterize
+    self.slug = title&.parameterize
   end
 end

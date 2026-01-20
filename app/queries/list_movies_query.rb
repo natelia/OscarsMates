@@ -22,7 +22,7 @@ class ListMoviesQuery
   private
 
   def prepare_collection
-    @results = Movie.for_year(year)
+    @results = Movie.for_year(year).includes(:reviews)
   end
 
   def search_movies

@@ -28,11 +28,10 @@
     <% if @categories.any? %>
       <div class="category-cards-grid">
         <% @categories.each do |category| %>
-          <% movie_count = category.movies.for_year(current_year).count %>
           <%= link_to category_path(category, year: current_year), class: "category-card-mini" do %>
             <i class="bi <%= category_icon(category.name) %> category-card-icon"></i>
             <span class="category-card-name"><%= category.name %></span>
-            <span class="category-card-count"><%= movie_count %></span>
+            <span class="category-card-count"><%= @movie_counts[category.id] || 0 %></span>
           <% end %>
         <% end %>
       </div>
