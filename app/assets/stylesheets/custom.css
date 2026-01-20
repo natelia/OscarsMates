@@ -1,31 +1,31 @@
-// OscarsMates Custom Styles
-// Theme: Clean & Minimal - Apple/Shopify inspired
+/* OscarsMates Custom Styles */
+/* Theme: Clean & Minimal - Apple/Shopify inspired */
 
-// ===================================
-// CSS Variables
-// ===================================
+/* =================================== */
+/* CSS Variables */
+/* =================================== */
 :root {
-  // Brand Colors
+  /* Brand Colors */
   --primary: #1a1a1a;
   --primary-hover: #333;
   --accent: #c9a227;
   --accent-light: #f5eddc;
   --accent-muted: #e8dfc7;
 
-  // Legacy support
+  /* Legacy support */
   --oscar-gold: #c9a227;
   --oscar-gold-light: #f5eddc;
   --oscar-gold-dark: #a68a1f;
   --coral-accent: #e74c3c;
   --coral-dark: #c0392b;
 
-  // Backgrounds
+  /* Backgrounds */
   --bg-primary: #fafafa;
   --bg-secondary: #ffffff;
   --cream-bg: #fafafa;
   --white: #ffffff;
 
-  // Text
+  /* Text */
   --text-primary: #1a1a1a;
   --text-secondary: #6b7280;
   --text-tertiary: #9ca3af;
@@ -33,16 +33,16 @@
   --charcoal-light: #6b7280;
   --text-muted: #9ca3af;
 
-  // Borders
+  /* Borders */
   --border-color: #e5e7eb;
   --border-color-light: #f3f4f6;
 
-  // Status Colors
+  /* Status Colors */
   --teal-success: #10b981;
   --warning: #f59e0b;
   --danger: #ef4444;
 
-  // Shadows - very subtle
+  /* Shadows - very subtle */
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
   --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.06);
   --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.04), 0 4px 6px rgba(0, 0, 0, 0.04);
@@ -50,12 +50,12 @@
   --card-shadow-hover: var(--shadow-lg);
   --card-shadow-lg: var(--shadow-lg);
 
-  // Transitions
+  /* Transitions */
   --transition-fast: 0.15s ease;
   --transition-smooth: 0.2s ease;
   --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 
-  // Borders
+  /* Borders */
   --radius-sm: 6px;
   --radius-md: 10px;
   --radius-lg: 14px;
@@ -65,7 +65,7 @@
   --border-radius-lg: 14px;
   --border-radius-xl: 20px;
 
-  // Spacing
+  /* Spacing */
   --spacing-xs: 0.25rem;
   --spacing-sm: 0.5rem;
   --spacing-md: 1rem;
@@ -75,9 +75,9 @@
   --spacing-3xl: 4rem;
 }
 
-// ===================================
-// Base Styles
-// ===================================
+/* =================================== */
+/* Base Styles */
+/* =================================== */
 body {
   background-color: var(--bg-primary);
   color: var(--text-primary);
@@ -87,9 +87,9 @@ body {
   line-height: 1.6;
 }
 
-// ===================================
-// Typography
-// ===================================
+/* =================================== */
+/* Typography */
+/* =================================== */
 h1, h2, h3, h4, h5, h6 {
   font-weight: 600;
   color: var(--text-primary);
@@ -119,7 +119,7 @@ a {
   }
 }
 
-// Text utilities
+/* Text utilities */
 .text-sm { font-size: 0.875rem; }
 .text-xs { font-size: 0.75rem; }
 .text-muted { color: var(--text-tertiary); }
@@ -127,9 +127,9 @@ a {
 .font-medium { font-weight: 500; }
 .font-semibold { font-weight: 600; }
 
-// ===================================
-// Card Styles - Minimal
-// ===================================
+/* =================================== */
+/* Card Styles - Minimal */
+/* =================================== */
 .card-oscar {
   background: var(--bg-secondary);
   border-radius: var(--radius-lg);
@@ -152,9 +152,9 @@ a {
   }
 }
 
-// ===================================
-// Movie Grid
-// ===================================
+/* =================================== */
+/* Movie Grid */
+/* =================================== */
 .movies-page {
   background-color: var(--cream-bg);
   min-height: 100vh;
@@ -183,9 +183,9 @@ a {
   }
 }
 
-// ===================================
-// Movie Card - Clean
-// ===================================
+/* =================================== */
+/* Movie Card - Clean */
+/* =================================== */
 .movie-card {
   position: relative;
   border-radius: var(--radius-lg);
@@ -278,7 +278,7 @@ a {
   transition: opacity 0.2s ease, transform 0.2s ease;
   text-align: center;
 
-  // Ensure buttons are clickable
+  /* Ensure buttons are clickable */
   a, button, form {
     pointer-events: auto;
     position: relative;
@@ -286,7 +286,7 @@ a {
   }
 }
 
-// Button styles for movie card overlay
+/* Button styles for movie card overlay */
 .movie-card-actions {
   .btn {
     font-size: 0.75rem;
@@ -346,9 +346,9 @@ a {
   z-index: 5;
 }
 
-// ===================================
-// Star Rating
-// ===================================
+/* =================================== */
+/* Star Rating */
+/* =================================== */
 .star-rating {
   display: inline-flex;
   gap: 4px;
@@ -378,7 +378,7 @@ a {
   }
 }
 
-// Rating display (read-only, for already rated movies)
+/* Rating display (read-only, for already rated movies) */
 .your-rating-display {
   text-align: center;
 
@@ -407,9 +407,9 @@ a {
   }
 }
 
-// ===================================
-// Buttons - Clean & Minimal
-// ===================================
+/* =================================== */
+/* Buttons - Clean & Minimal */
+/* =================================== */
 .btn-oscar {
   display: inline-flex;
   align-items: center;
@@ -488,15 +488,15 @@ a {
   }
 }
 
-// Small button variant
+/* Small button variant */
 .btn-sm {
   padding: var(--spacing-xs) var(--spacing-md);
   font-size: 0.8rem;
 }
 
-// ===================================
-// Mates Page
-// ===================================
+/* =================================== */
+/* Mates Page */
+/* =================================== */
 .mates-page {
   background-color: var(--cream-bg);
   min-height: 100vh;
@@ -609,9 +609,9 @@ a {
   }
 }
 
-// ===================================
-// Categories Page
-// ===================================
+/* =================================== */
+/* Categories Page */
+/* =================================== */
 .categories-page {
   background-color: var(--cream-bg);
   min-height: 100vh;
@@ -679,7 +679,7 @@ a {
   display: inline-block;
 }
 
-// Category List (compact for many items)
+/* Category List (compact for many items) */
 .category-list {
   display: grid;
   grid-template-columns: 1fr;
@@ -748,7 +748,7 @@ a {
   flex-shrink: 0;
 }
 
-// Category Cards Grid (compact cards with icons)
+/* Category Cards Grid (compact cards with icons) */
 .category-cards-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -819,9 +819,9 @@ a {
   color: var(--text-tertiary);
 }
 
-// ===================================
-// Page Header
-// ===================================
+/* =================================== */
+/* Page Header */
+/* =================================== */
 .page-header {
   margin-bottom: var(--spacing-xl);
 }
@@ -848,7 +848,7 @@ a {
   margin: var(--spacing-xs) 0 0 0;
 }
 
-// Progress ring
+/* Progress ring */
 .header-progress {
   display: flex;
   align-items: center;
@@ -884,9 +884,9 @@ a {
   transition: stroke-dasharray 0.6s ease;
 }
 
-// ===================================
-// Toolbar
-// ===================================
+/* =================================== */
+/* Toolbar */
+/* =================================== */
 .toolbar {
   display: flex;
   align-items: center;
@@ -958,7 +958,7 @@ a {
   gap: var(--spacing-md);
 }
 
-// Filter group (pill buttons)
+/* Filter group (pill buttons) */
 .filter-group {
   display: flex;
   background: var(--bg-primary);
@@ -986,7 +986,7 @@ a {
   }
 }
 
-// Sort dropdown
+/* Sort dropdown */
 .sort-form {
   display: inline-flex;
 }
@@ -1017,7 +1017,7 @@ a {
   }
 }
 
-// Toolbar dropdown button
+/* Toolbar dropdown button */
 .toolbar-dropdown-btn {
   display: inline-flex;
   align-items: center;
@@ -1049,7 +1049,7 @@ a {
   }
 }
 
-// Filter/Sort dropdown menus
+/* Filter/Sort dropdown menus */
 .dropdown-menu-filter,
 .dropdown-menu-sort {
   min-width: 180px;
@@ -1057,6 +1057,9 @@ a {
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-lg);
+  background: var(--bg-secondary);
+  position: absolute;
+  z-index: 50;
 
   .dropdown-header {
     font-size: 0.7rem;
@@ -1107,7 +1110,7 @@ a {
   }
 }
 
-// Responsive toolbar
+/* Responsive toolbar */
 @media (max-width: 640px) {
   .toolbar {
     flex-direction: column;
@@ -1130,9 +1133,9 @@ a {
   }
 }
 
-// ===================================
-// Empty States
-// ===================================
+/* =================================== */
+/* Empty States */
+/* =================================== */
 .empty-state {
   text-align: center;
   padding: var(--spacing-xxl);
@@ -1150,9 +1153,9 @@ a {
   }
 }
 
-// ===================================
-// Site Header - Clean & Minimal
-// ===================================
+/* =================================== */
+/* Site Header - Clean & Minimal */
+/* =================================== */
 .site-header {
   background: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(12px);
@@ -1234,11 +1237,6 @@ a {
       color: var(--text-primary);
     }
   }
-
-  .dropdown-toggle::after {
-    margin-left: 0.35em;
-    opacity: 0.5;
-  }
 }
 
 .header-actions {
@@ -1261,10 +1259,6 @@ a {
 
   &:hover {
     background: var(--bg-primary);
-  }
-
-  &::after {
-    display: none;
   }
 }
 
@@ -1316,13 +1310,16 @@ a {
   }
 }
 
-// Dropdown menus - clean style
+/* Dropdown menus - clean style */
 .dropdown-menu {
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-lg);
   padding: var(--spacing-xs);
   margin-top: var(--spacing-xs);
+  background: var(--bg-secondary);
+  position: absolute;
+  z-index: 50;
 
   .dropdown-item {
     padding: var(--spacing-sm) var(--spacing-md);
@@ -1346,7 +1343,7 @@ a {
   }
 }
 
-// Mobile responsive
+/* Mobile responsive */
 @media (max-width: 991.98px) {
   .main-nav {
     position: absolute;
@@ -1358,10 +1355,6 @@ a {
     flex-direction: column;
     padding: var(--spacing-lg);
     gap: var(--spacing-lg);
-
-    &:not(.show) {
-      display: none;
-    }
   }
 
   .nav-links {
@@ -1386,9 +1379,9 @@ a {
   }
 }
 
-// ===================================
-// Utilities
-// ===================================
+/* =================================== */
+/* Utilities */
+/* =================================== */
 .text-gold {
   color: var(--oscar-gold);
 }

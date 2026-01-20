@@ -1,76 +1,50 @@
-<section class="new-review py-5">
-  <div class="container">
-    <h1 class="mt-4 mb-3 text-center">
-      <%= link_to @movie.title, movie_path(@movie, year: params[:year]), style: "text-decoration: none; color: #555555;" %>
+<section class="new-review py-10">
+  <div class="container mx-auto px-4">
+    <h1 class="mb-4 text-center text-2xl font-semibold text-slate-900">
+      <%= link_to @movie.title, movie_path(@movie, year: params[:year]), class: "text-slate-600 hover:text-slate-800" %>
     </h1>
 
-    <div class="row justify-content-center">
-      <div class="col-md-8">
-        <%= form_with(model: [@movie, @review], url: movie_reviews_path(@movie, year: params[:year]), class: "mb-4") do |f| %>
-          <%= render "shared/errors", object: @review %>
+    <div class="mx-auto max-w-2xl">
+      <%= form_with(model: [@movie, @review], url: movie_reviews_path(@movie, year: params[:year]), class: "space-y-6") do |f| %>
+        <%= render "shared/errors", object: @review %>
 
-          <% if f.object.errors[:stars].any? %>
-            <div id="error_explanation">
-              <ul>
-                <% f.object.errors.full_messages_for(:stars).each do |message| %>
-                  <li><%= message %></li>
-                <% end %>
-              </ul>
-            </div>
-          <% end %>
-        
-          <div class="mb-3 text-center">
-            <div class="star-rating d-flex flex-row-reverse">
-              <% Review::STARS.reverse.each do |star| %>
-                <%= f.radio_button :stars, star, id: "star_#{star}", class: "d-none", checked: f.object.stars == star %>
-                <%= label_tag "star_#{star}", "★", class: "star fs-2" %>
+        <% if f.object.errors[:stars].any? %>
+          <div id="error_explanation" class="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+            <ul class="list-disc space-y-1 pl-5">
+              <% f.object.errors.full_messages_for(:stars).each do |message| %>
+                <li><%= message %></li>
               <% end %>
-            </div>
-          </div>
-
-          <div class="field">
-            <%= f.label :watched_on, "Date Watched" %>
-            <%= f.date_field :watched_on, value: Date.today %>
-          </div>
-
-          <div class="mb-3">
-            <%= f.label :comment, class: "form-label" %>
-            <%= f.text_area :comment, class: "form-control", placeholder: "What do you think, mate?", rows: 5 %>
-          </div>
-
-          <div class="d-grid gap-2 d-md-block text-center">
-            <%= f.submit "Mark as Watched", class: "btn btn-dark" %>
+            </ul>
           </div>
         <% end %>
 
-        <div class="mt-4 text-center">
-          <%= link_to "Back to Movie Details", movie_path(@movie, year: params[:year]), class: "btn btn-outline-dark" %>
+        <div class="text-center">
+          <div class="star-rating flex flex-row-reverse justify-center gap-2">
+            <% Review::STARS.reverse.each do |star| %>
+              <%= f.radio_button :stars, star, id: "star_#{star}", class: "hidden", checked: f.object.stars == star %>
+              <%= label_tag "star_#{star}", "★", class: "star text-3xl" %>
+            <% end %>
+          </div>
         </div>
+
+        <div>
+          <%= f.label :watched_on, "Date Watched", class: "text-sm font-semibold text-slate-700" %>
+          <%= f.date_field :watched_on, value: Date.today, class: "mt-2 w-full rounded-md border-slate-200 bg-white px-3 py-2 text-sm shadow-sm focus:border-slate-400 focus:ring-slate-300" %>
+        </div>
+
+        <div>
+          <%= f.label :comment, class: "text-sm font-semibold text-slate-700" %>
+          <%= f.text_area :comment, class: "mt-2 w-full rounded-md border-slate-200 bg-white px-3 py-2 text-sm shadow-sm focus:border-slate-400 focus:ring-slate-300", placeholder: "What do you think, mate?", rows: 5 %>
+        </div>
+
+        <div class="text-center">
+          <%= f.submit "Mark as Watched", class: "inline-flex items-center rounded-md bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800" %>
+        </div>
+      <% end %>
+
+      <div class="mt-6 text-center">
+        <%= link_to "Back to Movie Details", movie_path(@movie, year: params[:year]), class: "inline-flex items-center rounded-md border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100" %>
       </div>
     </div>
   </div>
 </section>
-
-<style>
-  .star-rating {
-    display: inline-flex;
-    gap: 5px;
-    justify-content: center;
-  }
-
-  .star {
-    color: #ccc;
-    cursor: pointer;
-    transition: color 0.2s;
-  }
-
-  .star:hover,
-  .star:hover ~ .star {
-    color: #f39c12;
-  }
-
-  input[type="radio"]:checked + .star,
-  input[type="radio"]:checked + .star ~ .star {
-    color: #f39c12;
-  }
-</style>

@@ -1,55 +1,49 @@
-<section class="user-form py-5">
-  <div class="container text-center">
-    <%= form_with model: user, url: user.persisted? ? user_path(user) : users_path, local: true, class: "needs-validation" do |form| %>
+<section class="user-form py-10">
+  <div class="container mx-auto px-4">
+    <div class="mx-auto max-w-2xl">
+    <%= form_with model: user, url: user.persisted? ? user_path(user) : users_path, local: true, class: "space-y-6" do |form| %>
       <%= render "shared/errors", object: user %>
 
-      <div class="row mb-3">
-        <div class="col-md-6">
-          <%= form.label :name, class: "form-label" %>
-          <%= form.text_field :name, id: "name", class: "form-control", placeholder: "Name" %>
+      <div class="grid gap-6 md:grid-cols-2">
+        <div>
+          <%= form.label :name, class: "text-sm font-semibold text-slate-700" %>
+          <%= form.text_field :name, id: "name", class: "mt-2 w-full rounded-md border-slate-200 bg-white px-3 py-2 text-sm shadow-sm focus:border-slate-400 focus:ring-slate-300", placeholder: "Name" %>
           <% user.errors.full_messages_for(:name).each do |message| %>
-            <div class="form-text text-danger">
-              <%= message %>
-            </div>
+            <div class="mt-2 text-sm text-red-600"><%= message %></div>
           <% end %>
         </div>
 
-        <div class="col-md-6">
-          <%= form.label :email, class: "form-label" %>
-          <%= form.email_field :email, id: "email", class: "form-control", placeholder: "Email" %>
+        <div>
+          <%= form.label :email, class: "text-sm font-semibold text-slate-700" %>
+          <%= form.email_field :email, id: "email", class: "mt-2 w-full rounded-md border-slate-200 bg-white px-3 py-2 text-sm shadow-sm focus:border-slate-400 focus:ring-slate-300", placeholder: "Email" %>
           <% user.errors.full_messages_for(:email).each do |message| %>
-            <div class="form-text text-danger">
-              <%= message %>
-            </div>
+            <div class="mt-2 text-sm text-red-600"><%= message %></div>
           <% end %>
         </div>
       </div>
 
-      <div class="row mb-3">
-        <div class="col-md-6">
-          <%= form.label :password, class: "form-label" %>
-          <%= form.password_field :password, id: "password", class: "form-control", placeholder: "Password" %>
+      <div class="grid gap-6 md:grid-cols-2">
+        <div>
+          <%= form.label :password, class: "text-sm font-semibold text-slate-700" %>
+          <%= form.password_field :password, id: "password", class: "mt-2 w-full rounded-md border-slate-200 bg-white px-3 py-2 text-sm shadow-sm focus:border-slate-400 focus:ring-slate-300", placeholder: "Password" %>
           <% user.errors.full_messages_for(:password).each do |message| %>
-            <div class="form-text text-danger">
-              <%= message %>
-            </div>
+            <div class="mt-2 text-sm text-red-600"><%= message %></div>
           <% end %>
         </div>
 
-        <div class="col-md-6">
-          <%= form.label :password_confirmation, class: "form-label" %>
-          <%= form.password_field :password_confirmation, id: "password_confirmation", class: "form-control", placeholder: "Password Confirmation" %>
+        <div>
+          <%= form.label :password_confirmation, class: "text-sm font-semibold text-slate-700" %>
+          <%= form.password_field :password_confirmation, id: "password_confirmation", class: "mt-2 w-full rounded-md border-slate-200 bg-white px-3 py-2 text-sm shadow-sm focus:border-slate-400 focus:ring-slate-300", placeholder: "Password Confirmation" %>
           <% user.errors.full_messages_for(:password_confirmation).each do |message| %>
-            <div class="form-text text-danger">
-              <%= message %>
-            </div>
+            <div class="mt-2 text-sm text-red-600"><%= message %></div>
           <% end %>
         </div>
       </div>
 
-      <div class="d-grid">
-        <%= form.submit user.new_record? ? 'Sign up!' : 'Update Account', class: 'btn btn-primary' %>
+      <div>
+        <%= form.submit user.new_record? ? 'Sign up!' : 'Update Account', class: 'w-full rounded-md bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800' %>
       </div>
     <% end %>
+    </div>
   </div>
 </section>

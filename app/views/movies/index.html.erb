@@ -1,7 +1,7 @@
 <a id="top"></a>
 
 <main class="movies-page">
-  <div class="container py-5">
+  <div class="container mx-auto px-4 py-8">
 
     <%# Toolbar %>
     <div class="toolbar">
@@ -26,13 +26,13 @@
       <% if current_user.present? %>
         <div class="toolbar-actions">
           <%# Filter Dropdown %>
-          <div class="dropdown">
-            <button class="toolbar-dropdown-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <div class="hs-dropdown relative">
+            <button class="toolbar-dropdown-btn hs-dropdown-toggle" type="button" aria-expanded="false">
               <i class="bi bi-funnel"></i>
               <span><%= filter_label(params[:filter_by]) %></span>
               <i class="bi bi-chevron-down"></i>
             </button>
-            <ul class="dropdown-menu dropdown-menu-filter">
+            <ul class="dropdown-menu dropdown-menu-filter hs-dropdown-menu transition-[opacity,margin] duration-200 opacity-0 hs-dropdown-open:opacity-100 hidden mt-2">
               <li>
                 <%= link_to movies_path(year: current_year, sort_by: params[:sort_by], query: params[:query]),
                     class: "dropdown-item #{'active' if params[:filter_by].blank?}" do %>
@@ -55,13 +55,13 @@
           </div>
 
           <%# Sort Dropdown %>
-          <div class="dropdown">
-            <button class="toolbar-dropdown-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <div class="hs-dropdown relative">
+            <button class="toolbar-dropdown-btn hs-dropdown-toggle" type="button" aria-expanded="false">
               <i class="bi bi-sort-down"></i>
               <span><%= sort_label(params[:sort_by]) %></span>
               <i class="bi bi-chevron-down"></i>
             </button>
-            <ul class="dropdown-menu dropdown-menu-sort">
+            <ul class="dropdown-menu dropdown-menu-sort hs-dropdown-menu transition-[opacity,margin] duration-200 opacity-0 hs-dropdown-open:opacity-100 hidden mt-2">
               <li>
                 <%= link_to movies_path(year: current_year, sort_by: '', filter_by: params[:filter_by], query: params[:query]),
                     class: "dropdown-item #{'active' if params[:sort_by].blank?}" do %>
@@ -119,8 +119,8 @@
     <%# Celebration %>
     <div data-controller="confetti" data-confetti-enabled-value="<%= @all_movies_watched %>">
       <% if @all_movies_watched %>
-        <div class="alert bg-gold-light text-center rounded-oscar mb-4 animate-fade-in-up">
-          <i class="bi bi-trophy-fill text-gold me-2" style="font-size: 1.5rem;"></i>
+        <div class="rounded-oscar mb-4 flex items-center justify-center gap-2 border border-amber-200 bg-gold-light px-4 py-3 text-center animate-fade-in-up">
+          <i class="bi bi-trophy-fill text-gold" style="font-size: 1.5rem;"></i>
           <strong>Congratulations!</strong> You've watched all <%= current_year %> Oscar nominees!
         </div>
       <% end %>
@@ -152,7 +152,7 @@
           <% end %>
         </p>
         <% if params[:query].present? || params[:filter_by].present? %>
-          <%= link_to "Clear Filters", movies_path(year: current_year), class: "btn btn-oscar" %>
+          <%= link_to "Clear Filters", movies_path(year: current_year), class: "btn-oscar" %>
         <% end %>
       </div>
     <% end %>
@@ -160,15 +160,15 @@
     <%# Admin Button %>
     <% if current_user_admin? %>
       <div class="text-center mt-4">
-        <%= link_to new_movie_path(year: current_year), class: "btn btn-outline-oscar" do %>
-          <i class="bi bi-plus-circle me-1"></i> Add New Movie
+        <%= link_to new_movie_path(year: current_year), class: "btn-outline-oscar" do %>
+          <i class="bi bi-plus-circle mr-1"></i> Add New Movie
         <% end %>
       </div>
     <% end %>
   </div>
 
   <%# Back to Top %>
-  <a href="#top" class="btn btn-oscar back-to-top" title="Back to top">
+  <a href="#top" class="btn-oscar back-to-top" title="Back to top">
     <i class="bi bi-chevron-up"></i>
   </a>
 </main>

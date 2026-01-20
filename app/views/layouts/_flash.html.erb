@@ -1,13 +1,17 @@
 <% if flash[:notice] %>
-  <div class="alert alert-success alert-dismissible fade show" role="alert">
-    <%= flash[:notice] %>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  <div class="flash flex items-start justify-between gap-4 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-emerald-900" role="alert" data-controller="flash">
+    <span><%= flash[:notice] %></span>
+    <button type="button" class="text-emerald-700 hover:text-emerald-900" data-action="flash#dismiss" aria-label="Close">
+      &times;
+    </button>
   </div>
 <% end %>
 
 <% if flash[:alert] %>
-  <div class="alert alert-danger alert-dismissible fade show" role="alert">
-    <%= flash[:alert] %>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  <div class="flash flex items-start justify-between gap-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-red-900" role="alert" data-controller="flash">
+    <span><%= flash[:alert] %></span>
+    <button type="button" class="text-red-700 hover:text-red-900" data-action="flash#dismiss" aria-label="Close">
+      &times;
+    </button>
   </div>
 <% end %>

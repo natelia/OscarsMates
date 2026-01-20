@@ -1,15 +1,19 @@
 // Entry point for the build script in your package.json
 import "@hotwired/turbo-rails";
 import "./controllers";
-import * as bootstrap from "bootstrap";
+import "preline/dist/preline.js";
 
-// Initialize Bootstrap dropdowns on Turbo page loads
-document.addEventListener("turbo:load", () => {
-  // Initialize all dropdowns
-  const dropdownTriggerList = document.querySelectorAll('[data-bs-toggle="dropdown"]');
-  dropdownTriggerList.forEach((el) => new bootstrap.Dropdown(el));
+const initPreline = () => {
+  if (window.HSDropdown) {
+    window.HSDropdown.autoInit();
+  }
+  if (window.HSAccordion) {
+    window.HSAccordion.autoInit();
+  }
+  if (window.HSOverlay) {
+    window.HSOverlay.autoInit();
+  }
+};
 
-  // Initialize all collapses
-  const collapseTriggerList = document.querySelectorAll('[data-bs-toggle="collapse"]');
-  collapseTriggerList.forEach((el) => new bootstrap.Collapse(el, { toggle: false }));
-});
+document.addEventListener("turbo:render", initPreline);
+document.addEventListener("turbo:load", initPreline);

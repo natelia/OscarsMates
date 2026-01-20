@@ -1,11 +1,11 @@
-// OscarsMates Animations
-// Playful micro-interactions and transitions
+/* OscarsMates Animations */
+/* Playful micro-interactions and transitions */
 
-// ===================================
-// Keyframe Animations
-// ===================================
+/* =================================== */
+/* Keyframe Animations */
+/* =================================== */
 
-// Progress bar fill animation
+/* Progress bar fill animation */
 @keyframes progressFill {
   from {
     width: 0;
@@ -15,7 +15,7 @@
   }
 }
 
-// Star pulse when selected
+/* Star pulse when selected */
 @keyframes starPulse {
   0%, 100% {
     transform: scale(1);
@@ -25,7 +25,7 @@
   }
 }
 
-// Subtle bounce
+/* Subtle bounce */
 @keyframes bounce {
   0%, 100% {
     transform: translateY(0);
@@ -35,7 +35,7 @@
   }
 }
 
-// Fade in up
+/* Fade in up */
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -47,7 +47,7 @@
   }
 }
 
-// Fade in scale
+/* Fade in scale */
 @keyframes fadeInScale {
   from {
     opacity: 0;
@@ -59,7 +59,7 @@
   }
 }
 
-// Shimmer loading effect
+/* Shimmer loading effect */
 @keyframes shimmer {
   0% {
     background-position: -200% 0;
@@ -69,7 +69,7 @@
   }
 }
 
-// Gentle float
+/* Gentle float */
 @keyframes float {
   0%, 100% {
     transform: translateY(0);
@@ -79,7 +79,7 @@
   }
 }
 
-// Crown glow for #1 position
+/* Crown glow for #1 position */
 @keyframes crownGlow {
   0%, 100% {
     filter: drop-shadow(0 0 3px rgba(212, 175, 55, 0.5));
@@ -89,7 +89,7 @@
   }
 }
 
-// Icon spin on hover
+/* Icon spin on hover */
 @keyframes iconSpin {
   from {
     transform: rotate(0deg);
@@ -99,7 +99,7 @@
   }
 }
 
-// Heart beat
+/* Heart beat */
 @keyframes heartbeat {
   0%, 100% {
     transform: scale(1);
@@ -115,11 +115,11 @@
   }
 }
 
-// ===================================
-// Oscar-Themed Animations
-// ===================================
+/* =================================== */
+/* Oscar-Themed Animations */
+/* =================================== */
 
-// Sparkle effect
+/* Sparkle effect */
 @keyframes sparkle {
   0%, 100% {
     opacity: 0;
@@ -131,7 +131,7 @@
   }
 }
 
-// Shimmer border effect
+/* Shimmer border effect */
 @keyframes shimmerBorder {
   0% {
     background-position: -200% 0;
@@ -141,7 +141,7 @@
   }
 }
 
-// Star floating
+/* Star floating */
 @keyframes starFloat {
   0%, 100% {
     transform: translateY(-50%) rotate(0deg);
@@ -153,7 +153,7 @@
   }
 }
 
-// Trophy bounce
+/* Trophy bounce */
 @keyframes trophyBounce {
   0%, 100% {
     transform: translateY(0);
@@ -166,7 +166,7 @@
   }
 }
 
-// Dropdown fade in
+/* Dropdown fade in */
 @keyframes dropdownFade {
   from {
     opacity: 0;
@@ -178,7 +178,7 @@
   }
 }
 
-// Progress bar sparkle move
+/* Progress bar sparkle move */
 @keyframes sparkleMove {
   0% {
     transform: translateX(-100%);
@@ -188,7 +188,7 @@
   }
 }
 
-// Gold pulse glow
+/* Gold pulse glow */
 @keyframes goldPulse {
   0%, 100% {
     box-shadow: 0 0 5px rgba(212, 175, 55, 0.3);
@@ -198,7 +198,7 @@
   }
 }
 
-// Gentle wiggle for icons
+/* Gentle wiggle for icons */
 @keyframes gentleWiggle {
   0%, 100% {
     transform: rotate(0deg);
@@ -211,7 +211,7 @@
   }
 }
 
-// Nav item entrance
+/* Nav item entrance */
 @keyframes navSlideIn {
   from {
     opacity: 0;
@@ -223,11 +223,11 @@
   }
 }
 
-// ===================================
-// Animation Classes
-// ===================================
+/* =================================== */
+/* Animation Classes */
+/* =================================== */
 
-// Apply to elements that should animate on page load
+/* Apply to elements that should animate on page load */
 .animate-fade-in-up {
   animation: fadeInUp 0.5s ease-out forwards;
 }
@@ -236,15 +236,29 @@
   animation: fadeInScale 0.4s ease-out forwards;
 }
 
-// Staggered delays for list items
-@for $i from 1 through 20 {
-  .animate-delay-#{$i} {
-    animation-delay: #{$i * 0.05}s;
-    opacity: 0;
-  }
-}
+/* Staggered delays for list items */
+.animate-delay-1 { animation-delay: 0.05s; opacity: 0; }
+.animate-delay-2 { animation-delay: 0.1s; opacity: 0; }
+.animate-delay-3 { animation-delay: 0.15s; opacity: 0; }
+.animate-delay-4 { animation-delay: 0.2s; opacity: 0; }
+.animate-delay-5 { animation-delay: 0.25s; opacity: 0; }
+.animate-delay-6 { animation-delay: 0.3s; opacity: 0; }
+.animate-delay-7 { animation-delay: 0.35s; opacity: 0; }
+.animate-delay-8 { animation-delay: 0.4s; opacity: 0; }
+.animate-delay-9 { animation-delay: 0.45s; opacity: 0; }
+.animate-delay-10 { animation-delay: 0.5s; opacity: 0; }
+.animate-delay-11 { animation-delay: 0.55s; opacity: 0; }
+.animate-delay-12 { animation-delay: 0.6s; opacity: 0; }
+.animate-delay-13 { animation-delay: 0.65s; opacity: 0; }
+.animate-delay-14 { animation-delay: 0.7s; opacity: 0; }
+.animate-delay-15 { animation-delay: 0.75s; opacity: 0; }
+.animate-delay-16 { animation-delay: 0.8s; opacity: 0; }
+.animate-delay-17 { animation-delay: 0.85s; opacity: 0; }
+.animate-delay-18 { animation-delay: 0.9s; opacity: 0; }
+.animate-delay-19 { animation-delay: 0.95s; opacity: 0; }
+.animate-delay-20 { animation-delay: 1s; opacity: 0; }
 
-// Progress bar that animates when visible
+/* Progress bar that animates when visible */
 .progress-animated {
   .progress-fill {
     animation: progressFill 1s ease-out forwards;
@@ -252,22 +266,22 @@
   }
 }
 
-// Star that pulses when clicked
+/* Star that pulses when clicked */
 .star-pulse {
   animation: starPulse 0.3s ease-out;
 }
 
-// Floating animation (for badges, icons)
+/* Floating animation (for badges, icons) */
 .animate-float {
   animation: float 3s ease-in-out infinite;
 }
 
-// Crown animation for top user
+/* Crown animation for top user */
 .crown-animated {
   animation: crownGlow 2s ease-in-out infinite;
 }
 
-// Bounce on hover
+/* Bounce on hover */
 .hover-bounce {
   transition: transform 0.3s ease;
 
@@ -276,7 +290,7 @@
   }
 }
 
-// Icon spin on hover
+/* Icon spin on hover */
 .hover-spin {
   transition: transform 0.3s ease;
 
@@ -285,49 +299,52 @@
   }
 }
 
-// Heart beat on hover (for favorites)
+/* Heart beat on hover (for favorites) */
 .hover-heartbeat {
   &:hover {
     animation: heartbeat 0.6s ease;
   }
 }
 
-// ===================================
-// Oscar Animation Classes
-// ===================================
+/* =================================== */
+/* Oscar Animation Classes */
+/* =================================== */
 
-// Apply gold pulse to interactive elements
+/* Apply gold pulse to interactive elements */
 .animate-gold-pulse {
   animation: goldPulse 2s ease-in-out infinite;
 }
 
-// Gentle wiggle for icons
+/* Gentle wiggle for icons */
 .hover-wiggle {
   &:hover i {
     animation: gentleWiggle 0.5s ease-in-out;
   }
 }
 
-// Nav items animate in sequence
+/* Nav items animate in sequence */
 .nav-animated {
   .nav-item {
     animation: navSlideIn 0.4s ease-out forwards;
     opacity: 0;
-
-    @for $i from 1 through 8 {
-      &:nth-child(#{$i}) {
-        animation-delay: #{$i * 0.08}s;
-      }
-    }
   }
+
+  .nav-item:nth-child(1) { animation-delay: 0.08s; }
+  .nav-item:nth-child(2) { animation-delay: 0.16s; }
+  .nav-item:nth-child(3) { animation-delay: 0.24s; }
+  .nav-item:nth-child(4) { animation-delay: 0.32s; }
+  .nav-item:nth-child(5) { animation-delay: 0.4s; }
+  .nav-item:nth-child(6) { animation-delay: 0.48s; }
+  .nav-item:nth-child(7) { animation-delay: 0.56s; }
+  .nav-item:nth-child(8) { animation-delay: 0.64s; }
 }
 
-// Toolbar slide-in from top
+/* Toolbar slide-in from top */
 .toolbar-animated {
   animation: fadeInUp 0.4s ease-out;
 }
 
-// Button hover sparkle effect
+/* Button hover sparkle effect */
 .btn-sparkle {
   position: relative;
   overflow: hidden;
@@ -351,9 +368,9 @@
   }
 }
 
-// ===================================
-// Loading States
-// ===================================
+/* =================================== */
+/* Loading States */
+/* =================================== */
 
 .skeleton {
   background: linear-gradient(
@@ -389,9 +406,9 @@
   border-radius: var(--border-radius-md);
 }
 
-// ===================================
-// Transition Utilities
-// ===================================
+/* =================================== */
+/* Transition Utilities */
+/* =================================== */
 
 .transition-fast {
   transition: all 0.15s ease;
@@ -405,11 +422,11 @@
   transition: var(--transition-bounce);
 }
 
-// ===================================
-// Hover Effects
-// ===================================
+/* =================================== */
+/* Hover Effects */
+/* =================================== */
 
-// Scale up slightly
+/* Scale up slightly */
 .hover-scale {
   transition: transform 0.3s ease;
 
@@ -418,7 +435,7 @@
   }
 }
 
-// Scale up more dramatically
+/* Scale up more dramatically */
 .hover-scale-lg {
   transition: transform 0.3s ease;
 
@@ -427,7 +444,7 @@
   }
 }
 
-// Lift with shadow
+/* Lift with shadow */
 .hover-lift {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 
@@ -437,7 +454,7 @@
   }
 }
 
-// Subtle lift
+/* Subtle lift */
 .hover-lift-sm {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 
@@ -447,7 +464,7 @@
   }
 }
 
-// Gold border on hover
+/* Gold border on hover */
 .hover-gold-border {
   border: 2px solid transparent;
   transition: border-color 0.3s ease;
@@ -457,13 +474,12 @@
   }
 }
 
-// ===================================
-// Mobile Touch Feedback
-// ===================================
+/* =================================== */
+/* Mobile Touch Feedback */
+/* =================================== */
 
 @media (hover: none) {
-  // On touch devices, use active states instead of hover
-
+  /* On touch devices, use active states instead of hover */
   .movie-card:active {
     transform: scale(0.98);
   }
@@ -477,9 +493,9 @@
   }
 }
 
-// ===================================
-// Reduced Motion
-// ===================================
+/* =================================== */
+/* Reduced Motion */
+/* =================================== */
 
 @media (prefers-reduced-motion: reduce) {
   *,
