@@ -1,14 +1,14 @@
 # This file should contain all the record creation needed to seed the database with its default values.
 # The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
-#   Character.create(name: 'Luke', movie: movies.first)
-Rails.logger.debug 'Creating User...'
+
+Rails.logger.debug 'Creating Users...'
 User.destroy_all
-User.create(name: 'admin', email: 'admin@example.com', password: 'password', admin: true)
-User.create(name: 'user', email: 'user@example.com', password: 'password', admin: false)
+User.create!(name: 'admin', email: 'admin@example.com', password: 'password', admin: true)
+user1 = User.create!(name: 'user', email: 'user@example.com', password: 'password', admin: false)
+user2 = User.create!(name: 'alice', email: 'alice@example.com', password: 'password', admin: false)
+user3 = User.create!(name: 'bob', email: 'bob@example.com', password: 'password', admin: false)
+user4 = User.create!(name: 'charlie', email: 'charlie@example.com', password: 'password', admin: false)
+user5 = User.create!(name: 'diana', email: 'diana@example.com', password: 'password', admin: false)
 
 Rails.logger.debug 'Creating Categories...'
 Category.destroy_all
@@ -126,7 +126,7 @@ movies = [
     runtime: 105,
     rating: 7.8,
     url: 'https://www.imdb.com/title/tt13238346/',
-    picture_url: 'https://m.media-amazon.com/images/M/MV5BOTkzYmMxNTItZDAxNC00NGM0LWIyODMtMWYzMzRkMjIyMTE1XkEyXkFqcGdeQXVyMTAyMjQ3NzQ1._V1_.jpg'
+    picture_url: 'https://m.media-amazon.com/images/M/MV5BOTkzYmMxNTItZDAxNC00NGM0LWIyODMtMWYzMzRkMjIyMTE1XkEyXkFqcGdeQXVyMTAyMjQ3NzQ1._V1_FMjpg_UX1000_.jpg'
   },
   {
     title: 'Anatomia Upadku',
@@ -471,7 +471,7 @@ movies = [
     picture_url: 'https://m.media-amazon.com/images/M/MV5BMzhiZDRmOTktZjNmNy00ZDYyLTk2OGUtZGJmMmFlOWRjYzFhXkEyXkFqcGdeQXVyMTc0ODU3MjY@._V1_FMjpg_UX1000_.jpg'
   },
   {
-    title: 'Zdumiewająca historia Henry’ego Sugara',
+    title: "Zdumiewająca historia Henry'ego Sugara",
     english_title: 'The Wonderful Story of Henry Sugar',
     where_to_watch: 'Netflix',
     runtime: 37,
@@ -527,5 +527,282 @@ movies = [
 ]
 
 movies.each do |movie|
-  Movie.create!(movie) unless Movie.exists?(title: movie[:title])
+  Movie.create!(movie)
 end
+
+Rails.logger.debug 'Creating Characterizations (Movie-Genre relationships)...'
+Characterization.destroy_all
+
+characterization_data = [
+  ['Oppenheimer', %w[Drama Historical Thriller]],
+  ['Przesilenie Zimowe', %w[Drama Comedy]],
+  ['Amerykańska Fikcja', %w[Drama Comedy]],
+  ['Strefa Interesów', %w[Drama Historical]],
+  ['Barbie', %w[Comedy Adventure]],
+  ['Biedne Istoty', %w[Drama Comedy Sci-Fi]],
+  ['Poprzednie Życie', %w[Drama Romance]],
+  ['Anatomia Upadku', %w[Drama Thriller]],
+  ['Maestro', %w[Drama Musical]],
+  ['Czas Krwawego Księzyca', %w[Drama Historical Thriller]],
+  ['Rustin', %w[Drama Historical]],
+  ['Nyad', %w[Drama Documentary]],
+  ['Ja, Kapitan', %w[Drama Adventure]],
+  ['Śnieżne Braterstwo', %w[Drama Adventure Thriller]],
+  ['Perfect Days', ['Drama']],
+  ['Pokój Nauczycielski', %w[Drama Thriller]],
+  ['Chłopiec i Czapla', %w[Animation Adventure Drama]],
+  ['Nimona', %w[Animation Action Adventure]],
+  ['Pies i Robot', %w[Animation Comedy Drama]],
+  ['Między Nami Żywiołami', %w[Animation Adventure Romance]],
+  ['Spider-Man: Poprzez multiwersum', %w[Animation Action Adventure Sci-Fi]],
+  ['Kolor Purpury', %w[Drama Musical]],
+  ['Obsesja', %w[Drama Romance]],
+  ['Indiana Jones i Artefakt Przeznaczenia', %w[Action Adventure]],
+  ['Godzilla Minus One', %w[Action Sci-Fi Drama]],
+  ['Strażnicy Galaktyki: Volume 3', %w[Action Adventure Comedy Sci-Fi]],
+  ['Hrabia', %w[Drama Comedy Horror]],
+  ['Napoleon', %w[Drama Historical Action]],
+  ['Mission: Impossible - Dead Reckoning Part One', %w[Action Adventure Thriller]],
+  ['Twórca', %w[Action Sci-Fi Drama]],
+  ['Golda', %w[Drama Historical]],
+  ["Flamin' Hot: Smak Sukcesu", %w[Drama Comedy]],
+  ['Jon Batiste: Amerykańska symfonia', %w[Documentary Musical]],
+  ['20 Dni w Mariupolu', ['Documentary']],
+  ['Bobi Wine – Głos Sprzeciwu', ['Documentary']],
+  ['To Kill a Tiger', ['Documentary']],
+  ['Cztery Córki', %w[Documentary Drama]],
+  ['Pamięć jest Wieczna', %w[Documentary Drama]],
+  ['List do Świni', %w[Animation Short]],
+  ['Ninety-Five Senses', %w[Animation Short]],
+  ['Pachydermia', %w[Animation Short]],
+  ['WAR IS OVER! Inspired by the Music of John and Yoko', %w[Animation Short]],
+  ['Kawaler Fortuny', %w[Comedy Drama Short]],
+  ['Red, White and Blue', %w[Drama Short]],
+  ['The After', %w[Drama Short]],
+  ["Zdumiewająca historia Henry'ego Sugara", %w[Comedy Drama Short]],
+  ['Island in Between', %w[Documentary Short]],
+  ['Nai Nai & Wài Pó', %w[Documentary Short]],
+  ['The Barber of Little Rock', %w[Documentary Short]],
+  ['The ABCs of Book Banning', %w[Documentary Short]],
+  ['Ostatni Warsztat', %w[Documentary Short]]
+]
+
+characterization_data.each do |movie_title, genre_names|
+  movie = Movie.find_by(title: movie_title)
+  next unless movie
+
+  genre_names.each do |genre_name|
+    genre = Genre.find_by(name: genre_name)
+    Characterization.create!(movie: movie, genre: genre) if genre
+  end
+end
+
+Rails.logger.debug 'Creating Nominations...'
+Nomination.destroy_all
+
+nomination_data = [
+  { movie_title: 'Oppenheimer', category_name: 'Best Picture', year: 2024, name: 'Oppenheimer' },
+  { movie_title: 'Oppenheimer', category_name: 'Best Director', year: 2024, name: 'Christopher Nolan' },
+  { movie_title: 'Oppenheimer', category_name: 'Best Actor', year: 2024, name: 'Cillian Murphy' },
+  { movie_title: 'Oppenheimer', category_name: 'Best Supporting Actor', year: 2024, name: 'Robert Downey Jr.' },
+  { movie_title: 'Oppenheimer', category_name: 'Best Cinematography', year: 2024, name: 'Hoyte van Hoytema' },
+  { movie_title: 'Oppenheimer', category_name: 'Best Film Editing', year: 2024, name: 'Jennifer Lame' },
+  { movie_title: 'Oppenheimer', category_name: 'Best Original Score', year: 2024, name: 'Ludwig Göransson' },
+  { movie_title: 'Oppenheimer', category_name: 'Best Production Design', year: 2024, name: 'Ruth De Jong' },
+  { movie_title: 'Oppenheimer', category_name: 'Best Sound', year: 2024, name: 'Oppenheimer' },
+  { movie_title: 'Oppenheimer', category_name: 'Best Adapted Screenplay', year: 2024, name: 'Christopher Nolan' },
+
+  { movie_title: 'Przesilenie Zimowe', category_name: 'Best Picture', year: 2024, name: 'The Holdovers' },
+  { movie_title: 'Przesilenie Zimowe', category_name: 'Best Actress', year: 2024, name: 'Emma Stone' },
+  { movie_title: 'Przesilenie Zimowe', category_name: 'Best Supporting Actor', year: 2024,
+    name: 'Da\'Vine Joy Randolph' },
+  { movie_title: 'Przesilenie Zimowe', category_name: 'Best Original Screenplay', year: 2024, name: 'David Hemingson' },
+  { movie_title: 'Przesilenie Zimowe', category_name: 'Best Film Editing', year: 2024, name: 'Kevin Tent' },
+
+  { movie_title: 'Barbie', category_name: 'Best Picture', year: 2024, name: 'Barbie' },
+  { movie_title: 'Barbie', category_name: 'Best Supporting Actor', year: 2024, name: 'Ryan Gosling' },
+  { movie_title: 'Barbie', category_name: 'Best Supporting Actress', year: 2024, name: 'America Ferrera' },
+  { movie_title: 'Barbie', category_name: 'Best Adapted Screenplay', year: 2024, name: 'Greta Gerwig & Noah Baumbach' },
+  { movie_title: 'Barbie', category_name: 'Best Original Song', year: 2024, name: '"What Was I Made For?"' },
+  { movie_title: 'Barbie', category_name: 'Best Costume Design', year: 2024, name: 'Jacqueline Durran' },
+  { movie_title: 'Barbie', category_name: 'Best Production Design', year: 2024, name: 'Sarah Greenwood' },
+
+  { movie_title: 'Biedne Istoty', category_name: 'Best Picture', year: 2024, name: 'Poor Things' },
+  { movie_title: 'Biedne Istoty', category_name: 'Best Actress', year: 2024, name: 'Emma Stone' },
+  { movie_title: 'Biedne Istoty', category_name: 'Best Director', year: 2024, name: 'Yorgos Lanthimos' },
+  { movie_title: 'Biedne Istoty', category_name: 'Best Cinematography', year: 2024, name: 'Robbie Ryan' },
+  { movie_title: 'Biedne Istoty', category_name: 'Best Costume Design', year: 2024, name: 'Holly Waddington' },
+  { movie_title: 'Biedne Istoty', category_name: 'Best Makeup and Hairstyling', year: 2024, name: 'Poor Things' },
+  { movie_title: 'Biedne Istoty', category_name: 'Best Production Design', year: 2024,
+    name: 'Shona Heath & James Price' },
+  { movie_title: 'Biedne Istoty', category_name: 'Best Original Score', year: 2024, name: 'Jerskin Fendrix' },
+
+  { movie_title: 'Killers of the Flower Moon', category_name: 'Best Picture', year: 2024,
+    name: 'Killers of the Flower Moon' },
+  { movie_title: 'Killers of the Flower Moon', category_name: 'Best Director', year: 2024, name: 'Martin Scorsese' },
+  { movie_title: 'Killers of the Flower Moon', category_name: 'Best Actress', year: 2024, name: 'Lily Gladstone' },
+  { movie_title: 'Killers of the Flower Moon', category_name: 'Best Supporting Actor', year: 2024,
+    name: 'Robert De Niro' },
+  { movie_title: 'Killers of the Flower Moon', category_name: 'Best Cinematography', year: 2024,
+    name: 'Rodrigo Prieto' },
+  { movie_title: 'Killers of the Flower Moon', category_name: 'Best Costume Design', year: 2024,
+    name: 'Jacqueline West' },
+  { movie_title: 'Killers of the Flower Moon', category_name: 'Best Original Score', year: 2024,
+    name: 'Robbie Robertson' },
+
+  { movie_title: 'Chłopiec i Czapla', category_name: 'Best Animated Feature Film', year: 2024,
+    name: 'The Boy and the Heron' },
+  { movie_title: 'Chłopiec i Czapla', category_name: 'Best Original Score', year: 2024, name: 'Joe Hisaishi' },
+
+  { movie_title: 'Pies i Robot', category_name: 'Best Animated Feature Film', year: 2024, name: 'Robot Dreams' },
+
+  { movie_title: 'Nimona', category_name: 'Best Animated Feature Film', year: 2024, name: 'Nimona' },
+
+  { movie_title: 'Między Nami Żywiołami', category_name: 'Best Animated Feature Film', year: 2024, name: 'Elemental' },
+  { movie_title: 'Między Nami Żywiołami', category_name: 'Best Original Song', year: 2024, name: '"Fire Inside"' },
+
+  { movie_title: 'Spider-Man: Poprzez multiwersum', category_name: 'Best Animated Feature Film', year: 2024,
+    name: 'Spider-Man: Across the Spider-Verse' },
+  { movie_title: 'Spider-Man: Poprzez multiwersum', category_name: 'Best Original Score', year: 2024,
+    name: 'Daniel Pemberton' },
+
+  { movie_title: 'Perfect Days', category_name: 'Best International Feature Film', year: 2024, name: 'Perfect Days' },
+
+  { movie_title: '20 Dni w Mariupolu', category_name: 'Best Documantary Feature Film', year: 2024,
+    name: '20 Days in Mariupol' },
+
+  { movie_title: 'Godzilla Minus One', category_name: 'Best Visual Effects', year: 2024, name: 'Godzilla Minus One' }
+]
+
+nomination_data.each do |nom|
+  movie = Movie.find_by(title: nom[:movie_title])
+  category = Category.find_by(name: nom[:category_name])
+  next unless movie && category
+
+  Nomination.create!(
+    movie: movie,
+    category: category,
+    year: nom[:year],
+    name: nom[:name]
+  )
+end
+
+Rails.logger.debug 'Creating Reviews...'
+Review.destroy_all
+
+review_data = [
+  { user: user1, movie_title: 'Oppenheimer', stars: 9,
+    comment: 'An absolute masterpiece. Christopher Nolan at his best.', watched_on: 2.months.ago },
+  { user: user1, movie_title: 'Barbie', stars: 7, comment: 'Fun and thought-provoking, but not for everyone.',
+    watched_on: 1.month.ago },
+  { user: user1, movie_title: 'Biedne Istoty', stars: 8, comment: 'Unique and bizarre in the best way possible.',
+    watched_on: 3.weeks.ago },
+  { user: user1, movie_title: 'Przesilenie Zimowe', stars: 8, comment: 'Heartwarming and beautifully acted.',
+    watched_on: 2.weeks.ago },
+  { user: user1, movie_title: 'Chłopiec i Czapla', stars: 9, comment: 'Miyazaki creates magic once again.',
+    watched_on: 1.week.ago },
+
+  { user: user2, movie_title: 'Oppenheimer', stars: 10, comment: 'The best film of the decade. Period.',
+    watched_on: 2.months.ago },
+  { user: user2, movie_title: 'Biedne Istoty', stars: 9, comment: 'Emma Stone deserves every award for this.',
+    watched_on: 1.month.ago },
+  { user: user2, movie_title: 'Anatomia Upadku', stars: 7, comment: 'Compelling courtroom drama.',
+    watched_on: 3.weeks.ago },
+  { user: user2, movie_title: 'Pies i Robot', stars: 8, comment: 'Simple, beautiful, heartbreaking.',
+    watched_on: 2.weeks.ago },
+  { user: user2, movie_title: 'Perfect Days', stars: 9, comment: 'A meditation on finding beauty in routine.',
+    watched_on: 1.week.ago },
+
+  { user: user3, movie_title: 'Strefa Interesów', stars: 8, comment: 'Haunting and unforgettable.',
+    watched_on: 2.months.ago },
+  { user: user3, movie_title: 'Barbie', stars: 8, comment: 'Surprisingly deep and meta.', watched_on: 1.month.ago },
+  { user: user3, movie_title: 'Poprzednie Życie', stars: 9, comment: 'Quietly powerful and deeply moving.',
+    watched_on: 3.weeks.ago },
+  { user: user3, movie_title: 'Czas Krwawego Księzyca', stars: 7, comment: 'Important story, but long runtime.',
+    watched_on: 2.weeks.ago },
+  { user: user3, movie_title: 'Spider-Man: Poprzez multiwersum', stars: 10,
+    comment: 'Visual storytelling at its finest.', watched_on: 1.week.ago },
+
+  { user: user4, movie_title: 'Amerykańska Fikcja', stars: 8, comment: 'Smart satire that hits hard.',
+    watched_on: 2.months.ago },
+  { user: user4, movie_title: 'Maestro', stars: 6, comment: 'Beautifully made, but emotionally distant.',
+    watched_on: 1.month.ago },
+  { user: user4, movie_title: '20 Dni w Mariupolu', stars: 10, comment: 'Essential viewing. Devastating.',
+    watched_on: 3.weeks.ago },
+  { user: user4, movie_title: 'Nimona', stars: 8, comment: 'Delightful and subversive.', watched_on: 2.weeks.ago },
+  { user: user4, movie_title: 'Godzilla Minus One', stars: 9, comment: 'Best Godzilla movie ever made.',
+    watched_on: 1.week.ago },
+
+  { user: user5, movie_title: 'Killers of the Flower Moon', stars: 8, comment: 'Scorsese delivers another epic.',
+    watched_on: 2.months.ago },
+  { user: user5, movie_title: 'Przesilenie Zimowe', stars: 9, comment: 'Paul Giamatti is incredible.',
+    watched_on: 1.month.ago },
+  { user: user5, movie_title: 'Między Nami Żywiołami', stars: 7, comment: 'Pixar returns with a heartfelt story.',
+    watched_on: 3.weeks.ago },
+  { user: user5, movie_title: 'Pokój Nauczycielski', stars: 8, comment: 'Tense and thought-provoking.',
+    watched_on: 2.weeks.ago },
+  { user: user5, movie_title: 'Pies i Robot', stars: 9, comment: 'A masterpiece of animated storytelling.',
+    watched_on: 1.week.ago }
+]
+
+review_data.each do |rev|
+  movie = Movie.find_by(title: rev[:movie_title])
+  next unless movie
+
+  Review.create!(
+    user: rev[:user],
+    movie: movie,
+    stars: rev[:stars],
+    comment: rev[:comment],
+    watched_on: rev[:watched_on]
+  )
+end
+
+Rails.logger.debug 'Creating Follows...'
+Follow.destroy_all
+
+follow_data = [
+  { follower: user1, followed: user2 },
+  { follower: user1, followed: user3 },
+  { follower: user2, followed: user3 },
+  { follower: user2, followed: user4 },
+  { follower: user3, followed: user4 },
+  { follower: user3, followed: user5 },
+  { follower: user4, followed: user1 },
+  { follower: user5, followed: user1 }
+]
+
+follow_data.each do |follow|
+  Follow.create!(
+    follower: follow[:follower],
+    followed: follow[:followed]
+  )
+end
+
+Rails.logger.debug 'Creating Favorites...'
+Favorite.destroy_all
+
+favorite_data = [
+  { user: user1, movie_title: 'Oppenheimer' },
+  { user: user1, movie_title: 'Chłopiec i Czapla' },
+  { user: user2, movie_title: 'Biedne Istoty' },
+  { user: user2, movie_title: 'Perfect Days' },
+  { user: user3, movie_title: 'Spider-Man: Poprzez multiwersum' },
+  { user: user3, movie_title: 'Poprzednie Życie' },
+  { user: user4, movie_title: '20 Dni w Mariupolu' },
+  { user: user4, movie_title: 'Strefa Interesów' },
+  { user: user5, movie_title: 'Przesilenie Zimowe' },
+  { user: user5, movie_title: 'Pies i Robot' }
+]
+
+favorite_data.each do |fav|
+  movie = Movie.find_by(title: fav[:movie_title])
+  next unless movie
+
+  Favorite.create!(
+    user: fav[:user],
+    movie: movie
+  )
+end
+
+Rails.logger.debug 'Seeding complete!'
