@@ -1,0 +1,41 @@
+<%= form_with(model: [movie, review], url: review.persisted? ? movie_review_path(movie, review, year: year) : movie_reviews_path(movie, year: year), method: review.persisted? ? :patch : :post, class: "space-y-6") do |f| %>
+  <%= render "shared/errors", object: review %>
+
+  <% if f.object.errors[:stars].any? %>
+    <div id="error_explanation" class="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+      <ul class="list-disc space-y-1 pl-5">
+        <% f.object.errors.full_messages_for(:stars).each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="text-center">
+    <div class="star-rating flex flex-row-reverse justify-center gap-2">
+      <% Review::STARS.reverse.each do |star| %>
+        <%= f.radio_button :stars, star, id: "star_#{star}_#{review.object_id}", class: "hidden", checked: review.stars == star %>
+        <%= label_tag "star_#{star}_#{review.object_id}", "★", class: "star text-3xl" %>
+      <% end %>
+    </div>
+  </div>
+
+  <div>
+    <%= f.label :watched_on, "Date Watched", class: "text-sm font-semibold text-slate-700" %>
+    <%= f.date_field :watched_on, value: review.watched_on || Date.today, class: "mt-2 max-w-[150px] rounded-md border-slate-200 bg-white px-3 py-2 text-sm shadow-sm focus:border-slate-400 focus:ring-slate-300" %>
+  </div>
+
+  <div>
+    <%= f.label :comment, class: "text-sm font-semibold text-slate-700" %>
+    <%= f.text_area :comment, class: "mt-2 w-full rounded-md border-slate-200 bg-white px-3 py-2 text-sm shadow-sm focus:border-slate-400 focus:ring-slate-300", placeholder: "What do you think, mate?", rows: 5 %>
+  </div>
+
+  <div class="flex items-center justify-between">
+    <% if review.persisted? %>
+      <button type="button" disabled class="inline-flex items-center rounded-md border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-400 bg-slate-50 opacity-50 cursor-not-allowed">
+        Remove rating
+      </button>
+    <% end %>
+    <%= f.submit review.persisted? ? "Update" : "Mark as Watched", class: "inline-flex items-center rounded-md bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800" %>
+  </div>
+<% end %>

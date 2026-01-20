@@ -10,6 +10,7 @@ export default class extends Controller {
   connect() {
     this.isTouchDevice = "ontouchstart" in window;
     this.isExpanded = false;
+    this.isReviewed = this.element.dataset.reviewed === "true";
 
     if (this.isTouchDevice) {
       this.setupTouchInteractions();

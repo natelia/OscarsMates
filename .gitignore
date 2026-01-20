@@ -40,6 +40,8 @@
 
 /node_modules
 
+/.worktrees
+
 # Ignore test coverage reports
 /coverage
 

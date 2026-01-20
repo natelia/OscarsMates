@@ -19,7 +19,7 @@
             <div class="info">
               <p class="mt-2 text-sm">
                 <%= link_to review.user.name, review.user, class: "font-semibold text-slate-900 hover:text-slate-700" %><br>
-                <small class="text-slate-500"><%= time_ago_in_words(review.created_at) %> ago</small>
+                <small class="text-muted"><%= time_ago_in_words(review.created_at) %> ago</small>
               </p>
               <p class="comment mt-2 text-sm text-slate-600">
                 <%= review.comment %>

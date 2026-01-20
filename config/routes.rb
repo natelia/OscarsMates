@@ -1,6 +1,7 @@
 require 'sidekiq/web' # require the web UI
 
 Rails.application.routes.draw do
+  get 'design_system/index'
   # Health check endpoint for Docker
   get 'up' => 'rails/health#show', as: :rails_health_check
 
@@ -10,7 +11,7 @@ Rails.application.routes.draw do
   # Year-scoped resources (content that varies by year)
   scope '/:year', constraints: { year: /\d{4}/ } do
     resources :movies do
-      resources :reviews, only: %i[index new create destroy]
+      resources :reviews, only: %i[index new create edit update destroy]
       resources :favorites, only: %i[create destroy]
     end
 

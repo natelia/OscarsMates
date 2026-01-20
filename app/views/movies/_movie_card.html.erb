@@ -3,82 +3,73 @@
 <% review ||= nil %>
 <% show_actions = local_assigns.fetch(:show_actions, true) %>
 
-<div class="movie-card"
+<div class="movie-card <%= 'is-watched' if review %>"
      data-controller="movie-card"
      data-movie-id="<%= movie.id %>"
+     data-reviewed="<%= !!review %>"
      id="movie-card-<%= movie.id %>">
 
-  <%# User's rating badge %>
+  <%# User's rating badge - clickable to edit review %>
   <% if review&.stars.present? %>
-    <div class="movie-card-badge animate-float">
-      <%= review.stars %> <i class="bi bi-star-fill"></i>
-    </div>
+    <%= link_to edit_movie_review_path(movie, review, year: current_year),
+        class: "movie-card-badge animate-float",
+        data: { turbo: false } do %>
+      <span class="rating-number"><%= review.stars %></span>
+      <i data-lucide="edit-2" class="edit-icon"></i>
+    <% end %>
   <% end %>
 
-  <%# Movie poster %>
-  <% if movie.picture_url.present? %>
-    <img src="<%= movie.picture_url %>"
-         alt="<%= movie.title %>"
-         class="movie-card-poster"
-         loading="lazy">
-  <% else %>
-    <div class="movie-card-poster flex items-center justify-center bg-gold-light">
-      <i class="bi bi-film text-gold text-4xl"></i>
-    </div>
-  <% end %>
+  <%# Movie poster container with overlay %>
+  <div class="movie-card-poster-container">
+    <% if movie.picture_url.present? %>
+      <img src="<%= movie.picture_url %>"
+           alt="<%= movie.title %>"
+           class="movie-card-poster"
+           loading="lazy">
+    <% else %>
+      <div class="movie-card-poster flex items-center justify-center bg-gold-light">
+        <i data-lucide="film" class="text-muted text-4xl"></i>
+      </div>
+    <% end %>
 
-  <%# Title overlay (always visible) %>
-  <div class="movie-card-title">
+    <%# Hover overlay with actions %>
+    <% if show_actions && current_user %>
+      <div class="movie-card-overlay">
+          <div class="movie-card-actions">
+            <% unless review %>
+              <%= link_to new_movie_review_path(movie, year: current_year), class: "btn-outline-oscar btn-sm" do %>
+                <i data-lucide="popcorn" style="font-size: 1.75rem;"></i> Watched
+              <% end %>
+            <% end %>
+          </div>
+      </div>
+    <% end %>
+  </div>
+
+  <%# Title and ratings (always visible) %>
+  <div class="movie-card-info">
     <h5><%= movie.title %></h5>
-    <div class="movie-rating">
+  <div class="movie-rating-row">
+    <div class="movie-rating-left">
       <% if movie.average_stars.zero? %>
-        <span class="text-muted">No ratings yet</span>
+        <i data-lucide="users" class="text-muted"></i>
+        <span class="text-muted">No ratings</span>
       <% else %>
-        <i class="bi bi-star-fill"></i>
-        <%= number_with_precision(movie.average_stars, precision: 1) %>/5 from mates
+        <i data-lucide="users" class="text-muted"></i>
+        <span><%= number_with_precision(movie.average_stars, precision: 1) %></span>
+      <% end %>
+    </div>
+    <div class="movie-rating-right">
+      <% if movie.rating.zero? %>
+        <i data-lucide="film" class="text-muted"></i>
+        <span class="text-muted">-</span>
+      <% else %>
+        <%= link_to movie.url, target: "_blank", class: "flex items-center gap-1 text-slate-600 hover:text-[var(--oscar-gold-dark)] transition-colors duration-150" do %>
+          <i data-lucide="film"></i>
+          <span><%= number_with_precision(movie.rating, precision: 1) %></span>
+        <% end %>
       <% end %>
     </div>
   </div>
-
-  <%# Hover overlay with actions %>
-  <% if show_actions && current_user %>
-    <div class="movie-card-overlay">
-      <div class="movie-card-actions">
-        <%# Show rating only for already rated movies %>
-        <% if review&.stars.present? %>
-          <div class="your-rating-display mb-3">
-            <span class="your-rating-label">Your rating</span>
-            <div class="rating-value">
-              <i class="bi bi-star-fill"></i>
-              <span><%= review.stars %>/10</span>
-            </div>
-          </div>
-        <% end %>
-
-        <%# Action buttons %>
-        <div class="flex flex-wrap gap-2 justify-center">
-          <%= link_to movie_path(movie, year: current_year), class: "btn-oscar btn-sm" do %>
-            <i class="bi bi-info-circle"></i> Details
-          <% end %>
-
-          <% if review %>
-            <%= button_to movie_review_path(movie, review, year: current_year),
-                method: :delete,
-                class: "btn-outline-light btn-sm",
-                data: { turbo_confirm: "Remove from watched?" } do %>
-              <i class="bi bi-eye-slash"></i> Unwatch
-            <% end %>
-          <% else %>
-            <%= link_to new_movie_review_path(movie, year: current_year), class: "btn-coral btn-sm" do %>
-              <i class="bi bi-check-circle"></i> Watched
-            <% end %>
-          <% end %>
-        </div>
-      </div>
-    </div>
-  <% else %>
-    <%# For non-logged-in users, just link to movie %>
-    <a href="<%= movie_path(movie, year: current_year) %>" class="movie-card-overlay" style="background: transparent;">
-    </a>
-  <% end %>
+  </div>
 </div>

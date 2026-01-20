@@ -5,10 +5,30 @@
 
     <%# Toolbar %>
     <div class="toolbar">
-      <%# Search %>
+      <%# Filter Pill Group - Far Left %>
+      <% if current_user.present? %>
+        <div class="toolbar-left">
+          <div class="filter-pill">
+            <%= link_to movies_path(year: current_year, sort_by: params[:sort_by], query: params[:query]),
+                class: "filter-option #{'active' if params[:filter_by].blank?}" do %>
+              <i data-lucide="grid" class="text-muted"></i> All
+            <% end %>
+            <%= link_to movies_path(year: current_year, filter_by: 'unwatched', sort_by: params[:sort_by], query: params[:query]),
+                class: "filter-option #{'active' if params[:filter_by] == 'unwatched'}" do %>
+              <i data-lucide="eye-off" class="text-muted"></i> Unwatched
+            <% end %>
+            <%= link_to movies_path(year: current_year, filter_by: 'watched', sort_by: params[:sort_by], query: params[:query]),
+                class: "filter-option #{'active' if params[:filter_by] == 'watched'}" do %>
+              <i data-lucide="eye" class="text-muted"></i> Watched
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+
+      <%# Search - Middle %>
       <div class="search-wrapper">
         <form class="search-form" role="search" action="<%= movies_path(year: current_year) %>" method="get">
-          <i class="bi bi-search search-icon"></i>
+          <i data-lucide="search" class="search-icon"></i>
           <input class="search-input"
                  type="search"
                  name="query"
@@ -17,55 +37,26 @@
                  value="<%= params[:query] %>">
           <% if params[:query].present? %>
             <%= link_to movies_path(year: current_year, filter_by: params[:filter_by], sort_by: params[:sort_by]), class: "search-clear" do %>
-              <i class="bi bi-x"></i>
+              <i data-lucide="x" class="text-muted"></i>
             <% end %>
           <% end %>
         </form>
       </div>
 
+      <%# Sort Dropdown - Far Right %>
       <% if current_user.present? %>
-        <div class="toolbar-actions">
-          <%# Filter Dropdown %>
+        <div class="toolbar-right">
           <div class="hs-dropdown relative">
             <button class="toolbar-dropdown-btn hs-dropdown-toggle" type="button" aria-expanded="false">
-              <i class="bi bi-funnel"></i>
-              <span><%= filter_label(params[:filter_by]) %></span>
-              <i class="bi bi-chevron-down"></i>
-            </button>
-            <ul class="dropdown-menu dropdown-menu-filter hs-dropdown-menu transition-[opacity,margin] duration-200 opacity-0 hs-dropdown-open:opacity-100 hidden mt-2">
-              <li>
-                <%= link_to movies_path(year: current_year, sort_by: params[:sort_by], query: params[:query]),
-                    class: "dropdown-item #{'active' if params[:filter_by].blank?}" do %>
-                  <i class="bi bi-grid"></i> All Movies
-                <% end %>
-              </li>
-              <li>
-                <%= link_to movies_path(year: current_year, filter_by: 'unwatched', sort_by: params[:sort_by], query: params[:query]),
-                    class: "dropdown-item #{'active' if params[:filter_by] == 'unwatched'}" do %>
-                  <i class="bi bi-eye-slash"></i> Unwatched
-                <% end %>
-              </li>
-              <li>
-                <%= link_to movies_path(year: current_year, filter_by: 'watched', sort_by: params[:sort_by], query: params[:query]),
-                    class: "dropdown-item #{'active' if params[:filter_by] == 'watched'}" do %>
-                  <i class="bi bi-eye"></i> Watched
-                <% end %>
-              </li>
-            </ul>
-          </div>
-
-          <%# Sort Dropdown %>
-          <div class="hs-dropdown relative">
-            <button class="toolbar-dropdown-btn hs-dropdown-toggle" type="button" aria-expanded="false">
-              <i class="bi bi-sort-down"></i>
+              <i data-lucide="arrow-down-wide-narrow" class="text-muted"></i>
               <span><%= sort_label(params[:sort_by]) %></span>
-              <i class="bi bi-chevron-down"></i>
+              <i data-lucide="chevron-down" class="text-muted"></i>
             </button>
             <ul class="dropdown-menu dropdown-menu-sort hs-dropdown-menu transition-[opacity,margin] duration-200 opacity-0 hs-dropdown-open:opacity-100 hidden mt-2">
               <li>
                 <%= link_to movies_path(year: current_year, sort_by: '', filter_by: params[:filter_by], query: params[:query]),
                     class: "dropdown-item #{'active' if params[:sort_by].blank?}" do %>
-                  <i class="bi bi-sort-alpha-down"></i> A-Z
+                  <i data-lucide="sort-desc" class="text-muted"></i> A-Z
                 <% end %>
               </li>
               <li><hr class="dropdown-divider"></li>
@@ -73,13 +64,13 @@
               <li>
                 <%= link_to movies_path(year: current_year, sort_by: 'my_rating', filter_by: params[:filter_by], query: params[:query]),
                     class: "dropdown-item #{'active' if params[:sort_by] == 'my_rating'}" do %>
-                  <i class="bi bi-star"></i> My Rating
+                  <i data-lucide="star" class="text-muted"></i> My Rating
                 <% end %>
               </li>
               <li>
                 <%= link_to movies_path(year: current_year, sort_by: 'imdb_rating', filter_by: params[:filter_by], query: params[:query]),
                     class: "dropdown-item #{'active' if params[:sort_by] == 'imdb_rating'}" do %>
-                  <i class="bi bi-film"></i> IMDB Rating
+                  <i data-lucide="film" class="text-muted"></i> IMDB Rating
                 <% end %>
               </li>
               <li><hr class="dropdown-divider"></li>
@@ -87,13 +78,13 @@
               <li>
                 <%= link_to movies_path(year: current_year, sort_by: 'duration', filter_by: params[:filter_by], query: params[:query]),
                     class: "dropdown-item #{'active' if params[:sort_by] == 'duration'}" do %>
-                  <i class="bi bi-hourglass-top"></i> Longest First
+                  <i data-lucide="timer" class="text-muted"></i> Longest First
                 <% end %>
               </li>
               <li>
                 <%= link_to movies_path(year: current_year, sort_by: 'shortest', filter_by: params[:filter_by], query: params[:query]),
                     class: "dropdown-item #{'active' if params[:sort_by] == 'shortest'}" do %>
-                  <i class="bi bi-hourglass-bottom"></i> Shortest First
+                  <i data-lucide="clock" class="text-muted"></i> Shortest First
                 <% end %>
               </li>
               <li><hr class="dropdown-divider"></li>
@@ -101,13 +92,13 @@
               <li>
                 <%= link_to movies_path(year: current_year, sort_by: 'watched_by_mates', filter_by: params[:filter_by], query: params[:query]),
                     class: "dropdown-item #{'active' if params[:sort_by] == 'watched_by_mates'}" do %>
-                  <i class="bi bi-people"></i> Mates' Rating
+                  <i data-lucide="users" class="text-muted"></i> Mates' Rating
                 <% end %>
               </li>
               <li>
                 <%= link_to movies_path(year: current_year, sort_by: 'most_nominated', filter_by: params[:filter_by], query: params[:query]),
                     class: "dropdown-item #{'active' if params[:sort_by] == 'most_nominated'}" do %>
-                  <i class="bi bi-trophy"></i> Most Nominated
+                  <i data-lucide="trophy" class="text-muted"></i> Most Nominated
                 <% end %>
               </li>
             </ul>
@@ -120,7 +111,7 @@
     <div data-controller="confetti" data-confetti-enabled-value="<%= @all_movies_watched %>">
       <% if @all_movies_watched %>
         <div class="rounded-oscar mb-4 flex items-center justify-center gap-2 border border-amber-200 bg-gold-light px-4 py-3 text-center animate-fade-in-up">
-          <i class="bi bi-trophy-fill text-gold" style="font-size: 1.5rem;"></i>
+          <i data-lucide="trophy" class="text-gold" style="font-size: 1.5rem;"></i>
           <strong>Congratulations!</strong> You've watched all <%= current_year %> Oscar nominees!
         </div>
       <% end %>
@@ -136,41 +127,49 @@
         <% end %>
       </div>
     <% else %>
-      <%# Empty State %>
-      <div class="empty-state">
-        <div class="empty-icon">
-          <i class="bi bi-film"></i>
-        </div>
-        <h3>No movies found</h3>
-        <p>
-          <% if params[:query].present? %>
-            No results for "<%= params[:query] %>". Try a different search.
-          <% elsif params[:filter_by] == 'unwatched' %>
-            You've watched everything! Amazing!
-          <% else %>
-            No movies available for this year yet.
-          <% end %>
-        </p>
-        <% if params[:query].present? || params[:filter_by].present? %>
-          <%= link_to "Clear Filters", movies_path(year: current_year), class: "btn-oscar" %>
+    <%# Empty State %>
+     <div class="empty-state">
+      <div class="empty-icon">
+        <% if params[:filter_by] == 'watched' %>
+          <%= image_tag 'empty_watched.svg', class: 'empty-state-svg' %>
+        <% elsif params[:filter_by] == 'unwatched' %>
+          <%= image_tag 'empty_unwatched.svg', class: 'empty-state-svg' %>
+        <% else %>
+          <%= image_tag 'empty_watched.svg', class: 'empty-state-svg' %>
         <% end %>
       </div>
+      <h3>No movies found</h3>
+      <p>
+        <% if params[:query].present? %>
+          No results for "<%= params[:query] %>". Try a different search.
+        <% elsif params[:filter_by] == 'unwatched' %>
+          You've watched everything! Amazing!
+        <% elsif params[:filter_by] == 'watched' %>
+          You haven't watched any movies yet. Start watching!
+        <% end %>
+      </p>
+        <% if params[:query].present? || params[:filter_by].present? %>
+          <%= link_to movies_path(year: current_year), class: "btn-clear-filters" do %>
+            <i data-lucide="x" class="text-muted"></i> Clear Filters
+          <% end %>
+        <% end %>
+        </div>
     <% end %>
 
     <%# Admin Button %>
     <% if current_user_admin? %>
       <div class="text-center mt-4">
         <%= link_to new_movie_path(year: current_year), class: "btn-outline-oscar" do %>
-          <i class="bi bi-plus-circle mr-1"></i> Add New Movie
+          <i data-lucide="plus-circle" class="mr-1 text-muted"></i> Add New Movie
         <% end %>
       </div>
     <% end %>
   </div>
 
   <%# Back to Top %>
-  <a href="#top" class="btn-oscar back-to-top" title="Back to top">
-    <i class="bi bi-chevron-up"></i>
-  </a>
+  <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="back-to-top" title="Back to top">
+    <i data-lucide="arrow-up" class="text-[#A3A29F]"></i>
+  </button>
 </main>
 
 <style>
@@ -188,6 +187,7 @@
   z-index: 100;
   opacity: 0.9;
   transition: var(--transition-smooth);
+  background: var(--bg-secondary);
 }
 
 .back-to-top:hover {
