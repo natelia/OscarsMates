@@ -26,8 +26,8 @@ class ReviewsController < ApplicationController
   end
 
   def destroy
-    @review = find_review
-    @review&.destroy
+    @review = current_user.reviews.find_by!(movie_id: @movie.id)
+    @review.destroy
 
     redirect_to movies_path(year: current_year), notice: 'Movie marked as Unwatched!'
   end
@@ -40,9 +40,5 @@ class ReviewsController < ApplicationController
 
   def set_movie
     @movie = Movie.for_year(current_year).find_by!(slug: params[:movie_id])
-  end
-
-  def find_review
-    current_user.reviews.find_by(movie_id: @movie.id)
   end
 end

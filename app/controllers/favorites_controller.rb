@@ -6,8 +6,12 @@ class FavoritesController < ApplicationController
   before_action :set_movie
 
   def create
-    @movie.favorites.create!(user: current_user)
-    redirect_to movie_path(@movie, year: current_year), notice: 'Movie was successfully added to favorites.'
+    favorite = @movie.favorites.new(user: current_user)
+    if favorite.save
+      redirect_to movie_path(@movie, year: current_year), notice: 'Movie was successfully added to favorites.'
+    else
+      redirect_to movie_path(@movie, year: current_year), alert: 'Could not add movie to favorites.'
+    end
   end
 
   def destroy

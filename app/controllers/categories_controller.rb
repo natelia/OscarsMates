@@ -4,7 +4,8 @@ class CategoriesController < ApplicationController
   before_action :set_category, only: %i[show edit update destroy]
 
   def index
-    @categories = ListCategoryQuery.new(params, current_year).results
+    categories_query = ListCategoryQuery.new(params, current_year).results
+    @pagy, @categories = pagy(categories_query.order(:name))
     # Precompute movie counts to avoid N+1 queries in the view
     @movie_counts = Nomination.where(year: current_year)
                               .group(:category_id)
@@ -12,18 +13,8 @@ class CategoriesController < ApplicationController
   end
 
   def show
-    @category = Category.find(params[:id])
     @movies = @category.movies.for_year(current_year).includes(:reviews)
     @user_reviews = current_user ? current_user.reviews.index_by(&:movie_id) : {}
-
-    # Handle unwatched action
-    return unless params[:unwatched] && current_user
-
-    movie = Movie.find(params[:unwatched])
-    review = current_user.reviews.find_by(movie_id: movie.id)
-    review&.update(watched: false)
-    redirect_to category_path(@category, year: current_year), notice: "#{movie.title} marked as unwatched"
-    nil
   end
 
   def new
@@ -37,7 +28,7 @@ class CategoriesController < ApplicationController
     if @category.save
       redirect_to category_path(@category, year: current_year), notice: 'Category was successfully created'
     else
-      render :new
+      render :new, status: :unprocessable_content
     end
   end
 
@@ -45,7 +36,7 @@ class CategoriesController < ApplicationController
     if @category.update(category_params)
       redirect_to category_path(@category, year: current_year), notice: 'Category was successfully updated'
     else
-      render :edit
+      render :edit, status: :unprocessable_content
     end
   end
 

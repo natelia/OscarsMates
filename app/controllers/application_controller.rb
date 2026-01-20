@@ -1,5 +1,8 @@
 # ApplicationController is the base class for all controllers in the application.
 class ApplicationController < ActionController::Base
+  include Pagy::Backend
+  include ErrorHandling
+
   before_action :set_current_year
 
   helper_method :current_year, :available_years, :default_year

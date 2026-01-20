@@ -7,21 +7,16 @@ class MoviesController < ApplicationController
   before_action :set_movie, only: %i[show edit update destroy]
 
   def index
-    @movies = ListMoviesQuery.new(params, current_user, current_year).results
+    movies_query = ListMoviesQuery.new(params, current_user, current_year).results
+    @pagy, @movies = pagy(movies_query)
 
-    @user_reviews = []
+    @user_reviews = {}
     if current_user
       @user_reviews = UserMovieProgress.new(@movies, current_user).call
       calculate_progress
     end
 
-    @all_movies_watched = if current_user
-                            watched = current_user.watched_movies_count_for_year(current_year)
-                            total = Movie.for_year(current_year).count
-                            watched == total
-                          else
-                            false
-                          end
+    @all_movies_watched = current_user ? all_movies_watched? : false
   end
 
   def show
@@ -95,5 +90,11 @@ class MoviesController < ApplicationController
   def set_users_specific_data
     @favorite = current_user.favorites.find_by(movie_id: @movie.id)
     @review = current_user.reviews.find_by(movie_id: @movie.id)
+  end
+
+  def all_movies_watched?
+    watched = current_user.watched_movies_count_for_year(current_year)
+    total = Movie.for_year(current_year).count
+    total.positive? && watched == total
   end
 end

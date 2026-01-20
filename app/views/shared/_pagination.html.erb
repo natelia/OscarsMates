@@ -1,0 +1,6 @@
+<%# Pagination partial using Pagy with Bootstrap styling %>
+<% if @pagy && @pagy.pages > 1 %>
+  <nav aria-label="Page navigation" class="d-flex justify-content-center mt-4">
+    <%== pagy_bootstrap_nav(@pagy) %>
+  </nav>
+<% end %>

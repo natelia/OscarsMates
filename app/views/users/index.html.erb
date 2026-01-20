@@ -7,7 +7,7 @@
         Oscar Mates
       </h1>
       <p class="text-muted">
-        <%= pluralize(@users.size, 'mate') %> tracking <%= @year %> nominees
+        <%= pluralize(@pagy.count + @top_watchers.size, 'mate') %> tracking <%= @year %> nominees
       </p>
     </header>
 
@@ -32,9 +32,9 @@
       </div>
     </div>
 
-    <% if @users.any? %>
+    <% if @top_watchers.any? || @remaining_users.any? %>
       <%# Top Watchers Podium (only show when not filtering) %>
-      <% unless params[:filter] == 'followed' %>
+      <% if @top_watchers.any? %>
         <%= render 'top_watchers',
             top_watchers: @top_watchers,
             total_movies: @total_movies_count,
@@ -43,9 +43,7 @@
       <% end %>
 
       <%# All Mates Section %>
-      <% users_to_show = params[:filter] == 'followed' ? @users : @remaining_users %>
-
-      <% if users_to_show.any? %>
+      <% if @remaining_users.any? %>
         <% unless params[:filter] == 'followed' %>
           <h4 class="mb-4 text-center text-muted">
             <i class="bi bi-grid me-2"></i>
@@ -54,18 +52,21 @@
         <% end %>
 
         <div class="mates-grid">
-          <% users_to_show.each_with_index do |user, index| %>
+          <% @remaining_users.each_with_index do |user, index| %>
+            <% base_rank = (@pagy.page - 1) * @pagy.limit + index + 4 %>
             <div class="animate-fade-in-up animate-delay-<%= [index + 1, 12].min %>">
               <%= render 'mate_card',
                   user: user,
                   total_movies: @total_movies_count,
                   year: @year,
                   current_user: current_user,
-                  rank: params[:filter] == 'followed' ? nil : (index + 4),
+                  rank: params[:filter] == 'followed' ? nil : base_rank,
                   watched_counts: @watched_counts %>
             </div>
           <% end %>
         </div>
+
+        <%= render 'shared/pagination' %>
       <% end %>
 
     <% else %>

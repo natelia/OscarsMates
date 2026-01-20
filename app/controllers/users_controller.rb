@@ -7,24 +7,18 @@ class UsersController < ApplicationController
   before_action :require_correct_user, only: %i[edit update destroy]
 
   def index
-    @users = User.all
     @year = current_year || default_year
-    @total_movies_count = Movie.for_year(@year).count
 
-    @users = UserFilterService.new(current_user, params[:filter]).call
+    service = UsersIndexService.new(
+      current_user: current_user,
+      year: @year,
+      filter: params[:filter]
+    ).call
 
-    # Precompute watched counts for all users to avoid N+1 queries
-    @watched_counts = Review.joins(movie: :nominations)
-                            .where(nominations: { year: @year })
-                            .group(:user_id)
-                            .distinct
-                            .count(:movie_id)
-
-    # Calculate top watchers for podium display using precomputed counts
-    @top_watchers = @users.sort_by { |u| -(@watched_counts[u.id] || 0) }.first(3)
-
-    # Exclude top watchers from main list to avoid duplication
-    @remaining_users = @users - @top_watchers
+    @total_movies_count = service.total_movies_count
+    @watched_counts = service.watched_counts
+    @top_watchers = service.top_watchers
+    @pagy, @remaining_users = pagy_array(service.remaining_users)
   end
 
   def show

@@ -88,3 +88,6 @@ group :test do
 end
 
 gem 'sidekiq', '~> 7.3'
+
+# Pagination
+gem 'pagy', '~> 9.0'
