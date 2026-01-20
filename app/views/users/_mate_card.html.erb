@@ -35,14 +35,14 @@
               method: :delete,
               class: "inline-flex items-center justify-center rounded-md border border-red-200 px-2.5 py-1 text-xs font-semibold text-red-600 hover:bg-red-50",
               data: { disable_with: "..." } do %>
-            <i class="bi bi-person-dash"></i>
+            <i data-lucide="user-minus" class="text-muted"></i>
           <% end %>
         <% else %>
           <%= button_to follow_user_path(user),
               method: :post,
               class: "btn-oscar btn-sm",
               data: { disable_with: "..." } do %>
-            <i class="bi bi-person-plus"></i>
+            <i data-lucide="user-plus" class="text-muted"></i>
           <% end %>
         <% end %>
       <% end %>
@@ -70,7 +70,7 @@
           <% else %>
             <div class="rounded bg-gold-light flex items-center justify-center"
                  style="width: 32px; height: 48px;">
-              <i class="bi bi-film text-gold" style="font-size: 0.75rem;"></i>
+              <i data-lucide="film" class="text-muted" style="font-size: 0.75rem;"></i>
             </div>
           <% end %>
         <% end %>

@@ -5,10 +5,10 @@ class UserFilterService
   end
 
   def call
-    if @filter == 'followed' && @current_user
-      @current_user.following
-    else
+    if @filter == 'all' || !@current_user
       User.all
+    else
+      @current_user.following
     end
   end
 end

@@ -8,7 +8,7 @@
 
       <div class="flex flex-wrap items-center gap-3">
         <form class="search-form" role="search" action="<%= categories_path(year: current_year) %>" method="get">
-          <i class="bi bi-search search-icon"></i>
+          <i data-lucide="search" class="search-icon"></i>
           <input class="search-input"
                  type="search"
                  name="query"
@@ -19,7 +19,7 @@
 
         <% if current_user_admin? %>
           <%= link_to new_category_path(year: current_year), class: "btn-oscar btn-sm" do %>
-            <i class="bi bi-plus"></i>
+            <i data-lucide="plus" class="text-muted"></i>
           <% end %>
         <% end %>
       </div>
@@ -30,7 +30,7 @@
         <% @categories.each do |category| %>
           <% movie_count = category.movies.for_year(current_year).count %>
           <%= link_to category_path(category, year: current_year), class: "category-card-mini" do %>
-            <i class="bi <%= category_icon(category.name) %> category-card-icon"></i>
+            <i data-lucide="<%= category_icon(category.name) %>" class="category-card-icon text-muted"></i>
             <span class="category-card-name"><%= category.name %></span>
             <span class="category-card-count"><%= movie_count %></span>
           <% end %>
@@ -39,7 +39,7 @@
     <% else %>
       <div class="empty-state">
         <div class="empty-icon">
-          <i class="bi bi-award"></i>
+          <i data-lucide="award" class="text-muted"></i>
         </div>
         <h3>No categories found</h3>
         <p>

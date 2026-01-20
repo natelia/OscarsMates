@@ -13,6 +13,10 @@ class ReviewsController < ApplicationController
     @review = @movie.reviews.new
   end
 
+  def edit
+    @review = find_review
+  end
+
   def create
     @review = @movie.reviews.new(review_params)
     @review.user = current_user
@@ -22,6 +26,17 @@ class ReviewsController < ApplicationController
                   notice: 'Thanks for your review!'
     else
       render :new, status: :unprocessable_content
+    end
+  end
+
+  def update
+    @review = find_review
+
+    if @review.update(review_params)
+      redirect_to movies_path(year: current_year),
+                  notice: 'Review updated!'
+    else
+      render :edit, status: :unprocessable_content
     end
   end
 

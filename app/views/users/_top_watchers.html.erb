@@ -4,7 +4,7 @@
 <% if top_watchers.present? && top_watchers.any? %>
   <div class="top-watchers-section mb-5">
     <h3 class="text-center mb-4">
-      <i class="bi bi-trophy-fill text-gold mr-2"></i>
+      <i data-lucide="trophy" class="text-gold mr-2"></i>
       Top Watchers
     </h3>
 
@@ -15,7 +15,7 @@
         <% progress = user_progress_for_year(user, year, total_movies) %>
         <div class="podium-card second animate-fade-in-up animate-delay-2">
           <div class="medal mb-2">
-            <i class="bi bi-award-fill" style="font-size: 2rem;"></i>
+            <i data-lucide="award" class="text-muted" style="font-size: 2rem;"></i>
           </div>
           <div class="avatar-circle mx-auto mb-2" style="background-color: <%= avatar_color(user.name) %>; width: 50px; height: 50px; font-size: 1rem;">
             <%= avatar_initials(user.name) %>
@@ -36,7 +36,7 @@
         <% progress = user_progress_for_year(user, year, total_movies) %>
         <div class="podium-card first animate-fade-in-up animate-delay-1">
           <div class="crown mb-2 crown-animated">
-            <i class="bi bi-trophy-fill" style="font-size: 2.5rem;"></i>
+            <i data-lucide="trophy" class="text-muted" style="font-size: 2.5rem;"></i>
           </div>
           <div class="avatar-circle mx-auto mb-2" style="background-color: <%= avatar_color(user.name) %>; width: 70px; height: 70px; font-size: 1.5rem;">
             <%= avatar_initials(user.name) %>
@@ -57,7 +57,7 @@
         <% progress = user_progress_for_year(user, year, total_movies) %>
         <div class="podium-card third animate-fade-in-up animate-delay-3">
           <div class="medal mb-2">
-            <i class="bi bi-award-fill" style="font-size: 2rem;"></i>
+            <i data-lucide="award" class="text-muted" style="font-size: 2rem;"></i>
           </div>
           <div class="avatar-circle mx-auto mb-2" style="background-color: <%= avatar_color(user.name) %>; width: 50px; height: 50px; font-size: 1rem;">
             <%= avatar_initials(user.name) %>
