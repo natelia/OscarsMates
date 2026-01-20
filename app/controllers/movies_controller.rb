@@ -12,7 +12,8 @@ class MoviesController < ApplicationController
 
     @user_reviews = {}
     if current_user
-      @user_reviews = UserMovieProgress.new(@movies, current_user).call
+      result = UserMovieProgress.call(movies: @movies, user: current_user)
+      @user_reviews = result.data if result.success?
       calculate_progress
     end
 
@@ -63,7 +64,8 @@ class MoviesController < ApplicationController
   end
 
   def sort_movies
-    @movies = MovieSortingService.new(@movies, params[:sort_by], current_user).call
+    result = MovieSortingService.call(movies: @movies, sort_by: params[:sort_by], user: current_user)
+    @movies = result.data if result.success?
   end
 
   def set_movie
@@ -76,7 +78,8 @@ class MoviesController < ApplicationController
   end
 
   def filter_movies
-    @movies = MovieFilteringService.new(@movies, current_user).filter_unwatched
+    result = MovieFilteringService.call(movies: @movies, user: current_user, filter: 'unwatched')
+    @movies = result.data if result.success?
   end
 
   def search_movies
@@ -84,7 +87,10 @@ class MoviesController < ApplicationController
   end
 
   def calculate_progress
-    @progress = UserProgressService.new(current_user, current_year).progress if current_user
+    return unless current_user
+
+    result = UserProgressService.call(user: current_user, year: current_year)
+    @progress = result.data if result.success?
   end
 
   def set_users_specific_data

@@ -79,3 +79,9 @@ Performance/DeletePrefix:
 
 Performance/DeleteSuffix:
   Enabled: true
+
+# Service objects inherit from ApplicationService which has no constructor
+Lint/MissingSuper:
+  Exclude:
+    - 'app/services/*_service.rb'
+    - 'app/services/user_movie_progress.rb'

@@ -8,16 +8,16 @@ RSpec.describe MovieSortingService do
   let!(:nomination1) { create(:nomination, movie: short_movie, category: category, year: 2025) }
   let!(:nomination2) { create(:nomination, movie: long_movie, category: category, year: 2025) }
 
-  describe '#call' do
+  describe '.call' do
     context 'when sorting by duration' do
       it 'returns movies ordered by runtime descending' do
         movies = Movie.all
-        service = described_class.new(movies, 'duration', user)
 
-        result = service.call
+        result = described_class.call(movies: movies, sort_by: 'duration', user: user)
 
-        expect(result.first).to eq(long_movie)
-        expect(result.last).to eq(short_movie)
+        expect(result).to be_success
+        expect(result.data.first).to eq(long_movie)
+        expect(result.data.last).to eq(short_movie)
       end
     end
 
@@ -28,11 +28,11 @@ RSpec.describe MovieSortingService do
 
       it 'returns movies ordered by mates reviews count' do
         movies = Movie.all
-        service = described_class.new(movies, 'watched_by_mates', user)
 
-        result = service.call
+        result = described_class.call(movies: movies, sort_by: 'watched_by_mates', user: user)
 
-        expect(result.first).to eq(short_movie)
+        expect(result).to be_success
+        expect(result.data.first).to eq(short_movie)
       end
     end
 
@@ -42,23 +42,23 @@ RSpec.describe MovieSortingService do
 
       it 'returns movies ordered by nomination count' do
         movies = Movie.all
-        service = described_class.new(movies, 'most_nominated', user)
 
-        result = service.call
+        result = described_class.call(movies: movies, sort_by: 'most_nominated', user: user)
 
-        expect(result.first).to eq(short_movie)
+        expect(result).to be_success
+        expect(result.data.first).to eq(short_movie)
       end
     end
 
     context 'when sorting by default (title)' do
       it 'returns movies ordered alphabetically by title' do
         movies = Movie.all
-        service = described_class.new(movies, nil, user)
 
-        result = service.call
+        result = described_class.call(movies: movies, sort_by: nil, user: user)
 
-        expect(result.first).to eq(long_movie)
-        expect(result.last).to eq(short_movie)
+        expect(result).to be_success
+        expect(result.data.first).to eq(long_movie)
+        expect(result.data.last).to eq(short_movie)
       end
     end
   end

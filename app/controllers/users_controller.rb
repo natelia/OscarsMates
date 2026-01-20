@@ -9,16 +9,23 @@ class UsersController < ApplicationController
   def index
     @year = current_year || default_year
 
-    service = UsersIndexService.new(
+    result = UsersIndexService.call(
       current_user: current_user,
       year: @year,
       filter: params[:filter]
-    ).call
+    )
 
-    @total_movies_count = service.total_movies_count
-    @watched_counts = service.watched_counts
-    @top_watchers = service.top_watchers
-    @pagy, @remaining_users = pagy_array(service.remaining_users)
+    if result.success?
+      @total_movies_count = result.data[:total_movies_count]
+      @watched_counts = result.data[:watched_counts]
+      @top_watchers = result.data[:top_watchers]
+      @pagy, @remaining_users = pagy_array(result.data[:remaining_users])
+    else
+      @total_movies_count = 0
+      @watched_counts = {}
+      @top_watchers = []
+      @pagy, @remaining_users = pagy_array([])
+    end
   end
 
   def show
@@ -26,7 +33,10 @@ class UsersController < ApplicationController
     year = current_year || default_year
     @reviews = @user.reviews_for_year(year).includes(:movie).order(watched_on: :desc, created_at: :desc)
     @favorite_movies = @user.favorite_movies.for_year(year)
-    @progress = UserProgressService.new(@user, year).progress
+
+    progress_result = UserProgressService.call(user: @user, year: year)
+    @progress = progress_result.success? ? progress_result.data : 0
+
     @top_rated_movies = @user.reviews_for_year(year).order(stars: :desc).limit(3).map(&:movie)
   end
 
@@ -63,11 +73,17 @@ class UsersController < ApplicationController
 
   def stats
     @user = current_user
-    stats_service = UserStatsService.new(@user, current_year)
+    result = UserStatsService.call(user: @user, year: current_year)
 
-    @total_movies_watched = stats_service.user_stats[:total_movies_watched]
-    @total_minutes_watched = stats_service.user_stats[:total_minutes_watched]
-    @mates_stats = stats_service.mates_stats || []
+    if result.success?
+      @total_movies_watched = result.data[:user_stats][:total_movies_watched]
+      @total_minutes_watched = result.data[:user_stats][:total_minutes_watched]
+      @mates_stats = result.data[:mates_stats] || []
+    else
+      @total_movies_watched = 0
+      @total_minutes_watched = 0
+      @mates_stats = []
+    end
 
     @mates_reviews = MatesReviewsQuery.new(current_user, current_year).results
   end
