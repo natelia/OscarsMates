@@ -1,139 +1,90 @@
-<section class="user py-5">
+<main class="user-profile py-5">
   <div class="container">
     <div class="text-center mb-4">
       <h1 class="display-4"><%= @user.name %></h1>
-      <strong>Follows:</strong> <%= @user.following.count %>
-      <strong>Followers:</strong> <%= @user.followers.count %>
-      <h4><%= mail_to(@user.email) %></h4>
+      <p>
+        <strong>Follows:</strong> <%= @user.following.count %>
+        <strong class="ms-3">Followers:</strong> <%= @user.followers.count %>
+      </p>
+      <p><%= mail_to(@user.email) %></p>
       <p class="text-muted">
         Member Since <%= @user.created_at.strftime("%B %Y") %>
       </p>
 
-      <div class="progress my-3">
-        <div class="progress-bar bg-success" role="progressbar" style="width: <%= @progress %>%;" aria-valuenow="<%= @progress %>" aria-valuemin="0" aria-valuemax="100">
+      <div class="progress my-3" role="progressbar" aria-label="Movies watched progress" aria-valuenow="<%= @progress %>" aria-valuemin="0" aria-valuemax="100">
+        <div class="progress-bar bg-success" style="width: <%= @progress %>%;">
           <%= number_to_percentage(@progress, precision: 0) %> Watched
         </div>
       </div>
 
       <% unless current_user?(@user) %>
         <% if current_user.following.include?(@user) %>
-          <%= button_to 'Unfollow', unfollow_user_path(@user), method: :delete, class: "btn btn-danger", data: { disable_with: "Unfollowing..." } %>
+          <%= button_to unfollow_user_path(@user),
+              method: :delete,
+              class: "btn btn-danger",
+              aria: { label: "Unfollow #{@user.name}" },
+              data: { disable_with: "Unfollowing..." } do %>
+            <i class="bi bi-person-dash me-1" aria-hidden="true"></i> Unfollow
+          <% end %>
         <% else %>
-          <%= button_to 'Follow', follow_user_path(@user), method: :post, class: "btn btn-primary", data: { disable_with: "Following..." } %>
+          <%= button_to follow_user_path(@user),
+              method: :post,
+              class: "btn btn-primary",
+              aria: { label: "Follow #{@user.name}" },
+              data: { disable_with: "Following..." } do %>
+            <i class="bi bi-person-plus me-1" aria-hidden="true"></i> Follow
+          <% end %>
         <% end %>
       <% end %>
     </div>
-    
 
     <% if @reviews.present? %>
-      <div class="accordion mb-4" id="reviewsAccordion">
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="headingReviews">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseReviews" aria-expanded="false" aria-controls="collapseReviews">
-              Recently Watched
-            </button>
-          </h2>
-          <div id="collapseReviews" class="accordion-collapse collapse" aria-labelledby="headingReviews" data-bs-parent="#reviewsAccordion">
-            <div class="accordion-body">
-              <% @reviews.each do |review| %>
-                <div class="d-flex align-items-center border p-3 my-3 rounded">
-                  <% if review.movie.picture_url.present? %>
-                    <img src="<%= review.movie.picture_url %>" alt="<%= review.movie.title %> Poster" class="me-3" width="60" height="90">
-                  <% end %>
-
-                  <div>
-                    <span class="d-block fw-bold">
-                      <%= link_to review.movie.title, movie_path(year: current_year, id: review.movie.id), class: "text-decoration-none" %> -
-                       <span class="text-warning"><%= render_stars(review.stars) %></span>
-                    </span>
-                    <small class="text-muted d-block">
-                      Watched on: <%= review.watched_on || review.created_at.strftime('%B %d, %Y') %>
-                    </small>
-                    <p class="mb-0">
-                      <%= review.comment %>
-                    </p>
-                  </div>
-                </div>
-              <% end %>
-            </div>
-          </div>
-        </div>
-      </div>
+      <%= render layout: 'shared/accordion_section', locals: { id: 'reviews', title: 'Recently Watched' } do %>
+        <% @reviews.each do |review| %>
+          <%= render 'shared/media_item',
+              movie: review.movie,
+              stars: review.stars,
+              subtitle: "Watched on: #{review.watched_on || review.created_at.strftime('%B %d, %Y')}",
+              comment: review.comment %>
+        <% end %>
+      <% end %>
     <% end %>
 
     <% if @favorite_movies.present? %>
-      <div class="accordion mb-4" id="favoritesAccordion">
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="headingFavorites">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFavorites" aria-expanded="false" aria-controls="collapseFavorites">
-              Favorite Movies
-            </button>
-          </h2>
-          <div id="collapseFavorites" class="accordion-collapse collapse" aria-labelledby="headingFavorites" data-bs-parent="#favoritesAccordion">
-            <div class="accordion-body">
-              <ul class="list-group">
-                <% @favorite_movies.each do |movie| %>
-                  <div class="d-flex align-items-center border p-3 my-3 rounded">
-                    <% if movie.picture_url.present? %>
-                      <img src="<%= movie.picture_url %>" alt="<%= movie.title %> Poster" class="me-3" width="60" height="90">
-                    <% end %>
-
-                    <div>
-                      <span class="d-block fw-bold">
-                        <%= link_to movie.title, movie_path(year: current_year, id: movie.id), class: "text-decoration-none" %>
-                      </span>
-                    </div>
-                  </div>
-                <% end %>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
+      <%= render layout: 'shared/accordion_section', locals: { id: 'favorites', title: 'Favorite Movies' } do %>
+        <% @favorite_movies.each do |movie| %>
+          <%= render 'shared/media_item', movie: movie %>
+        <% end %>
+      <% end %>
     <% end %>
 
     <% if @top_rated_movies.present? %>
-  <div class="accordion mb-4" id="topRatedAccordion">
-    <div class="accordion-item">
-      <h2 class="accordion-header" id="headingTopRated">
-        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTopRated" aria-expanded="false" aria-controls="collapseTopRated">
-          Top-Rated Movies
-        </button>
-      </h2>
-      <div id="collapseTopRated" class="accordion-collapse collapse" aria-labelledby="headingTopRated" data-bs-parent="#topRatedAccordion">
-        <div class="accordion-body">
-          <% @top_rated_movies.each do |movie| %>
-            <div class="d-flex align-items-center border p-3 my-3 rounded">
-              <% if movie.picture_url.present? %>
-                <img src="<%= movie.picture_url %>" alt="<%= movie.title %> Poster" class="me-3" width="60" height="90">
-              <% end %>
-
-              <div>
-                <span class="d-block fw-bold">
-                  <%= link_to movie.title, movie_path(year: current_year, id: movie.id), class: "text-decoration-none" %> -
-                  <span class="text-warning"><%= render_stars(movie.reviews.find_by(user: @user).stars) %></span>
-                </span>
-              </div>
-            </div>
-          <% end %>
-        </div>
-      </div>
-    </div>
-  </div>
-<% end %>
-
-
+      <%= render layout: 'shared/accordion_section', locals: { id: 'topRated', title: 'Top-Rated Movies' } do %>
+        <% @top_rated_movies.each do |movie| %>
+          <% review = movie.reviews.find_by(user: @user) %>
+          <%= render 'shared/media_item',
+              movie: movie,
+              stars: review&.stars %>
+        <% end %>
+      <% end %>
+    <% end %>
 
     <% if current_user?(@user) %>
       <div class="actions mb-4 text-center">
-        <%= link_to "Edit Account", edit_user_path(@user), class: "btn btn-warning me-2" %>
-        <%= link_to "Delete Account", user_path(@user), class: "btn btn-danger", 
-                      data: { turbo_method: :delete, turbo_confirm: "Permanently delete your account?!" } %>
+        <%= link_to edit_user_path(@user), class: "btn btn-warning me-2" do %>
+          <i class="bi bi-pencil me-1" aria-hidden="true"></i> Edit Account
+        <% end %>
+        <%= link_to user_path(@user), class: "btn btn-danger",
+                    data: { turbo_method: :delete, turbo_confirm: "Permanently delete your account?!" } do %>
+          <i class="bi bi-trash me-1" aria-hidden="true"></i> Delete Account
+        <% end %>
       </div>
     <% end %>
 
     <div class="text-center">
-      <%= link_to "Home Page", root_path, class: "btn btn-primary" %>
+      <%= link_to root_path, class: "btn btn-primary" do %>
+        <i class="bi bi-house me-1" aria-hidden="true"></i> Home Page
+      <% end %>
     </div>
   </div>
-</section>
+</main>

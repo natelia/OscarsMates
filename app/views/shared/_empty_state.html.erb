@@ -1,0 +1,10 @@
+<div class="empty-state">
+  <div class="empty-icon">
+    <i class="bi bi-<%= local_assigns[:icon] || 'search' %>" aria-hidden="true"></i>
+  </div>
+  <h3><%= local_assigns[:title] || 'No results found' %></h3>
+  <p><%= local_assigns[:message] %></p>
+  <% if local_assigns[:action_path].present? %>
+    <%= link_to local_assigns[:action_text] || 'Clear Filters', local_assigns[:action_path], class: "btn btn-oscar" %>
+  <% end %>
+</div>

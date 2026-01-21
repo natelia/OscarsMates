@@ -1,0 +1,33 @@
+<%# Reusable media item partial for movie/review cards
+    Required locals:
+    - movie: the movie object
+    Optional locals:
+    - stars: star rating to display (nil to hide)
+    - subtitle: additional text below title (e.g., watched date)
+    - comment: comment text to display
+%>
+<article class="media-item d-flex align-items-center border p-3 my-3 rounded">
+  <% if movie.picture_url.present? %>
+    <img src="<%= movie.picture_url %>"
+         alt="Movie poster for <%= movie.title %>"
+         class="poster-thumbnail me-3"
+         width="60"
+         height="90"
+         loading="lazy">
+  <% end %>
+
+  <div>
+    <span class="d-block fw-bold">
+      <%= link_to movie.title, movie_path(year: current_year, id: movie.id), class: "text-decoration-none" %>
+      <% if local_assigns[:stars].present? %>
+        <span class="text-warning" aria-label="<%= stars %> out of 10 stars"><%= render_stars(stars) %></span>
+      <% end %>
+    </span>
+    <% if local_assigns[:subtitle].present? %>
+      <small class="text-muted d-block"><%= subtitle %></small>
+    <% end %>
+    <% if local_assigns[:comment].present? %>
+      <p class="mb-0"><%= comment %></p>
+    <% end %>
+  </div>
+</article>

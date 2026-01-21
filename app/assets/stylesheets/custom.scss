@@ -267,8 +267,10 @@ a {
   pointer-events: none;
   z-index: 10;
 
-  .movie-card:hover & {
+  .movie-card:hover &,
+  .movie-card.is-expanded & {
     pointer-events: auto;
+    opacity: 1;
   }
 }
 
@@ -283,6 +285,12 @@ a {
     pointer-events: auto;
     position: relative;
     z-index: 20;
+  }
+
+  .movie-card:hover &,
+  .movie-card.is-expanded & {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
@@ -1403,4 +1411,114 @@ a {
 
 .rounded-oscar {
   border-radius: var(--border-radius-md);
+}
+
+// ===================================
+// Icon Sizes
+// ===================================
+.icon-xs { font-size: 0.75rem; }
+.icon-sm { font-size: 1rem; }
+.icon-md { font-size: 1.5rem; }
+.icon-lg { font-size: 2rem; }
+.icon-xl { font-size: 2.5rem; }
+.icon-xxl { font-size: 3rem; }
+
+// ===================================
+// Avatar Sizes
+// ===================================
+.avatar-xs {
+  width: 32px;
+  height: 32px;
+  font-size: 0.75rem;
+}
+
+.avatar-sm {
+  width: 50px;
+  height: 50px;
+  font-size: 1rem;
+}
+
+.avatar-md {
+  width: 60px;
+  height: 60px;
+  font-size: 1.25rem;
+}
+
+.avatar-lg {
+  width: 70px;
+  height: 70px;
+  font-size: 1.5rem;
+}
+
+// ===================================
+// Poster Thumbnail Sizes
+// ===================================
+.poster-thumbnail {
+  width: 60px;
+  height: 90px;
+  object-fit: cover;
+}
+
+.poster-xs {
+  width: 32px;
+  height: 48px;
+  object-fit: cover;
+}
+
+.poster-sm {
+  width: 45px;
+  height: 67px;
+  object-fit: cover;
+}
+
+// ===================================
+// Progress Bar Widths
+// ===================================
+.progress-bar-sm {
+  width: 80px;
+  margin: 0 auto;
+}
+
+.progress-bar-md {
+  width: 100px;
+  margin: 0 auto;
+}
+
+// ===================================
+// Back to Top Button
+// ===================================
+.back-to-top {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--card-shadow-lg);
+  z-index: 100;
+  opacity: 0.9;
+  transition: var(--transition-smooth);
+
+  &:hover {
+    opacity: 1;
+    transform: translateY(-4px);
+  }
+}
+
+// ===================================
+// Toolbar Responsive Override
+// ===================================
+@media (max-width: 768px) {
+  .toolbar {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .toolbar form {
+    width: 100%;
+    max-width: none;
+  }
 }

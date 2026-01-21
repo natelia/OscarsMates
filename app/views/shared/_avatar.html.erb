@@ -1,0 +1,15 @@
+<%# Reusable avatar partial
+    Required locals:
+    - name: user's name for initials and color
+    Optional locals:
+    - size: 'xs', 'sm', 'md', 'lg' (default: 'md')
+    - extra_class: additional CSS classes
+%>
+<% size ||= 'md' %>
+<% extra_class ||= '' %>
+<div class="avatar-circle avatar-<%= size %> <%= extra_class %>"
+     style="background-color: <%= avatar_color(name) %>;"
+     role="img"
+     aria-label="<%= name %>'s avatar">
+  <%= avatar_initials(name) %>
+</div>

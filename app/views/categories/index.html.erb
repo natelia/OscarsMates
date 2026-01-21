@@ -38,22 +38,13 @@
 
       <%= render 'shared/pagination' %>
     <% else %>
-      <div class="empty-state">
-        <div class="empty-icon">
-          <i class="bi bi-award"></i>
-        </div>
-        <h3>No categories found</h3>
-        <p>
-          <% if params[:query].present? %>
-            No results for "<%= params[:query] %>".
-          <% else %>
-            No categories available yet.
-          <% end %>
-        </p>
-        <% if params[:query].present? %>
-          <%= link_to "Clear", categories_path(year: current_year), class: "btn btn-oscar btn-sm" %>
-        <% end %>
-      </div>
+      <% message = params[:query].present? ? "No results for \"#{params[:query]}\"." : "No categories available yet." %>
+      <%= render 'shared/empty_state',
+          icon: 'award',
+          title: 'No categories found',
+          message: message,
+          action_path: params[:query].present? ? categories_path(year: current_year) : nil,
+          action_text: 'Clear' %>
     <% end %>
   </div>
 </main>

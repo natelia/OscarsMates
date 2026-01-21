@@ -2,9 +2,9 @@
 <%# Local variables: top_watchers (array of 3 users), total_movies, year, watched_counts %>
 
 <% if top_watchers.present? && top_watchers.any? %>
-  <div class="top-watchers-section mb-5">
+  <section class="top-watchers-section mb-5" aria-label="Top watchers leaderboard">
     <h3 class="text-center mb-4">
-      <i class="bi bi-trophy-fill text-gold me-2"></i>
+      <i class="bi bi-trophy-fill text-gold me-2" aria-hidden="true"></i>
       Top Watchers
     </h3>
 
@@ -13,64 +13,58 @@
       <% if top_watchers[1] %>
         <% user = top_watchers[1] %>
         <% progress = user_progress_for_year(user, year, total_movies, watched_counts: watched_counts) %>
-        <div class="podium-card second animate-fade-in-up animate-delay-2">
+        <article class="podium-card second animate-fade-in-up animate-delay-2" aria-label="Second place: <%= user.name %>">
           <div class="medal mb-2">
-            <i class="bi bi-award-fill" style="font-size: 2rem;"></i>
+            <i class="bi bi-award-fill icon-lg" aria-hidden="true"></i>
           </div>
-          <div class="avatar-circle mx-auto mb-2" style="background-color: <%= avatar_color(user.name) %>; width: 50px; height: 50px; font-size: 1rem;">
-            <%= avatar_initials(user.name) %>
-          </div>
+          <%= render 'shared/avatar', name: user.name, size: 'sm', extra_class: 'mx-auto mb-2' %>
           <%= link_to user_path(user), class: "text-decoration-none" do %>
-            <h6 class="mb-1" style="color: var(--charcoal);"><%= user.name %></h6>
+            <h6 class="mb-1"><%= user.name %></h6>
           <% end %>
-          <div class="progress-bar-oscar progress-animated mb-2" style="width: 80px; margin: 0 auto;">
+          <div class="progress-bar-oscar progress-animated mb-2 progress-bar-sm" role="progressbar" aria-valuenow="<%= progress %>" aria-valuemin="0" aria-valuemax="100" aria-label="<%= user.name %>'s progress">
             <div class="progress-fill" style="--progress: <%= progress %>%; width: <%= progress %>%;"></div>
           </div>
           <small class="text-muted"><%= number_to_percentage(progress, precision: 0) %></small>
-        </div>
+        </article>
       <% end %>
 
       <%# 1st Place (center, elevated) %>
       <% if top_watchers[0] %>
         <% user = top_watchers[0] %>
         <% progress = user_progress_for_year(user, year, total_movies, watched_counts: watched_counts) %>
-        <div class="podium-card first animate-fade-in-up animate-delay-1">
+        <article class="podium-card first animate-fade-in-up animate-delay-1" aria-label="First place: <%= user.name %>">
           <div class="crown mb-2 crown-animated">
-            <i class="bi bi-trophy-fill" style="font-size: 2.5rem;"></i>
+            <i class="bi bi-trophy-fill icon-xl" aria-hidden="true"></i>
           </div>
-          <div class="avatar-circle mx-auto mb-2" style="background-color: <%= avatar_color(user.name) %>; width: 70px; height: 70px; font-size: 1.5rem;">
-            <%= avatar_initials(user.name) %>
-          </div>
+          <%= render 'shared/avatar', name: user.name, size: 'lg', extra_class: 'mx-auto mb-2' %>
           <%= link_to user_path(user), class: "text-decoration-none" do %>
-            <h5 class="mb-1" style="color: var(--charcoal);"><%= user.name %></h5>
+            <h5 class="mb-1"><%= user.name %></h5>
           <% end %>
-          <div class="progress-bar-oscar progress-animated mb-2" style="width: 100px; margin: 0 auto;">
+          <div class="progress-bar-oscar progress-animated mb-2 progress-bar-md" role="progressbar" aria-valuenow="<%= progress %>" aria-valuemin="0" aria-valuemax="100" aria-label="<%= user.name %>'s progress">
             <div class="progress-fill" style="--progress: <%= progress %>%; width: <%= progress %>%;"></div>
           </div>
           <small class="text-muted"><%= number_to_percentage(progress, precision: 0) %></small>
-        </div>
+        </article>
       <% end %>
 
       <%# 3rd Place (right) %>
       <% if top_watchers[2] %>
         <% user = top_watchers[2] %>
         <% progress = user_progress_for_year(user, year, total_movies, watched_counts: watched_counts) %>
-        <div class="podium-card third animate-fade-in-up animate-delay-3">
+        <article class="podium-card third animate-fade-in-up animate-delay-3" aria-label="Third place: <%= user.name %>">
           <div class="medal mb-2">
-            <i class="bi bi-award-fill" style="font-size: 2rem;"></i>
+            <i class="bi bi-award-fill icon-lg" aria-hidden="true"></i>
           </div>
-          <div class="avatar-circle mx-auto mb-2" style="background-color: <%= avatar_color(user.name) %>; width: 50px; height: 50px; font-size: 1rem;">
-            <%= avatar_initials(user.name) %>
-          </div>
+          <%= render 'shared/avatar', name: user.name, size: 'sm', extra_class: 'mx-auto mb-2' %>
           <%= link_to user_path(user), class: "text-decoration-none" do %>
-            <h6 class="mb-1" style="color: var(--charcoal);"><%= user.name %></h6>
+            <h6 class="mb-1"><%= user.name %></h6>
           <% end %>
-          <div class="progress-bar-oscar progress-animated mb-2" style="width: 80px; margin: 0 auto;">
+          <div class="progress-bar-oscar progress-animated mb-2 progress-bar-sm" role="progressbar" aria-valuenow="<%= progress %>" aria-valuemin="0" aria-valuemax="100" aria-label="<%= user.name %>'s progress">
             <div class="progress-fill" style="--progress: <%= progress %>%; width: <%= progress %>%;"></div>
           </div>
           <small class="text-muted"><%= number_to_percentage(progress, precision: 0) %></small>
-        </div>
+        </article>
       <% end %>
     </div>
-  </div>
+  </section>
 <% end %>

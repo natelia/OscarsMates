@@ -1,0 +1,28 @@
+<%# Reusable accordion section partial
+    Required locals:
+    - id: unique identifier for the accordion (e.g., 'reviews', 'favorites')
+    - title: the accordion header title
+    - &block: the content to render inside the accordion body
+%>
+<div class="accordion mb-4" id="<%= id %>Accordion">
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="heading<%= id.camelize %>">
+      <button class="accordion-button collapsed"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapse<%= id.camelize %>"
+              aria-expanded="false"
+              aria-controls="collapse<%= id.camelize %>">
+        <%= title %>
+      </button>
+    </h2>
+    <div id="collapse<%= id.camelize %>"
+         class="accordion-collapse collapse"
+         aria-labelledby="heading<%= id.camelize %>"
+         data-bs-parent="#<%= id %>Accordion">
+      <div class="accordion-body">
+        <%= yield %>
+      </div>
+    </div>
+  </div>
+</div>

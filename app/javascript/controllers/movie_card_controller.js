@@ -59,32 +59,10 @@ export default class extends Controller {
   expand() {
     this.isExpanded = true;
     this.element.classList.add("is-expanded");
-
-    const overlay = this.element.querySelector(".movie-card-overlay");
-    const actions = this.element.querySelector(".movie-card-actions");
-
-    if (overlay) {
-      overlay.style.opacity = "1";
-    }
-    if (actions) {
-      actions.style.opacity = "1";
-      actions.style.transform = "translateY(0)";
-    }
   }
 
   collapse() {
     this.isExpanded = false;
     this.element.classList.remove("is-expanded");
-
-    const overlay = this.element.querySelector(".movie-card-overlay");
-    const actions = this.element.querySelector(".movie-card-actions");
-
-    if (overlay) {
-      overlay.style.opacity = "";
-    }
-    if (actions) {
-      actions.style.opacity = "";
-      actions.style.transform = "";
-    }
   }
 }

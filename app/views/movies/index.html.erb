@@ -27,10 +27,10 @@
         <div class="toolbar-actions">
           <%# Filter Dropdown %>
           <div class="dropdown">
-            <button class="toolbar-dropdown-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-              <i class="bi bi-funnel"></i>
+            <button class="toolbar-dropdown-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Filter movies">
+              <i class="bi bi-funnel" aria-hidden="true"></i>
               <span><%= filter_label(params[:filter_by]) %></span>
-              <i class="bi bi-chevron-down"></i>
+              <i class="bi bi-chevron-down" aria-hidden="true"></i>
             </button>
             <ul class="dropdown-menu dropdown-menu-filter">
               <li>
@@ -56,10 +56,10 @@
 
           <%# Sort Dropdown %>
           <div class="dropdown">
-            <button class="toolbar-dropdown-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-              <i class="bi bi-sort-down"></i>
+            <button class="toolbar-dropdown-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Sort movies">
+              <i class="bi bi-sort-down" aria-hidden="true"></i>
               <span><%= sort_label(params[:sort_by]) %></span>
-              <i class="bi bi-chevron-down"></i>
+              <i class="bi bi-chevron-down" aria-hidden="true"></i>
             </button>
             <ul class="dropdown-menu dropdown-menu-sort">
               <li>
@@ -119,8 +119,8 @@
     <%# Celebration %>
     <div data-controller="confetti" data-confetti-enabled-value="<%= @all_movies_watched %>">
       <% if @all_movies_watched %>
-        <div class="alert bg-gold-light text-center rounded-oscar mb-4 animate-fade-in-up">
-          <i class="bi bi-trophy-fill text-gold me-2" style="font-size: 1.5rem;"></i>
+        <div class="alert bg-gold-light text-center rounded-oscar mb-4 animate-fade-in-up" role="alert">
+          <i class="bi bi-trophy-fill text-gold me-2 icon-md" aria-hidden="true"></i>
           <strong>Congratulations!</strong> You've watched all <%= current_year %> Oscar nominees!
         </div>
       <% end %>
@@ -138,25 +138,19 @@
 
       <%= render 'shared/pagination' %>
     <% else %>
-      <%# Empty State %>
-      <div class="empty-state">
-        <div class="empty-icon">
-          <i class="bi bi-film"></i>
-        </div>
-        <h3>No movies found</h3>
-        <p>
-          <% if params[:query].present? %>
-            No results for "<%= params[:query] %>". Try a different search.
-          <% elsif params[:filter_by] == 'unwatched' %>
-            You've watched everything! Amazing!
-          <% else %>
-            No movies available for this year yet.
-          <% end %>
-        </p>
-        <% if params[:query].present? || params[:filter_by].present? %>
-          <%= link_to "Clear Filters", movies_path(year: current_year), class: "btn btn-oscar" %>
-        <% end %>
-      </div>
+      <% message = if params[:query].present?
+                     "No results for \"#{params[:query]}\". Try a different search."
+                   elsif params[:filter_by] == 'unwatched'
+                     "You've watched everything! Amazing!"
+                   else
+                     "No movies available for this year yet."
+                   end %>
+      <%= render 'shared/empty_state',
+          icon: 'film',
+          title: 'No movies found',
+          message: message,
+          action_path: (params[:query].present? || params[:filter_by].present?) ? movies_path(year: current_year) : nil,
+          action_text: 'Clear Filters' %>
     <% end %>
 
     <%# Admin Button %>
@@ -170,43 +164,7 @@
   </div>
 
   <%# Back to Top %>
-  <a href="#top" class="btn btn-oscar back-to-top" title="Back to top">
-    <i class="bi bi-chevron-up"></i>
+  <a href="#top" class="btn btn-oscar back-to-top" aria-label="Back to top">
+    <i class="bi bi-chevron-up" aria-hidden="true"></i>
   </a>
 </main>
-
-<style>
-.back-to-top {
-  position: fixed;
-  bottom: 24px;
-  right: 24px;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: var(--card-shadow-lg);
-  z-index: 100;
-  opacity: 0.9;
-  transition: var(--transition-smooth);
-}
-
-.back-to-top:hover {
-  opacity: 1;
-  transform: translateY(-4px);
-}
-
-/* Toolbar responsive */
-@media (max-width: 768px) {
-  .toolbar {
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .toolbar form {
-    width: 100% !important;
-    max-width: none !important;
-  }
-}
-</style>

@@ -3,12 +3,12 @@
 // ./bin/rails generate stimulus controllerName
 
 import { application } from "./application";
-import HelloController from "./hello_controller";
+import ChartController from "./chart_controller";
 import ConfettiController from "./confetti_controller";
-import QuickRatingController from "./quick_rating_controller";
 import MovieCardController from "./movie_card_controller";
+import QuickRatingController from "./quick_rating_controller";
 
-application.register("hello", HelloController);
+application.register("chart", ChartController);
 application.register("confetti", ConfettiController);
-application.register("quick-rating", QuickRatingController);
 application.register("movie-card", MovieCardController);
+application.register("quick-rating", QuickRatingController);

@@ -70,25 +70,13 @@
       <% end %>
 
     <% else %>
-      <%# Empty State %>
-      <div class="empty-state">
-        <div class="empty-icon">
-          <i class="bi bi-people"></i>
-        </div>
-        <h3>No mates found</h3>
-        <p>
-          <% if params[:filter] == 'followed' %>
-            You're not following anyone yet. Start following mates to see them here!
-          <% else %>
-            Be the first to join the Oscar watching party!
-          <% end %>
-        </p>
-        <% if params[:filter] == 'followed' %>
-          <%= link_to users_path, class: "btn btn-oscar" do %>
-            <i class="bi bi-people me-1"></i> Browse All Mates
-          <% end %>
-        <% end %>
-      </div>
+      <% message = params[:filter] == 'followed' ? "You're not following anyone yet. Start following mates to see them here!" : "Be the first to join the Oscar watching party!" %>
+      <%= render 'shared/empty_state',
+          icon: 'people',
+          title: 'No mates found',
+          message: message,
+          action_path: params[:filter] == 'followed' ? users_path : nil,
+          action_text: 'Browse All Mates' %>
     <% end %>
   </div>
 </main>

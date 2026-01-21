@@ -3,6 +3,7 @@
 # Pagy configuration
 # See https://ddnexus.github.io/pagy/docs/api/pagy#variables
 
+require 'pagy'
 require 'pagy/extras/bootstrap'
 require 'pagy/extras/overflow'
 require 'pagy/extras/array'

@@ -14,13 +14,10 @@
         <% end %>
       </div>
     <% else %>
-      <div class="empty-state">
-        <div class="empty-icon">
-          <i class="bi bi-film"></i>
-        </div>
-        <h3>No movies in this category</h3>
-        <p>There are no movies for this category yet.</p>
-      </div>
+      <%= render 'shared/empty_state',
+          icon: 'film',
+          title: 'No movies in this category',
+          message: 'There are no movies for this category yet.' %>
     <% end %>
 
     <div class="d-flex gap-2 mt-4">
