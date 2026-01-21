@@ -1,0 +1,3 @@
+<%= turbo_stream.append "timeline-reviews" do %>
+  <%= render "users/timeline_reviews", reviews: @mates_reviews, page: @page, year: current_year %>
+<% end %>

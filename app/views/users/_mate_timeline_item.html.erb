@@ -1,0 +1,67 @@
+<%# Mate Timeline Item - Shows a mate's review with poster and details %>
+<%# Local variables: review %>
+
+<div class="flex gap-4 rounded-lg border border-slate-200 bg-white p-4">
+  <%# Left: Movie Poster %>
+  <div class="flex-shrink-0 relative">
+    <% my_review = current_user&.reviews&.find_by(movie: review.movie) %>
+
+    <%# My rating badge - clickable to edit review %>
+    <% if my_review&.stars.present? %>
+      <%= link_to edit_movie_review_path(review.movie, my_review, year: current_year),
+          class: "movie-card-badge animate-float",
+          data: { turbo: false } do %>
+        <span class="rating-number"><%= my_review.stars %></span>
+        <i data-lucide="edit-2" class="edit-icon"></i>
+      <% end %>
+    <% end %>
+
+    <% if review.movie.picture_url.present? %>
+      <%= image_tag review.movie.picture_url,
+                    alt: review.movie.title,
+                    class: "h-[200px] w-[133px] rounded-lg object-cover shadow-sm" %>
+    <% else %>
+      <div class="h-[200px] w-[133px] flex items-center justify-center rounded-lg bg-slate-100 shadow-sm">
+        <i data-lucide="film" class="text-slate-400" style="width: 48px; height: 48px;"></i>
+      </div>
+    <% end %>
+  </div>
+
+  <%# Right: Content Area %>
+  <div class="flex flex-1 flex-col gap-2">
+    <%# Top: User Info with Avatar and Rating Badge %>
+    <div class="flex items-start justify-between gap-2">
+      <div class="flex items-center gap-2">
+        <div class="avatar-circle h-12 w-12 text-base"
+             style="background-color: <%= avatar_color(review.user.name) %>;">
+          <%= avatar_initials(review.user.name) %>
+        </div>
+        <div>
+          <div class="text-sm font-semibold text-slate-900">
+            <%= review.user.name %>
+          </div>
+          <div class="text-sm italic text-slate-600">
+            Watched "<%= review.movie.title %>"
+            <% time_ago = time_ago_in_words(review.watched_on) %>
+            <span title="<%= review.watched_on.strftime('%B %d, %Y') %>">
+              <%= time_ago == "0 minutes" ? "Today" : "#{time_ago} ago" %>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <%# Rating Badge - rectangular with rounded corners like movie-card-badge but inactive %>
+      <div class="flex-shrink-0 flex items-center justify-center min-w-[4rem] rounded px-4 py-2 text-2xl font-bold"
+           style="background-color: var(--text-tertiary); color: white;">
+        <%= review.stars %>
+      </div>
+    </div>
+
+    <%# Comment Section - full comments without truncation %>
+    <% if review.comment.present? %>
+      <div class="mt-2 rounded-md bg-slate-50 p-3 text-sm text-slate-700">
+        <%= review.comment %>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -17,8 +17,9 @@ Rails.application.routes.draw do
 
     resources :categories
 
-    # Only stats is year-scoped
+    # User-related year-scoped pages
     get 'stats', to: 'users#stats', as: :stats_users
+    get 'timeline', to: 'users#timeline', as: :timeline_users
   end
 
   # User profiles (NOT year-scoped)

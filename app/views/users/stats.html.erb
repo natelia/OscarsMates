@@ -9,24 +9,4 @@
        data-chart-minutes-watched-value="<%= @mates_stats.to_json %>">
     <canvas></canvas>
   </div>
-
-  <div class="mt-6">
-    <h4 class="mb-3 text-center text-lg font-semibold text-slate-900">Latest Reviews from Your Mates</h4>
-    <% if @mates_reviews.any? %>
-      <ul class="mx-auto max-w-2xl space-y-3">
-        <% @mates_reviews.each do |review| %>
-          <li class="rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700">
-            <strong class="text-slate-900"><%= review.user.name %></strong> watched <em><%= review.movie.title %></em> on
-            <%= review.watched_on.strftime("%B %d, %Y") %>
-            <span class="ml-2 inline-flex items-center rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-semibold text-amber-800"><%= review.stars %>/10</span>
-            <% if review.comment.present? %>
-              <p class="mt-2 italic text-slate-600">"<%= review.comment %>"</p>
-            <% end %>
-          </li>
-        <% end %>
-      </ul>
-    <% else %>
-      <p class="text-center text-sm text-muted">No reviews from your mates yet.</p>
-    <% end %>
-  </div>
 </div>

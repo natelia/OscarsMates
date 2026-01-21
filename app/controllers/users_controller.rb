@@ -2,7 +2,7 @@
 # viewing user details, editing user profiles, and deleting users. It ensures
 # that only authenticated and authorized users can perform certain actions.
 class UsersController < ApplicationController
-  before_action :require_year, only: %i[stats]
+  before_action :require_year, only: %i[stats timeline]
   before_action :require_signin, except: %i[new create]
   before_action :require_correct_user, only: %i[edit update destroy]
 
@@ -67,8 +67,17 @@ class UsersController < ApplicationController
     @total_movies_watched = stats_service.user_stats[:total_movies_watched]
     @total_minutes_watched = stats_service.user_stats[:total_minutes_watched]
     @mates_stats = stats_service.mates_stats || []
+  end
 
-    @mates_reviews = MatesReviewsQuery.new(current_user, current_year).results
+  def timeline
+    @user = current_user
+    @page = params[:page]&.to_i || 1
+    @mates_reviews = MatesReviewsQuery.new(current_user, current_year, limit: 8, page: @page).results
+
+    respond_to do |format|
+      format.html
+      format.turbo_stream
+    end
   end
 
   private
