@@ -19,31 +19,3 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40s
-
-  backup:
-    image: alpine:latest
-    volumes:
-      - ./storage:/data/storage:ro
-      - ${BACKUP_PATH:-./backups}:/backups
-    command: >
-      sh -c "
-        apk add --no-cache sqlite >/dev/null 2>&1 &&
-        echo '[Backup] Service started' &&
-        while true; do
-          for db in /data/storage/*.sqlite3; do
-            if [ -f \"$$db\" ]; then
-              filename=$$(basename $$db)
-              backup_file=\"/backups/$${filename%.sqlite3}_$$(date +%Y%m%d_%H%M%S).sqlite3\"
-              echo \"[Backup] Backing up $$filename...\"
-              if sqlite3 \"$$db\" \".backup '$$backup_file'\"; then
-                echo \"[Backup] Success: $$backup_file\"
-              else
-                echo \"[Backup] FAILED: $$filename\" >&2
-              fi
-            fi
-          done
-          find /backups -name '*.sqlite3' -mtime +7 -delete
-          echo '[Backup] Cleanup complete. Sleeping for 24 hours...'
-          sleep 86400
-        done"
-    restart: unless-stopped
