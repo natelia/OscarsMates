@@ -28,6 +28,7 @@
             </li>
           <% end %>
           <li><%= link_to "Mates", users_path, class: "nav-link" %></li>
+          <li><%= link_to "Timeline", timeline_users_path(year: selected_year), class: "nav-link" %></li>
           <li><%= link_to "Stats", stats_users_path(year: selected_year), class: "nav-link" %></li>
           <li><%= link_to "Categories", categories_path(year: selected_year), class: "nav-link" %></li>
         </ul>

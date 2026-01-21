@@ -1,0 +1,18 @@
+<%# Timeline Reviews Partial - Renders a batch of reviews %>
+<%# Local variables: reviews, page, year (optional) %>
+
+<% reviews.each_with_index do |review, index| %>
+  <div class="animate-fade-in-up" style="animation-delay: <%= (index * 0.1) %>s;">
+    <%= render "users/mate_timeline_item", review: review %>
+  </div>
+<% end %>
+
+<% if reviews.any? && reviews.count == 8 %>
+  <div id="infinite-scroll-trigger"
+       class="py-8 text-center"
+       data-controller="infinite-scroll"
+       data-infinite-scroll-page-value="<%= page + 1 %>"
+       data-infinite-scroll-url-value="<%= timeline_users_path(year: year, page: page + 1, format: :turbo_stream) %>">
+    <div class="text-sm text-slate-400">Loading more reviews...</div>
+  </div>
+<% end %>

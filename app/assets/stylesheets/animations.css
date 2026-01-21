@@ -82,10 +82,10 @@
 /* Crown glow for #1 position */
 @keyframes crownGlow {
   0%, 100% {
-    filter: drop-shadow(0 0 3px rgba(212, 175, 55, 0.5));
+    filter: drop-shadow(0 0 3px rgba(201, 162, 39, 0.5)); /* --oscar-gold with opacity */
   }
   50% {
-    filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.8));
+    filter: drop-shadow(0 0 10px rgba(201, 162, 39, 0.8)); /* --oscar-gold with opacity */
   }
 }
 
@@ -191,10 +191,10 @@
 /* Gold pulse glow */
 @keyframes goldPulse {
   0%, 100% {
-    box-shadow: 0 0 5px rgba(212, 175, 55, 0.3);
+    box-shadow: 0 0 5px rgba(201, 162, 39, 0.3); /* --oscar-gold with opacity */
   }
   50% {
-    box-shadow: 0 0 20px rgba(212, 175, 55, 0.6);
+    box-shadow: 0 0 20px rgba(201, 162, 39, 0.6); /* --oscar-gold with opacity */
   }
 }
 
@@ -356,7 +356,7 @@
     left: 50%;
     width: 0;
     height: 0;
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, transparent 70%); /* --white with opacity */
     transform: translate(-50%, -50%);
     transition: width 0.3s ease, height 0.3s ease;
     border-radius: 50%;
@@ -376,7 +376,7 @@
   background: linear-gradient(
     90deg,
     var(--oscar-gold-light) 25%,
-    #fff 50%,
+    var(--white) 50%,
     var(--oscar-gold-light) 75%
   );
   background-size: 200% 100%;

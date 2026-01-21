@@ -37,11 +37,13 @@
 
   /* Status Colors */
   --teal-success: #025522;
+  --teal-light: #EFF6F1;
   --warning: #a68a1f;
   --danger: #560202;
+  --carpet-light: #F0E5E5;
 
   /* Background Colors */
-  --warning-bg: #fef2f2;
+  --warning-bg: var(--carpet-light);
 
   /* Shadows - very subtle */
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
@@ -540,7 +542,7 @@ a {
   align-items: center;
   justify-content: center;
   gap: var(--spacing-xs);
-  background: transparent;
+  background: var(--white);
   color: var(--text-primary);
   border: 1px solid var(--border-color);
   font-weight: 500;
@@ -552,7 +554,7 @@ a {
 
   &:hover {
     border-color: var(--oscar-gold-dark);
-    background: white;
+    background: var(--white);
     color: var(--oscar-gold-dark);
   }
 
@@ -565,6 +567,52 @@ a {
 .btn-sm {
   padding: var(--spacing-xs) var(--spacing-md);
   font-size: 0.8rem;
+}
+
+/* Watch/Unwatch buttons */
+.btn-watched {
+  border-color: rgba(2, 85, 34, 0.2);
+  color: var(--teal-success);
+  transition: background var(--transition-fast);
+
+  &:hover {
+    background: var(--teal-light);
+  }
+}
+
+.btn-unwatch {
+  border-color: rgba(86, 2, 2, 0.2);
+  color: var(--danger);
+  transition: background var(--transition-fast);
+
+  &:hover {
+    background: var(--carpet-light);
+  }
+}
+
+/* Alert styles */
+.alert-success {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(2, 85, 34, 0.2);
+  background: var(--teal-light);
+  color: var(--teal-success);
+}
+
+.alert-error {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(86, 2, 2, 0.2);
+  background: var(--carpet-light);
+  color: var(--danger);
 }
 
 /* =================================== */
