@@ -2,6 +2,9 @@
   <div class="container mx-auto px-4">
     <div class="mx-auto max-w-4xl">
       <div class="text-center mb-8 space-y-2">
+        <div class="mb-4">
+          <%= render "shared/avatar", user: @user, size: :xl %>
+        </div>
         <h1 class="text-3xl font-semibold text-slate-900"><%= @user.name %></h1>
         <div class="flex flex-wrap justify-center gap-4 text-sm text-slate-600">
           <span><strong class="text-slate-900">Follows:</strong> <%= @user.following.count %></span>

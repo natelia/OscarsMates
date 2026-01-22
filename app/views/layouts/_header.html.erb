@@ -36,10 +36,10 @@
         <div class="header-actions">
           <% if current_user %>
             <div class="hs-dropdown relative">
-              <button type="button" class="user-menu hs-dropdown-toggle">
-                <span class="avatar"><%= current_user.name[0].upcase %></span>
+              <button type="button" class="user-menu hs-dropdown-toggle flex items-center gap-2">
+                <%= render "shared/avatar", user: current_user, size: :sm %>
                 <span class="hidden md:inline"><%= current_user.name %></span>
-                <i class="bi bi-chevron-down text-xs opacity-60"></i>
+                <i data-lucide="chevron-down" class="w-3 h-3 opacity-60"></i>
               </button>
               <ul class="dropdown-menu hs-dropdown-menu transition-[opacity,margin] duration-200 opacity-0 hs-dropdown-open:opacity-100 hidden mt-2 w-48 right-0">
                 <li><%= link_to "Profile", user_path(current_user), class: "dropdown-item" %></li>

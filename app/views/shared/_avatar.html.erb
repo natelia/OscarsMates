@@ -1,0 +1,46 @@
+<%# Avatar component
+    Parameters:
+    - user: User object (required)
+    - size: :sm (32px), :md (48px), :lg (80px), :xl (120px) - default: :md
+    - editable: boolean - show edit overlay - default: false
+    - link: boolean - wrap in link to user profile - default: false
+%>
+<% size ||= :md %>
+<% editable ||= false %>
+<% link ||= false %>
+
+<%
+  size_classes = {
+    sm: 'w-8 h-8 text-xs',
+    md: 'w-12 h-12 text-sm',
+    lg: 'w-20 h-20 text-xl',
+    xl: 'w-30 h-30 text-3xl'
+  }
+%>
+
+<% avatar_content = capture do %>
+  <div class="avatar-component relative inline-block">
+    <% if user.avatar.attached? %>
+      <%= image_tag url_for(user.avatar),
+                    class: "#{size_classes[size]} rounded-full object-cover ring-2 ring-white shadow-sm" %>
+    <% else %>
+      <div class="<%= size_classes[size] %> rounded-full bg-gradient-to-br from-slate-600 to-slate-800 flex items-center justify-center text-white font-semibold ring-2 ring-white shadow-sm">
+        <%= user.initials %>
+      </div>
+    <% end %>
+
+    <% if editable %>
+      <label for="avatar-upload" class="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full opacity-0 hover:opacity-100 transition-opacity cursor-pointer group">
+        <i data-lucide="pencil" class="w-5 h-5 text-white"></i>
+      </label>
+    <% end %>
+  </div>
+<% end %>
+
+<% if link && !editable %>
+  <%= link_to user_path(user), class: "inline-block" do %>
+    <%= avatar_content %>
+  <% end %>
+<% else %>
+  <%= avatar_content %>
+<% end %>
