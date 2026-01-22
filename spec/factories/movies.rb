@@ -11,11 +11,9 @@ FactoryBot.define do
     trait :with_reviews do
       transient do
         reviews_count { 3 }
-        review_year { 2025 }
       end
       after(:create) do |movie, evaluator|
-        create(:nomination, movie: movie, year: evaluator.review_year)
-        create_list(:review, evaluator.reviews_count, movie: movie, year: evaluator.review_year)
+        create_list(:review, evaluator.reviews_count, movie: movie)
       end
     end
 

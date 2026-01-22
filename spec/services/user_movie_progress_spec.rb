@@ -2,13 +2,10 @@ require 'rails_helper'
 
 RSpec.describe UserMovieProgress do
   let(:user) { create(:user) }
-  let(:category) { create(:category) }
   let(:movie1) { create(:movie, title: 'Avatar') }
   let(:movie2) { create(:movie, title: 'Star Trek') }
-  let!(:nomination1) { create(:nomination, movie: movie1, category: category, year: 2025) }
-  let!(:nomination2) { create(:nomination, movie: movie2, category: category, year: 2025) }
-  let!(:review1) { create(:review, user: user, movie: movie1, stars: 6, year: 2025) }
-  let!(:review2) { create(:review, user: user, movie: movie2, stars: 9, year: 2025) }
+  let!(:review1) { create(:review, user: user, movie: movie1, stars: 6) }
+  let!(:review2) { create(:review, user: user, movie: movie2, stars: 9) }
 
   describe '#call' do
     context 'when user is nil' do
