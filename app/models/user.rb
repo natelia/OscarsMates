@@ -1,6 +1,7 @@
 # Represents a user of the application.
 class User < ApplicationRecord
   has_secure_password
+  has_one_attached :avatar
 
   # User relationships
   has_many :reviews, dependent: :destroy
