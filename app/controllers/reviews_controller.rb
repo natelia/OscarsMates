@@ -20,7 +20,6 @@ class ReviewsController < ApplicationController
   def create
     @review = @movie.reviews.new(review_params)
     @review.user = current_user
-    @review.year = current_year
 
     if @review.save
       redirect_to movies_path(year: current_year),
@@ -59,6 +58,6 @@ class ReviewsController < ApplicationController
   end
 
   def find_review
-    current_user.reviews.find_by(movie_id: @movie.id, year: current_year)
+    current_user.reviews.find_by(movie_id: @movie.id)
   end
 end
