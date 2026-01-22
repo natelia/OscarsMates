@@ -93,6 +93,14 @@
                   <i data-lucide="clock" class="text-muted"></i> Shortest First
                 <% end %>
               </li>
+              <li><hr class="dropdown-divider"></li>
+              <li class="dropdown-header">By Popularity</li>
+              <li>
+                <%= link_to movies_path(year: current_year, sort_by: 'most_watched_by_mates', filter_by: params[:filter_by], query: params[:query]),
+                    class: "dropdown-item #{'active' if params[:sort_by] == 'most_watched_by_mates'}" do %>
+                  <i data-lucide="eye" class="text-muted"></i> Most Watched by Mates
+                <% end %>
+              </li>
             </ul>
           </div>
         </div>

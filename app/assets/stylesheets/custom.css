@@ -201,6 +201,7 @@ a {
 .movies-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
+  grid-auto-rows: 1fr;
   gap: var(--spacing-lg);
 
   @media (min-width: 576px) {
@@ -233,6 +234,9 @@ a {
     transform 0.2s ease,
     box-shadow 0.2s ease;
   cursor: default;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 
   &:hover {
     box-shadow: var(--card-shadow-hover);
@@ -310,13 +314,17 @@ a {
   padding: var(--spacing-sm) var(--spacing-md) var(--spacing-md);
   background: white;
   cursor: default;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 
-  h5 {
-    font-size: 0.9rem;
+  h4 {
+    font-size: 1.1rem;
     font-weight: 600;
     margin: 0 0 var(--spacing-xs);
     color: var(--text-primary);
-    line-height: 1.3;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
@@ -331,6 +339,7 @@ a {
   align-items: center;
   font-size: 0.75rem;
   gap: var(--spacing-sm);
+  margin-top: auto;
 
   i {
     font-size: 0.875rem;

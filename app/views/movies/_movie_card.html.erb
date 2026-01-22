@@ -49,13 +49,20 @@
 
   <%# Title and ratings (always visible) %>
   <div class="movie-card-info">
-    <h5><%= movie.title %></h5>
+    <h4><%= movie.title %></h4>
   <div class="movie-rating-row">
     <% if sort_by == 'duration' || sort_by == 'shortest' %>
       <%# Show duration when sorting by duration %>
       <div class="movie-rating-left">
         <i data-lucide="timer" class="text-muted"></i>
         <span><%= movie.runtime %> mins</span>
+      </div>
+    <% elsif sort_by == 'most_watched_by_mates' %>
+      <%# Show mate watch count when sorting by popularity %>
+      <div class="movie-rating-left">
+        <% watch_count = movie.try(:mates_watch_count) || 0 %>
+        <i data-lucide="users" class="text-muted"></i>
+        <span><%= watch_count %> <%= 'mate'.pluralize(watch_count) %></span>
       </div>
     <% else %>
       <%# Show ratings normally %>
