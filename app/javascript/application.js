@@ -14,6 +14,9 @@ const initPreline = () => {
   if (window.HSOverlay) {
     window.HSOverlay.autoInit();
   }
+  if (window.HSCollapse) {
+    window.HSCollapse.autoInit();
+  }
 };
 
 const initLucideIcons = () => {

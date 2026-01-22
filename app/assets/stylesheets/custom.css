@@ -201,6 +201,7 @@ a {
 .movies-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
+  grid-auto-rows: 1fr;
   gap: var(--spacing-lg);
 
   @media (min-width: 576px) {
@@ -233,6 +234,9 @@ a {
     transform 0.2s ease,
     box-shadow 0.2s ease;
   cursor: default;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 
   &:hover {
     box-shadow: var(--card-shadow-hover);
@@ -310,13 +314,17 @@ a {
   padding: var(--spacing-sm) var(--spacing-md) var(--spacing-md);
   background: white;
   cursor: default;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 
-  h5 {
-    font-size: 0.9rem;
+  h4 {
+    font-size: 1.1rem;
     font-weight: 600;
     margin: 0 0 var(--spacing-xs);
     color: var(--text-primary);
-    line-height: 1.3;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
@@ -331,6 +339,7 @@ a {
   align-items: center;
   font-size: 0.75rem;
   gap: var(--spacing-sm);
+  margin-top: auto;
 
   i {
     font-size: 0.875rem;
@@ -684,6 +693,9 @@ a {
   font-size: 1.25rem;
   color: white;
   margin: 0 auto var(--spacing-sm);
+  flex-shrink: 0;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
 }
 
 .mates-grid {
@@ -1103,7 +1115,16 @@ a {
   gap: var(--spacing-md);
 }
 
-/* Filter pill group */
+/* =================================== */
+/* Filter Pill Component */
+/* =================================== */
+/* Usage: Segmented control for filtering options
+   States:
+   - Default: Light background, secondary text
+   - Hover: Primary text
+   - Active: oscar-gold-dark background, white text, accent-light icons
+   Example: All/Unwatched/Watched filter in movies index
+*/
 .filter-pill {
   display: inline-flex;
   align-items: center;
@@ -1126,14 +1147,23 @@ a {
   align-items: center;
   gap: var(--spacing-xs);
 
+  i {
+    color: var(--text-tertiary);
+    transition: color var(--transition-fast);
+  }
+
   &:hover {
     color: var(--text-primary);
   }
 
   &.active {
-    background: var(--primary);
+    background: var(--oscar-gold-dark);
     color: var(--white);
     box-shadow: var(--shadow-sm);
+
+    i {
+      color: var(--accent-light);
+    }
   }
 }
 
@@ -1385,6 +1415,20 @@ a {
   gap: var(--spacing-xl);
   flex: 1;
   justify-content: space-between;
+}
+
+/* Desktop: always show navigation */
+@media (min-width: 992px) {
+  .main-nav {
+    display: flex !important;
+  }
+}
+
+/* Mobile: hidden by default, shown when toggled */
+@media (max-width: 991.98px) {
+  .main-nav.hidden {
+    display: none;
+  }
 }
 
 .nav-links {

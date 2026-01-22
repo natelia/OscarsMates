@@ -11,15 +11,15 @@
           <div class="filter-pill">
             <%= link_to movies_path(year: current_year, sort_by: params[:sort_by], query: params[:query]),
                 class: "filter-option #{'active' if params[:filter_by].blank?}" do %>
-              <i data-lucide="grid" class="text-muted"></i> All
+              <i data-lucide="gallery-horizontal-end"></i> All
             <% end %>
             <%= link_to movies_path(year: current_year, filter_by: 'unwatched', sort_by: params[:sort_by], query: params[:query]),
                 class: "filter-option #{'active' if params[:filter_by] == 'unwatched'}" do %>
-              <i data-lucide="eye-off" class="text-muted"></i> Unwatched
+              <i data-lucide="eye-off"></i> Unwatched
             <% end %>
             <%= link_to movies_path(year: current_year, filter_by: 'watched', sort_by: params[:sort_by], query: params[:query]),
                 class: "filter-option #{'active' if params[:filter_by] == 'watched'}" do %>
-              <i data-lucide="eye" class="text-muted"></i> Watched
+              <i data-lucide="eye"></i> Watched
             <% end %>
           </div>
         </div>
@@ -62,15 +62,21 @@
               <li><hr class="dropdown-divider"></li>
               <li class="dropdown-header">By Rating</li>
               <li>
-                <%= link_to movies_path(year: current_year, sort_by: 'my_rating', filter_by: params[:filter_by], query: params[:query]),
-                    class: "dropdown-item #{'active' if params[:sort_by] == 'my_rating'}" do %>
-                  <i data-lucide="star" class="text-muted"></i> My Rating
+                <%= link_to movies_path(year: current_year, sort_by: 'watched_by_mates', filter_by: params[:filter_by], query: params[:query]),
+                    class: "dropdown-item #{'active' if params[:sort_by] == 'watched_by_mates'}" do %>
+                  <i data-lucide="users" class="text-muted"></i> Mates' Rating
                 <% end %>
               </li>
               <li>
                 <%= link_to movies_path(year: current_year, sort_by: 'imdb_rating', filter_by: params[:filter_by], query: params[:query]),
                     class: "dropdown-item #{'active' if params[:sort_by] == 'imdb_rating'}" do %>
                   <i data-lucide="film" class="text-muted"></i> IMDB Rating
+                <% end %>
+              </li>
+              <li>
+                <%= link_to movies_path(year: current_year, sort_by: 'my_rating', filter_by: params[:filter_by], query: params[:query]),
+                    class: "dropdown-item #{'active' if params[:sort_by] == 'my_rating'}" do %>
+                  <i data-lucide="star" class="text-muted"></i> My Rating
                 <% end %>
               </li>
               <li><hr class="dropdown-divider"></li>
@@ -90,15 +96,9 @@
               <li><hr class="dropdown-divider"></li>
               <li class="dropdown-header">By Popularity</li>
               <li>
-                <%= link_to movies_path(year: current_year, sort_by: 'watched_by_mates', filter_by: params[:filter_by], query: params[:query]),
-                    class: "dropdown-item #{'active' if params[:sort_by] == 'watched_by_mates'}" do %>
-                  <i data-lucide="users" class="text-muted"></i> Mates' Rating
-                <% end %>
-              </li>
-              <li>
-                <%= link_to movies_path(year: current_year, sort_by: 'most_nominated', filter_by: params[:filter_by], query: params[:query]),
-                    class: "dropdown-item #{'active' if params[:sort_by] == 'most_nominated'}" do %>
-                  <i data-lucide="trophy" class="text-muted"></i> Most Nominated
+                <%= link_to movies_path(year: current_year, sort_by: 'most_watched_by_mates', filter_by: params[:filter_by], query: params[:query]),
+                    class: "dropdown-item #{'active' if params[:sort_by] == 'most_watched_by_mates'}" do %>
+                  <i data-lucide="eye" class="text-muted"></i> Most Watched by Mates
                 <% end %>
               </li>
             </ul>
@@ -122,7 +122,7 @@
       <div class="movies-grid">
         <% @movies.each_with_index do |movie, index| %>
           <div class="animate-fade-in-up animate-delay-<%= [index + 1, 12].min %>">
-            <%= render 'movie_card', movie: movie, review: @user_reviews[movie.id] %>
+            <%= render 'movie_card', movie: movie, review: @user_reviews[movie.id], sort_by: params[:sort_by] %>
           </div>
         <% end %>
       </div>

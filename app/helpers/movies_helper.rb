@@ -43,6 +43,8 @@ module MoviesHelper
       'Shortest'
     when 'watched_by_mates'
       'Mates'
+    when 'most_watched_by_mates'
+      'Most Watched'
     when 'most_nominated'
       'Nominations'
     else

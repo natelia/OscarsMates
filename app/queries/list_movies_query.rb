@@ -62,6 +62,8 @@ class ListMoviesQuery
       sort_by_user_rating
     when 'watched_by_mates'
       sort_by_mates_watched
+    when 'most_watched_by_mates'
+      sort_by_most_watched_by_mates
     when 'most_nominated'
       sort_by_nominations
     else
@@ -72,11 +74,14 @@ class ListMoviesQuery
   def sort_by_user_rating
     return @results = @results.order(:title) unless user
 
-    # Only show movies the user has rated, sorted by their rating
+    # Show all movies, with rated ones first sorted by rating, then unrated ones last
+    user_reviews = Review
+                   .where(user_id: user.id)
+                   .select('movie_id, stars')
+
     @results = @results
-               .joins(:reviews)
-               .where(reviews: { user_id: user.id })
-               .order('reviews.stars DESC, movies.title ASC')
+               .joins("LEFT JOIN (#{user_reviews.to_sql}) AS user_reviews ON movies.id = user_reviews.movie_id")
+               .order(Arel.sql('user_reviews.stars DESC NULLS LAST, movies.title ASC'))
   end
 
   def sort_by_mates_watched
@@ -94,6 +99,24 @@ class ListMoviesQuery
     @results = @results
                .joins("LEFT JOIN (#{mates_avg.to_sql}) AS mates_reviews ON movies.id = mates_reviews.movie_id")
                .order(Arel.sql('mates_reviews.avg_rating DESC NULLS LAST, movies.title ASC'))
+  end
+
+  def sort_by_most_watched_by_mates
+    return @results = @results.order(:title) unless user
+
+    mate_ids = user.following.pluck(:id)
+    return @results = @results.order(:title) if mate_ids.empty?
+
+    # Subquery to count how many mates watched each movie
+    mates_count = Review
+                  .where(user_id: mate_ids)
+                  .group(:movie_id)
+                  .select('movie_id, COUNT(*) as watch_count')
+
+    @results = @results
+               .joins("LEFT JOIN (#{mates_count.to_sql}) AS mates_watches ON movies.id = mates_watches.movie_id")
+               .select('movies.*, COALESCE(mates_watches.watch_count, 0) as mates_watch_count')
+               .order(Arel.sql('mates_watches.watch_count DESC NULLS LAST, movies.title ASC'))
   end
 
   def sort_by_nominations
