@@ -32,10 +32,7 @@
     <%# Top: User Info with Avatar and Rating Badge %>
     <div class="flex items-start justify-between gap-2">
       <div class="flex items-center gap-2">
-        <div class="avatar-circle h-12 w-12 text-base"
-             style="background-color: <%= avatar_color(review.user.name) %>;">
-          <%= avatar_initials(review.user.name) %>
-        </div>
+        <%= render "shared/avatar", user: review.user, size: :md %>
         <div>
           <div class="text-sm font-semibold text-slate-900">
             <%= review.user.name %>

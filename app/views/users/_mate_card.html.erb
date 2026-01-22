@@ -7,9 +7,7 @@
 
 <div class="mate-card card-lift">
   <%# Avatar %>
-  <div class="avatar-circle" style="background-color: <%= avatar_color(user.name) %>;">
-    <%= avatar_initials(user.name) %>
-  </div>
+  <%= render "shared/avatar", user: user, size: :md %>
 
   <%# User Info %>
   <div class="flex-1">

@@ -24,8 +24,9 @@
       <%= image_tag url_for(user.avatar),
                     class: "#{size_classes[size]} rounded-full object-cover ring-2 ring-white shadow-sm" %>
     <% else %>
-      <div class="<%= size_classes[size] %> rounded-full bg-gradient-to-br from-slate-600 to-slate-800 flex items-center justify-center text-white font-semibold ring-2 ring-white shadow-sm">
-        <%= user.initials %>
+      <div class="<%= size_classes[size] %> rounded-full flex items-center justify-center text-white font-semibold ring-2 ring-white shadow-sm"
+           style="background-color: <%= avatar_color(user.name) %>;">
+        <%= avatar_initials(user.name) %>
       </div>
     <% end %>
 
