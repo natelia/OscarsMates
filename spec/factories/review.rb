@@ -1,9 +1,19 @@
 FactoryBot.define do
   factory :review do
-    association :movie
     association :user
     watched_on { Time.zone.today }
     stars { 7 }
+    year { 2025 }
+
+    transient do
+      category { nil }
+    end
+
+    movie do
+      create(:movie).tap do |m|
+        create(:nomination, movie: m, year: year, category: category || create(:category))
+      end
+    end
 
     trait :with_comment do
       comment { 'Great movie! Highly recommend.' }
