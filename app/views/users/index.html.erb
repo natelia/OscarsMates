@@ -84,4 +84,33 @@
       </div>
     <% end %>
   </div>
+
+  <%# Back to Top %>
+  <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="back-to-top" title="Back to top">
+    <i data-lucide="arrow-up" style="color: var(--text-tertiary);"></i>
+  </button>
 </main>
+
+<style>
+.back-to-top {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--card-shadow-lg);
+  z-index: 1000;
+  opacity: 0.9;
+  transition: var(--transition-smooth);
+  background: var(--bg-secondary);
+}
+
+.back-to-top:hover {
+  opacity: 1;
+  transform: translateY(-4px);
+}
+</style>

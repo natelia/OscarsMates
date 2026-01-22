@@ -72,11 +72,14 @@ class ListMoviesQuery
   def sort_by_user_rating
     return @results = @results.order(:title) unless user
 
-    # Only show movies the user has rated, sorted by their rating
+    # Show all movies, with rated ones first sorted by rating, then unrated ones last
+    user_reviews = Review
+                   .where(user_id: user.id)
+                   .select('movie_id, stars')
+
     @results = @results
-               .joins(:reviews)
-               .where(reviews: { user_id: user.id })
-               .order('reviews.stars DESC, movies.title ASC')
+               .joins("LEFT JOIN (#{user_reviews.to_sql}) AS user_reviews ON movies.id = user_reviews.movie_id")
+               .order(Arel.sql('user_reviews.stars DESC NULLS LAST, movies.title ASC'))
   end
 
   def sort_by_mates_watched

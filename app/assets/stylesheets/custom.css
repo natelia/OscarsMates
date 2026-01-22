@@ -684,6 +684,9 @@ a {
   font-size: 1.25rem;
   color: white;
   margin: 0 auto var(--spacing-sm);
+  flex-shrink: 0;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
 }
 
 .mates-grid {
@@ -1103,7 +1106,16 @@ a {
   gap: var(--spacing-md);
 }
 
-/* Filter pill group */
+/* =================================== */
+/* Filter Pill Component */
+/* =================================== */
+/* Usage: Segmented control for filtering options
+   States:
+   - Default: Light background, secondary text
+   - Hover: Primary text
+   - Active: oscar-gold-dark background, white text
+   Example: All/Unwatched/Watched filter in movies index
+*/
 .filter-pill {
   display: inline-flex;
   align-items: center;
@@ -1131,7 +1143,7 @@ a {
   }
 
   &.active {
-    background: var(--primary);
+    background: var(--oscar-gold-dark);
     color: var(--white);
     box-shadow: var(--shadow-sm);
   }
@@ -1385,6 +1397,20 @@ a {
   gap: var(--spacing-xl);
   flex: 1;
   justify-content: space-between;
+}
+
+/* Desktop: always show navigation */
+@media (min-width: 992px) {
+  .main-nav {
+    display: flex !important;
+  }
+}
+
+/* Mobile: hidden by default, shown when toggled */
+@media (max-width: 991.98px) {
+  .main-nav.hidden {
+    display: none;
+  }
 }
 
 .nav-links {
