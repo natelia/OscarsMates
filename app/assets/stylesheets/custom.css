@@ -1113,7 +1113,7 @@ a {
    States:
    - Default: Light background, secondary text
    - Hover: Primary text
-   - Active: oscar-gold-dark background, white text
+   - Active: oscar-gold-dark background, white text, accent-light icons
    Example: All/Unwatched/Watched filter in movies index
 */
 .filter-pill {
@@ -1138,6 +1138,11 @@ a {
   align-items: center;
   gap: var(--spacing-xs);
 
+  i {
+    color: var(--text-tertiary);
+    transition: color var(--transition-fast);
+  }
+
   &:hover {
     color: var(--text-primary);
   }
@@ -1146,6 +1151,10 @@ a {
     background: var(--oscar-gold-dark);
     color: var(--white);
     box-shadow: var(--shadow-sm);
+
+    i {
+      color: var(--accent-light);
+    }
   }
 }
 

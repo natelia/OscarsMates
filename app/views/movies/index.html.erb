@@ -11,15 +11,15 @@
           <div class="filter-pill">
             <%= link_to movies_path(year: current_year, sort_by: params[:sort_by], query: params[:query]),
                 class: "filter-option #{'active' if params[:filter_by].blank?}" do %>
-              <i data-lucide="grid" class="text-muted"></i> All
+              <i data-lucide="gallery-horizontal-end"></i> All
             <% end %>
             <%= link_to movies_path(year: current_year, filter_by: 'unwatched', sort_by: params[:sort_by], query: params[:query]),
                 class: "filter-option #{'active' if params[:filter_by] == 'unwatched'}" do %>
-              <i data-lucide="eye-off" class="text-muted"></i> Unwatched
+              <i data-lucide="eye-off"></i> Unwatched
             <% end %>
             <%= link_to movies_path(year: current_year, filter_by: 'watched', sort_by: params[:sort_by], query: params[:query]),
                 class: "filter-option #{'active' if params[:filter_by] == 'watched'}" do %>
-              <i data-lucide="eye" class="text-muted"></i> Watched
+              <i data-lucide="eye"></i> Watched
             <% end %>
           </div>
         </div>
