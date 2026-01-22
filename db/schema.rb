@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_01_22_081658) do
+ActiveRecord::Schema[7.1].define(version: 2026_01_21_185123) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -114,20 +114,9 @@ ActiveRecord::Schema[7.1].define(version: 2026_01_22_081658) do
     t.datetime "updated_at", null: false
     t.integer "user_id", null: false
     t.date "watched_on", null: false
-    t.integer "year", null: false
     t.index ["movie_id"], name: "index_reviews_on_movie_id"
-    t.index ["user_id", "movie_id", "year"], name: "index_reviews_on_user_id_and_movie_id_and_year", unique: true
     t.index ["user_id"], name: "index_reviews_on_user_id"
     t.index ["watched_on"], name: "index_reviews_on_watched_on"
-  end
-
-  create_table "settings", force: :cascade do |t|
-    t.date "nomination_date"
-    t.date "ceremony_date"
-    t.integer "year", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["year"], name: "index_settings_on_year", unique: true
   end
 
   create_table "users", force: :cascade do |t|
