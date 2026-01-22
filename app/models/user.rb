@@ -3,6 +3,9 @@ class User < ApplicationRecord
   has_secure_password
   has_one_attached :avatar
 
+  AVATAR_CONTENT_TYPES = %w[image/png image/jpeg image/gif image/webp].freeze
+  AVATAR_MAX_SIZE = 5.megabytes
+
   # User relationships
   has_many :reviews, dependent: :destroy
   has_many :favorites, dependent: :destroy
@@ -19,6 +22,7 @@ class User < ApplicationRecord
   validates :email, presence: true,
                     format: { with: /\A\S+@\S+\z/ },
                     uniqueness: { case_sensitive: false }
+  validate :acceptable_avatar
 
   def reviews_for_year(year)
     reviews.joins(movie: :nominations)
@@ -28,5 +32,23 @@ class User < ApplicationRecord
 
   def watched_movies_count_for_year(year)
     reviews_for_year(year).select(:movie_id).distinct.count
+  end
+
+  def initials
+    name.split.map(&:first).join.upcase[0, 2]
+  end
+
+  private
+
+  def acceptable_avatar
+    return unless avatar.attached?
+
+    unless avatar.blob.content_type.in?(AVATAR_CONTENT_TYPES)
+      errors.add(:avatar, 'must be PNG, JPEG, GIF, or WebP')
+    end
+
+    if avatar.blob.byte_size > AVATAR_MAX_SIZE
+      errors.add(:avatar, 'must be less than 5MB')
+    end
   end
 end

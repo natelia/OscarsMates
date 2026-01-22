@@ -4,7 +4,7 @@
 class UsersController < ApplicationController
   before_action :require_year, only: %i[stats timeline]
   before_action :require_signin, except: %i[new create]
-  before_action :require_correct_user, only: %i[edit update destroy]
+  before_action :require_correct_user, only: %i[edit update destroy destroy_avatar]
 
   def index
     @users = User.all
@@ -60,6 +60,11 @@ class UsersController < ApplicationController
                            alert: 'Account successfully deleted!'
   end
 
+  def destroy_avatar
+    @user.avatar.purge
+    redirect_to edit_user_path(@user), notice: 'Avatar removed!'
+  end
+
   def stats
     @user = current_user
     stats_service = UserStatsService.new(@user, current_year)
@@ -88,6 +93,6 @@ class UsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:name, :email, :password, :password_confirmation)
+    params.require(:user).permit(:name, :email, :password, :password_confirmation, :avatar)
   end
 end

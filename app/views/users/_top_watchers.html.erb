@@ -17,8 +17,8 @@
           <div class="medal mb-2">
             <i data-lucide="award" class="text-muted" style="font-size: 2rem;"></i>
           </div>
-          <div class="avatar-circle mx-auto mb-2" style="background-color: <%= avatar_color(user.name) %>; width: 50px; height: 50px; font-size: 1rem;">
-            <%= avatar_initials(user.name) %>
+          <div class="mx-auto mb-2">
+            <%= render "shared/avatar", user: user, size: :md %>
           </div>
           <%= link_to user_path(user), class: "no-underline hover:text-slate-700" do %>
             <h6 class="mb-1" style="color: var(--charcoal);"><%= user.name %></h6>
@@ -38,8 +38,8 @@
           <div class="crown mb-2 crown-animated">
             <i data-lucide="trophy" class="text-muted" style="font-size: 2.5rem;"></i>
           </div>
-          <div class="avatar-circle mx-auto mb-2" style="background-color: <%= avatar_color(user.name) %>; width: 70px; height: 70px; font-size: 1.5rem;">
-            <%= avatar_initials(user.name) %>
+          <div class="mx-auto mb-2">
+            <%= render "shared/avatar", user: user, size: :lg %>
           </div>
           <%= link_to user_path(user), class: "no-underline hover:text-slate-700" do %>
             <h5 class="mb-1" style="color: var(--charcoal);"><%= user.name %></h5>
@@ -59,8 +59,8 @@
           <div class="medal mb-2">
             <i data-lucide="award" class="text-muted" style="font-size: 2rem;"></i>
           </div>
-          <div class="avatar-circle mx-auto mb-2" style="background-color: <%= avatar_color(user.name) %>; width: 50px; height: 50px; font-size: 1rem;">
-            <%= avatar_initials(user.name) %>
+          <div class="mx-auto mb-2">
+            <%= render "shared/avatar", user: user, size: :md %>
           </div>
           <%= link_to user_path(user), class: "no-underline hover:text-slate-700" do %>
             <h6 class="mb-1" style="color: var(--charcoal);"><%= user.name %></h6>
