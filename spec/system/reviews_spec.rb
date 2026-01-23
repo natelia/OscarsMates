@@ -27,10 +27,39 @@ RSpec.describe 'Reviews', type: :system do
       visit "/2025/movies/#{movie.slug}/reviews/new"
 
       find('input[value="8"]', visible: false).choose
-      fill_in 'Date Watched', with: Time.zone.today.to_s
+      fill_in 'Date Watched', with: Time.current.strftime('%Y-%m-%dT%H:%M')
       click_button 'Mark as Watched'
 
       expect(page).to have_content('Thanks for your review')
+    end
+
+    it 'stores the exact datetime when creating a review' do
+      watched_time = Time.zone.parse('2025-01-15 14:30')
+
+      visit "/2025/movies/#{movie.slug}/reviews/new"
+
+      find('input[value="8"]', visible: false).choose
+      fill_in 'Date Watched', with: watched_time.strftime('%Y-%m-%dT%H:%M')
+      click_button 'Mark as Watched'
+
+      review = Review.last
+      expect(review.watched_on).to be_within(1.minute).of(watched_time)
+    end
+  end
+
+  describe 'updating a review' do
+    let!(:review) { create(:review, user: user, movie: movie, stars: 7, watched_on: 2.days.ago) }
+
+    it 'allows a user to update the watched datetime' do
+      new_watched_time = Time.zone.parse('2025-01-20 18:45')
+
+      visit edit_movie_review_path(movie, review, year: 2025)
+
+      fill_in 'Date Watched', with: new_watched_time.strftime('%Y-%m-%dT%H:%M')
+      click_button 'Update'
+
+      expect(page).to have_content('Review updated')
+      expect(review.reload.watched_on).to be_within(1.minute).of(new_watched_time)
     end
   end
 

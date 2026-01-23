@@ -93,7 +93,10 @@
                     <span class="text-gold"><%= render_stars(review.stars) %></span>
                   </div>
                   <div class="text-sm text-muted">
-                    Watched on: <%= review.watched_on || review.created_at.strftime('%B %d, %Y') %>
+                    Watched on:
+                    <span title="<%= review.watched_on.strftime('%I:%M %p') %>">
+                      <%= review.watched_on.strftime('%B %d, %Y') %>
+                    </span>
                   </div>
                   <% if review.comment.present? %>
                     <p class="text-sm text-secondary mt-1"><%= review.comment %></p>

@@ -94,7 +94,7 @@ export default class extends Controller {
 
     const formData = new FormData();
     formData.append("review[stars]", stars);
-    formData.append("review[watched_on]", new Date().toISOString().split("T")[0]);
+    formData.append("review[watched_on]", new Date().toISOString());
 
     const response = await fetch(url, {
       method: "POST",
