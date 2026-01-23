@@ -43,12 +43,7 @@ class User < ApplicationRecord
   def acceptable_avatar
     return unless avatar.attached?
 
-    unless avatar.blob.content_type.in?(AVATAR_CONTENT_TYPES)
-      errors.add(:avatar, 'must be PNG, JPEG, GIF, or WebP')
-    end
-
-    if avatar.blob.byte_size > AVATAR_MAX_SIZE
-      errors.add(:avatar, 'must be less than 5MB')
-    end
+    errors.add(:avatar, 'must be PNG, JPEG, GIF, or WebP') unless avatar.blob.content_type.in?(AVATAR_CONTENT_TYPES)
+    errors.add(:avatar, 'must be less than 5MB') if avatar.blob.byte_size > AVATAR_MAX_SIZE
   end
 end

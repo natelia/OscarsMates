@@ -3,17 +3,14 @@ import { Controller } from "@hotwired/stimulus";
 export default class extends Controller {
   static values = {
     page: Number,
-    url: String
+    url: String,
   };
 
   connect() {
-    this.observer = new IntersectionObserver(
-      (entries) => this.handleIntersection(entries),
-      {
-        threshold: 0.1,
-        rootMargin: "100px"
-      }
-    );
+    this.observer = new IntersectionObserver((entries) => this.handleIntersection(entries), {
+      threshold: 0.1,
+      rootMargin: "100px",
+    });
 
     this.observer.observe(this.element);
   }
@@ -40,8 +37,8 @@ export default class extends Controller {
     try {
       const response = await fetch(this.urlValue, {
         headers: {
-          Accept: "text/vnd.turbo-stream.html"
-        }
+          Accept: "text/vnd.turbo-stream.html",
+        },
       });
 
       if (response.ok) {

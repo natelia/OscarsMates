@@ -99,7 +99,7 @@ RSpec.describe ListMoviesQuery do
       it 'returns movies sorted by user rating descending' do
         query = described_class.new({ sort_by: 'my_rating' }, user, 2025)
 
-        result = query.results
+        result = query.results.to_a
 
         expect(result.first).to eq(movie2)
         expect(result.last).to eq(movie1)
