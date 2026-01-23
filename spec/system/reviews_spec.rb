@@ -26,7 +26,7 @@ RSpec.describe 'Reviews', type: :system do
     it 'allows a logged in user to create a review' do
       visit "/2025/movies/#{movie.slug}/reviews/new"
 
-      choose 'star_8'
+      find('input[value="8"]', visible: false).choose
       fill_in 'Date Watched', with: Time.zone.today.to_s
       click_button 'Mark as Watched'
 
