@@ -13,6 +13,7 @@ class MoviesController < ApplicationController
     if current_user
       @user_reviews = UserMovieProgress.new(@movies, current_user).call
       calculate_progress
+      calculate_user_stats
     end
 
     @all_movies_watched = if current_user
@@ -90,6 +91,15 @@ class MoviesController < ApplicationController
 
   def calculate_progress
     @progress = UserProgressService.new(current_user, current_year).progress if current_user
+  end
+
+  def calculate_user_stats
+    return unless current_user
+
+    ranking_service = RankingService.new(year: current_year, current_user: current_user, mode: :goals)
+    user_data = ranking_service.ranked_users.find { |r| r[:user].id == current_user.id }
+    @user_stats = user_data ? user_data[:stats] : nil
+    @totals = ranking_service.totals
   end
 
   def set_users_specific_data

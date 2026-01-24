@@ -1,7 +1,9 @@
 <div class="container mx-auto px-4 py-8">
-  <div class="text-center mb-6">
-    <h1 class="text-4xl font-bold text-slate-900">Timeline</h1>
-    <p class="text-sm text-slate-600">Latest reviews from your mates</p>
+  <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between timeline-header">
+    <div>
+      <h1 class="page-title mb-0">Timeline</h1>
+      <p class="text-secondary mb-0">Latest reviews from your mates</p>
+    </div>
   </div>
 
   <% if @mates_reviews.any? %>

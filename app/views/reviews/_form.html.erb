@@ -21,13 +21,13 @@
   </div>
 
   <div>
-    <%= f.label :watched_on, "Date Watched", class: "text-sm font-semibold text-slate-700" %>
-    <%= f.date_field :watched_on, value: review.watched_on || Date.today, class: "mt-2 max-w-[150px] rounded-md border-slate-200 bg-white px-3 py-2 text-sm shadow-sm focus:border-slate-400 focus:ring-slate-300" %>
+    <%= f.label :watched_on, "Date Watched" %>
+    <%= f.date_field :watched_on, value: review.watched_on || Date.today, class: "mt-2 max-w-[150px]" %>
   </div>
 
   <div>
-    <%= f.label :comment, class: "text-sm font-semibold text-slate-700" %>
-    <%= f.text_area :comment, class: "mt-2 w-full rounded-md border-slate-200 bg-white px-3 py-2 text-sm shadow-sm focus:border-slate-400 focus:ring-slate-300", placeholder: "What do you think, mate?", rows: 5 %>
+    <%= f.label :comment %>
+    <%= f.text_area :comment, class: "mt-2", placeholder: "What do you think, mate?", rows: 5 %>
   </div>
 
   <div class="flex items-center justify-between">

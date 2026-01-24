@@ -1,67 +1,113 @@
-<main class="mates-page">
-  <div class="container mx-auto px-4 py-6">
+<main class="ranking-page" data-controller="ranking-filter">
+  <div class="container mx-auto px-4 py-8">
     <%# Header %>
-    <header class="text-center mb-4">
-      <h1 class="page-title mb-2">
-        <i data-lucide="users" class="mr-2 text-muted"></i>
-        Oscar Mates
-      </h1>
-      <p class="text-muted">
-        <%= pluralize(@users.size, 'mate') %> tracking <%= @year %> nominees
-      </p>
-    </header>
+    <div class="ranking-header">
+      <h1 class="page-title mb-0">Ranking</h1>
 
-    <%# Filter Toggle %>
-    <div class="text-center mb-4">
-      <div class="inline-flex flex-wrap items-center gap-2" role="group" aria-label="Filter users">
-        <% if params[:filter] == 'all' %>
-          <%= link_to users_path, class: "btn-outline-oscar" do %>
-            <i data-lucide="heart" class="text-muted"></i> Following
-          <% end %>
-          <span class="btn-oscar">
-            <i data-lucide="users" class="text-muted"></i> All Mates
-          </span>
-        <% else %>
-          <span class="btn-oscar">
-            <i data-lucide="heart" class="text-muted"></i> Following
-          </span>
-          <%= link_to users_path(filter: 'all'), class: "btn-outline-oscar" do %>
-            <i data-lucide="users" class="text-muted"></i> All Mates
-          <% end %>
-        <% end %>
+      <%# Summary Statistics %>
+      <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between mt-3">
+        <div class="flex flex-wrap items-center gap-3">
+          <div class="stat-badge">
+            <i data-lucide="film"></i>
+            <span>All films: <strong><%= @totals[:films] %></strong></span>
+          </div>
+          <div class="stat-badge">
+            <i data-lucide="clock"></i>
+            <span>Total time: <strong><%= (@totals[:minutes] / 60).to_i %>h <%= @totals[:minutes] % 60 %>min</strong></span>
+          </div>
+          <div class="stat-badge">
+            <i data-lucide="trophy"></i>
+            <span>Total nominations: <strong><%= @totals[:nominations] %></strong></span>
+          </div>
+        </div>
+
+        <%# Search Input %>
+        <div class="flex flex-wrap items-center gap-3">
+          <form class="search-form"
+                role="search"
+                data-action="submit->ranking-filter#submitSearch">
+            <i data-lucide="search" class="search-icon"></i>
+            <input class="search-input"
+                   type="search"
+                   name="query"
+                   placeholder="Search mates..."
+                   aria-label="Search"
+                   value="<%= @query %>"
+                   data-ranking-filter-target="searchInput"
+                   data-action="input->ranking-filter#search">
+            <% if @query.present? %>
+              <button type="button"
+                      class="search-clear"
+                      data-action="click->ranking-filter#clearSearch">
+                <i data-lucide="x"></i>
+              </button>
+            <% end %>
+          </form>
+        </div>
       </div>
     </div>
 
-    <% if @users.any? %>
-      <%# Top Watchers Podium %>
-      <%= render 'top_watchers',
-          top_watchers: @top_watchers,
-          total_movies: @total_movies_count,
-          year: @year %>
-
-      <%# Users Section %>
-      <% users_to_show = params[:filter] == 'all' ? @remaining_users : @users %>
-
-      <% if users_to_show.any? %>
-        <h4 class="mb-4 text-center text-muted">
-          <i data-lucide="grid" class="mr-2 text-muted"></i>
-          <%= params[:filter] == 'all' ? 'All Mates' : 'Following' %>
-        </h4>
-
-        <div class="mates-grid">
-          <% users_to_show.each_with_index do |user, index| %>
-            <div class="animate-fade-in-up animate-delay-<%= [index + 1, 12].min %>">
-              <%= render 'mate_card',
-                  user: user,
-                  total_movies: @total_movies_count,
-                  year: @year,
-                  current_user: current_user,
-                  rank: nil %>
-            </div>
+    <%# Filter Bar %>
+    <div class="ranking-filters">
+      <%# Filter Group 1: Metric Selector %>
+      <div class="ranking-filter-group">
+        <span class="ranking-filter-label">Sort by:</span>
+        <div class="filter-pill">
+          <% %i[films minutes nominations].each do |metric| %>
+            <a href="#"
+               class="filter-option <%= 'active' if @metric == metric %>"
+               data-metric="<%= metric %>"
+               data-action="click->ranking-filter#setMetric">
+              <i data-lucide="<%= metric == :films ? 'film' : (metric == :minutes ? 'clock' : 'trophy') %>"></i>
+              <%= metric.to_s.capitalize %>
+            </a>
           <% end %>
         </div>
-      <% end %>
+      </div>
 
+      <%# Filter Group 2: Mode Selector %>
+      <div class="ranking-filter-group">
+        <span class="ranking-filter-label">Show:</span>
+        <div class="filter-pill">
+          <% %i[goals totals].each do |mode| %>
+            <a href="#"
+               class="filter-option <%= 'active' if @mode == mode %>"
+               data-mode="<%= mode %>"
+               data-action="click->ranking-filter#setMode">
+              <i data-lucide="<%= mode == :goals ? 'percent' : 'hash' %>"></i>
+              <%= mode.to_s.capitalize %>
+            </a>
+          <% end %>
+        </div>
+      </div>
+
+      <%# Filter Group 3: Scope Selector %>
+      <div class="ranking-filter-group">
+        <span class="ranking-filter-label">Users:</span>
+        <div class="filter-pill">
+          <% %i[mates all].each do |scope| %>
+            <a href="#"
+               class="filter-option <%= 'active' if @scope == scope %>"
+               data-scope="<%= scope %>"
+               data-action="click->ranking-filter#setScope">
+              <i data-lucide="<%= scope == :mates ? 'heart' : 'users' %>"></i>
+              <%= scope == :mates ? 'My mates' : 'All users' %>
+            </a>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <%# Ranking List %>
+    <% if @ranked_users.any? %>
+      <div class="ranking-list" data-ranking-filter-target="rankingList">
+        <% @ranked_users.each do |ranked_user| %>
+          <%= render 'ranking_item',
+              ranked_user: ranked_user,
+              current_user: current_user,
+              main_metric: @metric %>
+        <% end %>
+      </div>
     <% else %>
       <%# Empty State %>
       <div class="empty-state">
@@ -70,14 +116,20 @@
         </div>
         <h3>No mates found</h3>
         <p>
-          <% if params[:filter] != 'all' %>
+          <% if @query.present? %>
+            No results for "<%= @query %>".
+          <% elsif @scope == :mates && current_user %>
             You're not following anyone yet. Start following mates to see them here!
           <% else %>
             Be the first to join the Oscar watching party!
           <% end %>
         </p>
-        <% if params[:filter] != 'all' %>
-          <%= link_to users_path(filter: 'all'), class: "btn-oscar" do %>
+        <% if @query.present? %>
+          <%= link_to users_path, class: "btn-oscar" do %>
+            <i data-lucide="x" class="mr-1 text-muted"></i> Clear search
+          <% end %>
+        <% elsif @scope == :mates %>
+          <%= link_to users_path(scope: 'all'), class: "btn-oscar" do %>
             <i data-lucide="users" class="mr-1 text-muted"></i> Browse All Mates
           <% end %>
         <% end %>

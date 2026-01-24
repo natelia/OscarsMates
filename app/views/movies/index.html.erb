@@ -3,6 +3,46 @@
 <main class="movies-page">
   <div class="container mx-auto px-4 py-8">
 
+    <%# User Stats %>
+    <% if current_user && @user_stats %>
+      <div class="user-stats-section">
+        <h3 class="user-stats-title">Watched</h3>
+
+        <%# Films %>
+        <div class="user-stats-row">
+          <span class="user-stats-name"><i data-lucide="film"></i> Movies</span>
+          <div class="user-stats-bar">
+            <div class="user-stats-fill" style="width: <%= @user_stats[:films][:percentage] %>%;"></div>
+          </div>
+          <span class="user-stats-label"><%= @user_stats[:films][:watched] %>/<%= @totals[:films] %></span>
+          <span class="user-stats-percentage"><%= @user_stats[:films][:percentage].round %>%</span>
+          <span class="user-stats-remaining"><%= @totals[:films] - @user_stats[:films][:watched] %> left</span>
+        </div>
+
+        <%# Minutes %>
+        <div class="user-stats-row">
+          <span class="user-stats-name"><i data-lucide="clock"></i> Time</span>
+          <div class="user-stats-bar">
+            <div class="user-stats-fill" style="width: <%= @user_stats[:minutes][:percentage] %>%;"></div>
+          </div>
+          <span class="user-stats-label"><%= (@user_stats[:minutes][:watched] / 60.0).round %>h/<%= (@totals[:minutes] / 60.0).round %>h</span>
+          <span class="user-stats-percentage"><%= @user_stats[:minutes][:percentage].round %>%</span>
+          <span class="user-stats-remaining"><%= ((@totals[:minutes] - @user_stats[:minutes][:watched]) / 60.0).round %>h left</span>
+        </div>
+
+        <%# Nominations %>
+        <div class="user-stats-row">
+          <span class="user-stats-name"><i data-lucide="trophy"></i> Nominations</span>
+          <div class="user-stats-bar">
+            <div class="user-stats-fill" style="width: <%= @user_stats[:nominations][:percentage] %>%;"></div>
+          </div>
+          <span class="user-stats-label"><%= @user_stats[:nominations][:watched] %>/<%= @totals[:nominations] %></span>
+          <span class="user-stats-percentage"><%= @user_stats[:nominations][:percentage].round %>%</span>
+          <span class="user-stats-remaining"><%= @totals[:nominations] - @user_stats[:nominations][:watched] %> left</span>
+        </div>
+      </div>
+    <% end %>
+
     <%# Toolbar %>
     <div class="toolbar">
       <%# Filter Pill Group - Far Left %>
@@ -43,9 +83,14 @@
         </form>
       </div>
 
-      <%# Sort Dropdown - Far Right %>
+      <%# Admin Add Button & Sort Dropdown - Far Right %>
       <% if current_user.present? %>
         <div class="toolbar-right">
+          <% if current_user_admin? %>
+            <%= link_to new_movie_path(year: current_year), class: "btn-admin-add" do %>
+              <i data-lucide="plus"></i>
+            <% end %>
+          <% end %>
           <div class="hs-dropdown relative">
             <button class="toolbar-dropdown-btn hs-dropdown-toggle" type="button" aria-expanded="false">
               <i data-lucide="arrow-down-wide-narrow" class="text-muted"></i>
@@ -156,14 +201,6 @@
         </div>
     <% end %>
 
-    <%# Admin Button %>
-    <% if current_user_admin? %>
-      <div class="text-center mt-4">
-        <%= link_to new_movie_path(year: current_year), class: "btn-outline-oscar" do %>
-          <i data-lucide="plus-circle" class="mr-1 text-muted"></i> Add New Movie
-        <% end %>
-      </div>
-    <% end %>
   </div>
 
   <%# Back to Top %>
