@@ -1,8 +1,9 @@
 <%# Movie Card Partial - Netflix-style with hover actions %>
-<%# Local variables: movie, review (optional), show_actions (default true), sort_by (optional) %>
+<%# Local variables: movie, review (optional), show_actions (default true), sort_by (optional), pick_count (optional) %>
 <% review ||= nil %>
 <% show_actions = local_assigns.fetch(:show_actions, true) %>
 <% sort_by ||= nil %>
+<% pick_count = local_assigns[:pick_count] %>
 
 <div class="movie-card <%= 'is-watched' if review %>"
      data-controller="movie-card"
@@ -51,7 +52,13 @@
   <div class="movie-card-info">
     <h4><%= movie.title %></h4>
   <div class="movie-rating-row">
-    <% if sort_by == 'duration' || sort_by == 'shortest' %>
+    <% if pick_count %>
+      <%# Show mates' votes count on Categories page %>
+      <div class="movie-rating-left">
+        <i data-lucide="users" class="text-muted"></i>
+        <span><%= pick_count %> <%= pick_count == 1 ? "mate's" : "mates'" %> votes</span>
+      </div>
+    <% elsif sort_by == 'duration' || sort_by == 'shortest' %>
       <%# Show duration when sorting by duration %>
       <div class="movie-rating-left">
         <i data-lucide="timer" class="text-muted"></i>

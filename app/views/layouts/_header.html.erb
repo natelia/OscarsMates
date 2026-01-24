@@ -22,7 +22,7 @@
               </button>
               <ul class="dropdown-menu hs-dropdown-menu transition-[opacity,margin] duration-200 opacity-0 hs-dropdown-open:opacity-100 hidden mt-2 w-48">
                 <% available_years.each do |year| %>
-                  <li><%= link_to year, movies_path(year: year), class: "dropdown-item #{'active' if year == selected_year}" %></li>
+                  <li><%= link_to "#{year} Awards", movies_path(year: year), class: "dropdown-item #{'active' if year == selected_year}" %></li>
                 <% end %>
               </ul>
             </li>

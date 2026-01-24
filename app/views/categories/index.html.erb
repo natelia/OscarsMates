@@ -1,38 +1,97 @@
 <main class="categories-page">
   <div class="container mx-auto px-4 py-8">
-    <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between mb-4">
-      <div>
-        <h1 class="page-title mb-0">Categories</h1>
-        <p class="text-secondary mb-0"><%= current_year %> Academy Awards</p>
-      </div>
+    <div class="categories-header">
+      <h1 class="page-title mb-0">Categories</h1>
 
-      <div class="flex flex-wrap items-center gap-3">
-        <form class="search-form" role="search" action="<%= categories_path(year: current_year) %>" method="get">
-          <i data-lucide="search" class="search-icon"></i>
-          <input class="search-input"
-                 type="search"
-                 name="query"
-                 placeholder="Search..."
-                 aria-label="Search"
-                 value="<%= params[:query] %>">
-        </form>
+      <!-- Summary Statistics and Actions Row -->
+      <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between mt-3">
+        <div class="flex flex-wrap items-center gap-3">
+          <div class="stat-badge">
+            <i data-lucide="film"></i>
+            <span><%= current_year %> Awards nominees: <strong><%= @total_nominees %></strong></span>
+          </div>
+          <div class="stat-badge">
+            <i data-lucide="calendar"></i>
+            <span>Days until ceremony: <strong><%= @days_until_ceremony %></strong></span>
+          </div>
+          <div class="stat-badge">
+            <i data-lucide="trophy"></i>
+            <span>Category winners left to pick: <strong><%= @categories_count %></strong></span>
+          </div>
+        </div>
 
-        <% if current_user_admin? %>
-          <%= link_to new_category_path(year: current_year), class: "btn-oscar btn-sm" do %>
-            <i data-lucide="plus" class="text-muted"></i>
+        <div class="flex flex-wrap items-center gap-3">
+          <form class="search-form" role="search" action="<%= categories_path(year: current_year) %>" method="get">
+            <i data-lucide="search" class="search-icon"></i>
+            <input class="search-input"
+                   type="search"
+                   name="query"
+                   placeholder="Search..."
+                   aria-label="Search"
+                   value="<%= params[:query] %>">
+          </form>
+
+          <% if current_user_admin? %>
+            <%= link_to new_category_path(year: current_year), class: "btn-oscar btn-sm" do %>
+              <i data-lucide="plus" class="text-muted"></i>
+            <% end %>
           <% end %>
-        <% end %>
+        </div>
       </div>
     </div>
 
     <% if @categories.any? %>
-      <div class="category-cards-grid">
+      <div class="categories-list">
         <% @categories.each do |category| %>
-          <% movie_count = category.movies.for_year(current_year).count %>
-          <%= link_to category_path(category, year: current_year), class: "category-card-mini" do %>
-            <i data-lucide="<%= category_icon(category.name) %>" class="category-card-icon text-muted"></i>
-            <span class="category-card-name"><%= category.name %></span>
-            <span class="category-card-count"><%= movie_count %></span>
+          <% category_movies = category.movies.select { |m| m.nominations.any? { |n| n.year == current_year } }.first(4) %>
+          <% if category_movies.any? %>
+            <% user_pick = @user_picks[category.id] %>
+            <div class="category-row"
+                 data-controller="category-pick"
+                 data-category-pick-category-id-value="<%= category.id %>"
+                 data-category-pick-year-value="<%= current_year %>"
+                 data-category-pick-picking-allowed-value="<%= @picking_allowed && current_user.present? %>">
+              <!-- Category name column (4/12 columns) -->
+              <div class="category-name-column">
+                <div class="category-title-row">
+                  <div class="category-icon-wrapper">
+                    <i data-lucide="trophy" class="category-icon"></i>
+                  </div>
+                  <div class="category-title-wrapper">
+                    <h2 class="category-title"><%= category.name %></h2>
+                  </div>
+                </div>
+                <p class="text-base text-muted m-0 category-count-text"><%= pluralize(category.movies.count { |m| m.nominations.any? { |n| n.year == current_year } }, 'movie') %></p>
+                <% if current_user %>
+                  <p class="text-base text-muted m-0 category-count-text">
+                    Your nomination:
+                    <% if user_pick %>
+                      <span data-category-pick-target="nominationText" class="text-secondary font-bold"><%= user_pick.movie.title %></span>
+                    <% elsif @picking_allowed %>
+                      <span data-category-pick-target="nominationText" class="text-muted italic">Pick a movie</span>
+                    <% else %>
+                      <span data-category-pick-target="nominationText" class="text-muted italic">You missed the deadline for voting</span>
+                    <% end %>
+                  </p>
+                <% end %>
+                <p class="text-base text-muted m-0 category-count-text">
+                  Won: <span class="text-secondary font-medium">TBD</span>
+                </p>
+              </div>
+
+              <!-- Movies grid column (8/12 columns) -->
+              <div class="category-movies-column">
+                <% category_movies.each do |movie| %>
+                  <div class="category-movie-card <%= 'selected-pick' if user_pick&.movie_id == movie.id %>"
+                       data-category-pick-target="movieCard"
+                       data-movie-id="<%= movie.id %>"
+                       data-action="click->category-pick#selectMovie"
+                       style="cursor: <%= @picking_allowed && current_user ? 'pointer' : 'default' %>">
+                    <%= render 'movies/movie_card', movie: movie, review: @user_reviews[movie.id], pick_count: @pick_counts[movie.id] || 0 %>
+                  </div>
+                <% end %>
+              </div>
+            </div>
           <% end %>
         <% end %>
       </div>

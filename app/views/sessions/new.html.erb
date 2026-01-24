@@ -9,17 +9,17 @@
 
       <%= form_with(url: create_session_path, local: true, class: "mt-8 space-y-4", novalidate: true) do |f| %>
         <div>
-          <%= f.label :email, class: "text-sm font-semibold text-slate-700" %>
-          <%= f.email_field :email, autofocus: true, class: "mt-2 w-full rounded-md border-slate-200 bg-white px-3 py-2 text-sm shadow-sm focus:border-slate-400 focus:ring-slate-300", placeholder: "Enter your email" %>
+          <%= f.label :email %>
+          <%= f.email_field :email, autofocus: true, class: "mt-2 w-full", placeholder: "Enter your email" %>
         </div>
 
         <div>
-          <%= f.label :password, class: "text-sm font-semibold text-slate-700" %>
-          <%= f.password_field :password, class: "mt-2 w-full rounded-md border-slate-200 bg-white px-3 py-2 text-sm shadow-sm focus:border-slate-400 focus:ring-slate-300", placeholder: "Enter your password" %>
+          <%= f.label :password %>
+          <%= f.password_field :password, class: "mt-2 w-full", placeholder: "Enter your password" %>
         </div>
 
         <label class="flex items-center gap-2 text-sm text-slate-600">
-          <%= f.check_box :remember_me, class: "rounded border-slate-300 text-slate-900 focus:ring-slate-400" %>
+          <%= f.check_box :remember_me %>
           <span>Remember me</span>
         </label>
 

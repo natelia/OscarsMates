@@ -5,6 +5,22 @@ class CategoriesController < ApplicationController
 
   def index
     @categories = ListCategoryQuery.new(params, current_year).results
+    # Preload movies for each category to display on the index page
+    @categories = @categories.includes(movies: %i[reviews nominations])
+    @user_reviews = current_user ? current_user.reviews.index_by(&:movie_id) : {}
+    @user_picks = current_user ? current_user.user_picks.where(year: current_year).index_by(&:category_id) : {}
+
+    # Get pick counts for all movies
+    @pick_counts = UserPick.where(year: current_year)
+                           .group(:movie_id)
+                           .count
+
+    # Summary statistics
+    @total_nominees = Movie.joins(:nominations).where(nominations: { year: current_year }).distinct.count
+    @ceremony_date = Date.new(current_year, 3, 15)
+    @days_until_ceremony = (@ceremony_date - Time.zone.today).to_i
+    @categories_count = @categories.count
+    @picking_allowed = Time.zone.today <= @ceremony_date
   end
 
   def show

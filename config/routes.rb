@@ -16,6 +16,7 @@ Rails.application.routes.draw do
     end
 
     resources :categories
+    resources :user_picks, only: [:create]
 
     # User-related year-scoped pages
     get 'stats', to: 'users#stats', as: :stats_users

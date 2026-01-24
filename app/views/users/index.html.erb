@@ -1,19 +1,13 @@
 <main class="mates-page">
-  <div class="container mx-auto px-4 py-6">
+  <div class="container mx-auto px-4 py-8">
     <%# Header %>
-    <header class="text-center mb-4">
-      <h1 class="page-title mb-2">
-        <i data-lucide="users" class="mr-2 text-muted"></i>
-        Oscar Mates
-      </h1>
-      <p class="text-muted">
-        <%= pluralize(@users.size, 'mate') %> tracking <%= @year %> nominees
-      </p>
-    </header>
+    <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between mates-header">
+      <div>
+        <h1 class="page-title mb-0">Oscar Mates</h1>
+        <p class="text-secondary mb-0"><%= pluralize(@users.size, 'mate') %> tracking <%= @year %> nominees</p>
+      </div>
 
-    <%# Filter Toggle %>
-    <div class="text-center mb-4">
-      <div class="inline-flex flex-wrap items-center gap-2" role="group" aria-label="Filter users">
+      <div class="flex flex-wrap items-center gap-3">
         <% if params[:filter] == 'all' %>
           <%= link_to users_path, class: "btn-outline-oscar" do %>
             <i data-lucide="heart" class="text-muted"></i> Following
