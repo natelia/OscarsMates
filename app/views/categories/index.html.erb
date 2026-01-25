@@ -1,11 +1,13 @@
+<a id="top"></a>
+
 <main class="categories-page">
   <div class="container mx-auto px-4 py-8">
     <div class="categories-header">
       <h1 class="page-title mb-0">Nominations</h1>
 
       <!-- Summary Statistics and Actions Row -->
-      <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between mt-3">
-        <div class="flex flex-wrap items-center gap-3">
+      <div class="categories-stats-actions flex flex-col gap-3 md:flex-row md:items-center md:justify-between mt-3">
+        <div class="categories-stats-row flex flex-wrap items-center gap-3">
           <div class="stat-badge">
             <i data-lucide="film"></i>
             <span><%= current_year %> Awards nominees: <strong><%= @total_nominees %></strong></span>
@@ -20,7 +22,7 @@
           </div>
         </div>
 
-        <div class="flex flex-wrap items-center gap-3">
+        <div class="categories-search-row flex flex-wrap items-center gap-3">
           <form class="search-form" role="search" action="<%= categories_path(year: current_year) %>" method="get">
             <i data-lucide="search" class="search-icon"></i>
             <input class="search-input"
@@ -117,4 +119,9 @@
       </div>
     <% end %>
   </div>
+
+  <%# Back to Top %>
+  <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="back-to-top" title="Back to top">
+    <i data-lucide="arrow-up" style="color: var(--text-tertiary);"></i>
+  </button>
 </main>
