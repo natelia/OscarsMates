@@ -30,6 +30,15 @@ class Movie < ApplicationRecord
     reviews.average(:stars) || 0.0
   end
 
+  def mates_average_stars(user)
+    return 0.0 unless user
+
+    mate_ids = user.following.pluck(:id)
+    return 0.0 if mate_ids.empty?
+
+    reviews.where(user_id: mate_ids).average(:stars) || 0.0
+  end
+
   def to_param
     slug
   end
