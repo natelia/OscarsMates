@@ -20,6 +20,7 @@ class ReviewsController < ApplicationController
   def create
     @review = @movie.reviews.new(review_params)
     @review.user = current_user
+    @review.oscar_year_id = current_year
 
     if @review.save
       redirect_to movies_path(year: current_year),

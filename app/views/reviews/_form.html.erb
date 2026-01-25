@@ -12,10 +12,10 @@
   <% end %>
 
   <div class="text-center">
-    <div class="star-rating">
-      <% Review::STARS.reverse.each do |star| %>
+    <div class="star-rating" data-controller="star-rating" data-action="mouseleave->star-rating#leave">
+      <% Review::STARS.each do |star| %>
         <%= f.radio_button :stars, star, id: "star_#{star}_#{review.object_id}", class: "hidden", checked: review.stars == star %>
-        <%= label_tag "star_#{star}_#{review.object_id}", "★", class: "star" %>
+        <%= label_tag "star_#{star}_#{review.object_id}", "★", class: "star", data: { star_rating_target: "star", value: star, action: "mouseenter->star-rating#hover click->star-rating#select" } %>
       <% end %>
     </div>
   </div>

@@ -13,6 +13,7 @@ import AvatarUploadController from "./avatar_upload_controller";
 import CategoryPickController from "./category_pick_controller";
 import RankingFilterController from "./ranking_filter_controller";
 import MobileNavController from "./mobile_nav_controller";
+import StarRatingController from "./star_rating_controller";
 
 application.register("hello", HelloController);
 application.register("confetti", ConfettiController);
@@ -24,3 +25,4 @@ application.register("avatar-upload", AvatarUploadController);
 application.register("category-pick", CategoryPickController);
 application.register("ranking-filter", RankingFilterController);
 application.register("mobile-nav", MobileNavController);
+application.register("star-rating", StarRatingController);

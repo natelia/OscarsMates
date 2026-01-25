@@ -568,7 +568,6 @@ a {
 /* =================================== */
 .star-rating {
   display: inline-flex;
-  flex-direction: row-reverse;
   justify-content: center;
   gap: 0.5rem;
 }
@@ -586,18 +585,8 @@ a {
   justify-content: center;
 }
 
-/* All stars turn gold when hovering the container */
-.star-rating:hover .star {
-  color: var(--oscar-gold);
-}
-
-/* Stars AFTER the hovered one (visually to the right) stay muted */
-.star-rating .star:hover ~ .star {
-  color: var(--text-muted);
-}
-
-/* Checked star and all after it (visually to the left) are gold */
-.star-rating input:checked ~ .star {
+.star-rating .star.hovered,
+.star-rating .star.selected {
   color: var(--oscar-gold);
 }
 
