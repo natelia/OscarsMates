@@ -321,6 +321,11 @@ a {
   grid-auto-rows: 1fr;
   gap: var(--spacing-lg);
 
+  /* Single column for very small screens */
+  @media (max-width: 374px) {
+    grid-template-columns: 1fr;
+  }
+
   @media (min-width: 576px) {
     grid-template-columns: repeat(3, 1fr);
   }
@@ -780,11 +785,21 @@ a {
 
 .top-watchers {
   display: flex;
-  justify-content: center;
-  align-items: flex-end;
-  gap: var(--spacing-lg);
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-md);
   margin-bottom: var(--spacing-xxl);
   padding: var(--spacing-xl) 0;
+}
+
+/* Row layout on sm+ screens */
+@media (min-width: 640px) {
+  .top-watchers {
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-end;
+    gap: var(--spacing-lg);
+  }
 }
 
 .podium-card {
@@ -794,15 +809,16 @@ a {
   border-radius: var(--border-radius-lg);
   box-shadow: var(--card-shadow);
   transition: var(--transition-smooth);
+  width: 100%;
+  max-width: 200px;
 
   &:hover {
-    transform: translateY(-5px);
     box-shadow: var(--card-shadow-hover);
   }
 
+  /* Mobile: 1st on top, 2nd, 3rd */
   &.first {
-    order: 2;
-    transform: scale(1.1);
+    order: 1;
     border: 2px solid var(--oscar-gold);
 
     .crown {
@@ -811,7 +827,7 @@ a {
   }
 
   &.second {
-    order: 1;
+    order: 2;
 
     .medal {
       color: var(--border-color);
@@ -823,6 +839,35 @@ a {
 
     .medal {
       color: var(--warning);
+    }
+  }
+}
+
+/* Desktop: podium order (2nd, 1st, 3rd) with scale effect */
+@media (min-width: 640px) {
+  .podium-card {
+    width: auto;
+    max-width: none;
+
+    &:hover {
+      transform: translateY(-5px);
+    }
+
+    &.first {
+      order: 2;
+      transform: scale(1.1);
+
+      &:hover {
+        transform: scale(1.1) translateY(-5px);
+      }
+    }
+
+    &.second {
+      order: 1;
+    }
+
+    &.third {
+      order: 3;
     }
   }
 }
@@ -1306,15 +1351,21 @@ a {
   display: flex;
   align-items: center;
   justify-self: flex-start;
-  min-width: 280px;
 }
 
 .toolbar-right {
   display: flex;
   align-items: center;
   justify-self: flex-end;
-  min-width: 280px;
   justify-content: flex-end;
+}
+
+/* Restore min-width on larger screens */
+@media (min-width: 768px) {
+  .toolbar-left,
+  .toolbar-right {
+    min-width: 280px;
+  }
 }
 
 .search-wrapper {
@@ -1711,12 +1762,30 @@ input[type="search"].search-input,
 }
 
 .menu-toggle {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 44px;
+  height: 44px;
   background: none;
   border: none;
-  font-size: 1.5rem;
-  color: var(--text-primary);
   cursor: pointer;
-  padding: var(--spacing-xs);
+  padding: var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  transition: background var(--transition-fast);
+  gap: 5px;
+}
+
+.menu-toggle:hover {
+  background: var(--bg-primary);
+}
+
+.menu-toggle .hamburger-line {
+  width: 24px;
+  height: 2px;
+  background: var(--text-primary);
+  transition: var(--transition-smooth);
 }
 
 .main-nav {
@@ -1727,15 +1796,15 @@ input[type="search"].search-input,
   justify-content: space-between;
 }
 
-/* Desktop: always show navigation */
-@media (min-width: 992px) {
+/* Desktop: always show navigation (matches Tailwind lg: breakpoint = 1024px) */
+@media (min-width: 1024px) {
   .main-nav {
     display: flex !important;
   }
 }
 
 /* Mobile: hidden by default, shown when toggled */
-@media (max-width: 991.98px) {
+@media (max-width: 1023.98px) {
   .main-nav.hidden {
     display: none;
   }
