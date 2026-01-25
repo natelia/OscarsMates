@@ -5,6 +5,9 @@ import "preline/dist/preline.js";
 import { createIcons, icons } from "lucide";
 
 const initPreline = () => {
+  if (window.HSStaticMethods) {
+    window.HSStaticMethods.autoInit();
+  }
   if (window.HSDropdown) {
     window.HSDropdown.autoInit();
   }
