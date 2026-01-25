@@ -1,0 +1,90 @@
+<%# Ranking Item Partial %>
+<%# Local variables: ranked_user (hash with :user, :stats, :rank), current_user, main_metric %>
+<% user = ranked_user[:user] %>
+<% stats = ranked_user[:stats] %>
+<% rank = ranked_user[:rank] %>
+<% is_current_user = current_user && user.id == current_user.id %>
+
+<div class="ranking-item <%= 'ranking-item-current' if is_current_user %>"
+     data-user-id="<%= user.id %>"
+     data-ranking-filter-target="rankingItem">
+  <%# Left section: Rank, Avatar, Username %>
+  <div class="ranking-identity">
+    <div class="ranking-position">
+      <span class="ranking-number"><%= rank %></span>
+    </div>
+
+    <div class="ranking-avatar-wrapper">
+      <%= render "shared/avatar", user: user, size: :md %>
+
+      <% if current_user && user != current_user %>
+        <div class="ranking-avatar-overlay">
+          <% if current_user.following.include?(user) %>
+            <%= button_to unfollow_user_path(user),
+                method: :delete,
+                class: "ranking-follow-btn ranking-unfollow-btn",
+                data: { disable_with: "...", turbo_frame: "_top" } do %>
+              <i data-lucide="user-round-minus"></i>
+            <% end %>
+          <% else %>
+            <%= button_to follow_user_path(user),
+                method: :post,
+                class: "ranking-follow-btn ranking-follow-add-btn",
+                data: { disable_with: "...", turbo_frame: "_top" } do %>
+              <i data-lucide="user-round-plus"></i>
+            <% end %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+
+    <%= link_to user_path(user), class: "ranking-user-name", data: { ranking_filter_target: "userName" } do %>
+      <%= user.name %>
+    <% end %>
+  </div>
+
+  <%# Right section: Progress bars %>
+  <div class="ranking-progress-bars">
+    <%# Films progress bar %>
+    <div class="ranking-progress-row" data-metric="films">
+      <div class="ranking-progress-bar <%= main_metric == :films ? 'ranking-progress-main' : 'ranking-progress-secondary' %>" data-ranking-filter-target="progressBar">
+        <div class="ranking-progress-fill" data-ranking-filter-target="progressFill" data-percentage="<%= stats[:films][:percentage] %>" style="width: <%= stats[:films][:percentage] %>%;"></div>
+      </div>
+      <span class="ranking-progress-label" data-ranking-filter-target="progressLabel">
+        <i data-lucide="film" class="ranking-progress-icon"></i>
+        <span data-ranking-filter-target="progressStats"><%= stats[:films][:watched] %>/<%= stats[:films][:total] %></span>
+      </span>
+      <span class="ranking-progress-percentage" data-ranking-filter-target="progressPercent">
+        <%= stats[:films][:percentage].round %>%
+      </span>
+    </div>
+
+    <%# Minutes progress bar %>
+    <div class="ranking-progress-row" data-metric="minutes">
+      <div class="ranking-progress-bar <%= main_metric == :minutes ? 'ranking-progress-main' : 'ranking-progress-secondary' %>" data-ranking-filter-target="progressBar">
+        <div class="ranking-progress-fill" data-ranking-filter-target="progressFill" data-percentage="<%= stats[:minutes][:percentage] %>" style="width: <%= stats[:minutes][:percentage] %>%;"></div>
+      </div>
+      <span class="ranking-progress-label" data-ranking-filter-target="progressLabel">
+        <i data-lucide="clock" class="ranking-progress-icon"></i>
+        <span data-ranking-filter-target="progressStats"><%= (stats[:minutes][:watched] / 60.0).round %>h/<%= (stats[:minutes][:total] / 60.0).round %>h</span>
+      </span>
+      <span class="ranking-progress-percentage" data-ranking-filter-target="progressPercent">
+        <%= stats[:minutes][:percentage].round %>%
+      </span>
+    </div>
+
+    <%# Nominations progress bar %>
+    <div class="ranking-progress-row" data-metric="nominations">
+      <div class="ranking-progress-bar <%= main_metric == :nominations ? 'ranking-progress-main' : 'ranking-progress-secondary' %>" data-ranking-filter-target="progressBar">
+        <div class="ranking-progress-fill" data-ranking-filter-target="progressFill" data-percentage="<%= stats[:nominations][:percentage] %>" style="width: <%= stats[:nominations][:percentage] %>%;"></div>
+      </div>
+      <span class="ranking-progress-label" data-ranking-filter-target="progressLabel">
+        <i data-lucide="trophy" class="ranking-progress-icon"></i>
+        <span data-ranking-filter-target="progressStats"><%= stats[:nominations][:watched] %>/<%= stats[:nominations][:total] %></span>
+      </span>
+      <span class="ranking-progress-percentage" data-ranking-filter-target="progressPercent">
+        <%= stats[:nominations][:percentage].round %>%
+      </span>
+    </div>
+  </div>
+</div>

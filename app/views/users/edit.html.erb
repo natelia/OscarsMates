@@ -7,41 +7,40 @@
       <div class="mb-8 p-6 bg-white rounded-lg border border-slate-200 shadow-sm">
         <h2 class="text-lg font-semibold text-slate-900 mb-4">Profile Picture</h2>
 
-        <%= form_with model: @user, url: user_path(@user), method: :patch, local: true, data: { controller: "avatar-upload" } do |form| %>
-          <div class="flex items-center gap-6">
+        <div class="flex items-center gap-6">
+          <%= form_with model: @user, url: user_path(@user), method: :patch, local: true, data: { controller: "avatar-upload" } do |form| %>
             <div class="relative" data-avatar-upload-target="preview">
               <%= render "shared/avatar", user: @user, size: :xl, editable: true %>
               <%= form.file_field :avatar,
                     id: "avatar-upload",
                     accept: "image/png,image/jpeg,image/gif,image/webp",
                     class: "sr-only",
-                    data: { avatar_upload_target: "input", action: "change->avatar-upload#preview" } %>
+                    data: { avatar_upload_target: "input", action: "change->avatar-upload#preview change->avatar-upload#submit" } %>
             </div>
 
-            <div class="flex-1">
-              <p class="text-sm text-slate-600 mb-2">Click on your avatar to upload a new photo</p>
-              <p class="text-xs text-slate-500">PNG, JPG, GIF or WebP. Max 5MB.</p>
+            <% if @user.errors[:avatar].any? %>
+              <div class="mt-3 text-sm text-red-600">
+                <%= @user.errors[:avatar].join(", ") %>
+              </div>
+            <% end %>
+          <% end %>
 
-              <div class="mt-4 flex items-center gap-3">
-                <%= form.submit "Save Avatar", class: "rounded-md bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800" %>
+          <div class="flex-1">
+            <p class="text-sm text-slate-600 mb-2">Click on your avatar to upload a new photo</p>
+            <p class="text-xs text-slate-500">PNG, JPG, GIF or WebP. Max 5MB.</p>
 
-                <% if @user.avatar.attached? %>
-                  <%= button_to "Remove",
-                        avatar_user_path(@user),
-                        method: :delete,
-                        class: "rounded-md border border-red-200 px-4 py-2 text-sm font-semibold text-red-600 hover:bg-red-50",
-                        form: { data: { turbo_confirm: "Remove your avatar?" } } %>
+            <% if @user.avatar.attached? %>
+              <div class="mt-4">
+                <%= button_to avatar_user_path(@user),
+                      method: :delete,
+                      class: "rounded-md border border-red-200 px-4 py-2 text-sm font-semibold text-red-600 hover:bg-red-50",
+                      data: { turbo_confirm: "Remove your avatar?" } do %>
+                  Remove avatar
                 <% end %>
               </div>
-            </div>
+            <% end %>
           </div>
-
-          <% if @user.errors[:avatar].any? %>
-            <div class="mt-3 text-sm text-red-600">
-              <%= @user.errors[:avatar].join(", ") %>
-            </div>
-          <% end %>
-        <% end %>
+        </div>
       </div>
 
       <!-- Account Details Section -->

@@ -7,7 +7,8 @@ class UserMovieProgress
   def call
     return {} unless @user
 
-    reviews = @user.reviews.where(movie: @movies)
+    movie_ids = @movies.map(&:id)
+    reviews = @user.reviews.where(movie_id: movie_ids)
     review_pairs = reviews.map do |review|
       [review.movie.id, review]
     end

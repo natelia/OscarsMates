@@ -10,6 +10,8 @@ import MovieCardController from "./movie_card_controller";
 import FlashController from "./flash_controller";
 import InfiniteScrollController from "./infinite_scroll_controller";
 import AvatarUploadController from "./avatar_upload_controller";
+import CategoryPickController from "./category_pick_controller";
+import RankingFilterController from "./ranking_filter_controller";
 
 application.register("hello", HelloController);
 application.register("confetti", ConfettiController);
@@ -18,3 +20,5 @@ application.register("movie-card", MovieCardController);
 application.register("flash", FlashController);
 application.register("infinite-scroll", InfiniteScrollController);
 application.register("avatar-upload", AvatarUploadController);
+application.register("category-pick", CategoryPickController);
+application.register("ranking-filter", RankingFilterController);

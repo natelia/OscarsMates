@@ -5,43 +5,43 @@
 
       <div class="grid gap-6 md:grid-cols-2">
         <div>
-          <%= form.label :title, class: "text-sm font-semibold text-slate-700" %>
-          <%= form.text_field :title, class: "mt-2 w-full rounded-md border-slate-200 bg-white px-3 py-2 text-sm shadow-sm focus:border-slate-400 focus:ring-slate-300", placeholder: "Movie Title", autofocus: true %>
+          <%= form.label :title %>
+          <%= form.text_field :title, class: "mt-2 w-full", placeholder: "Movie Title", autofocus: true %>
           <% movie.errors.full_messages_for(:title).each do |message| %>
             <div class="mt-2 text-sm text-red-600"><%= message %></div>
           <% end %>
         </div>
         <div>
-          <%= form.label :english_title, class: "text-sm font-semibold text-slate-700" %>
-          <%= form.text_field :english_title, class: "mt-2 w-full rounded-md border-slate-200 bg-white px-3 py-2 text-sm shadow-sm focus:border-slate-400 focus:ring-slate-300", placeholder: "English Title" %>
+          <%= form.label :english_title %>
+          <%= form.text_field :english_title, class: "mt-2 w-full", placeholder: "English Title" %>
           <% movie.errors.full_messages_for(:english_title).each do |message| %>
             <div class="mt-2 text-sm text-red-600"><%= message %></div>
           <% end %>
         </div>
         <div>
-          <%= form.label :where_to_watch, class: "text-sm font-semibold text-slate-700" %>
-          <%= form.text_field :where_to_watch, class: "mt-2 w-full rounded-md border-slate-200 bg-white px-3 py-2 text-sm shadow-sm focus:border-slate-400 focus:ring-slate-300", placeholder: "Where can you watch it?" %>
+          <%= form.label :where_to_watch %>
+          <%= form.text_field :where_to_watch, class: "mt-2 w-full", placeholder: "Where can you watch it?" %>
           <% movie.errors.full_messages_for(:where_to_watch).each do |message| %>
             <div class="mt-2 text-sm text-red-600"><%= message %></div>
           <% end %>
         </div>
         <div>
-          <%= form.label :runtime, class: "text-sm font-semibold text-slate-700" %>
-          <%= form.text_field :runtime, class: "mt-2 w-full rounded-md border-slate-200 bg-white px-3 py-2 text-sm shadow-sm focus:border-slate-400 focus:ring-slate-300", placeholder: "Runtime (in mins)" %>
+          <%= form.label :runtime %>
+          <%= form.text_field :runtime, class: "mt-2 w-full", placeholder: "Runtime (in mins)" %>
           <% movie.errors.full_messages_for(:runtime).each do |message| %>
             <div class="mt-2 text-sm text-red-600"><%= message %></div>
           <% end %>
         </div>
         <div>
-          <%= form.label :rating, class: "text-sm font-semibold text-slate-700" %>
-          <%= form.text_field :rating, class: "mt-2 w-full rounded-md border-slate-200 bg-white px-3 py-2 text-sm shadow-sm focus:border-slate-400 focus:ring-slate-300", placeholder: "Rating" %>
+          <%= form.label :rating %>
+          <%= form.text_field :rating, class: "mt-2 w-full", placeholder: "Rating" %>
           <% movie.errors.full_messages_for(:rating).each do |message| %>
             <div class="mt-2 text-sm text-red-600"><%= message %></div>
           <% end %>
         </div>
         <div>
-          <%= form.label :url, class: "text-sm font-semibold text-slate-700" %>
-          <%= form.text_field :url, class: "mt-2 w-full rounded-md border-slate-200 bg-white px-3 py-2 text-sm shadow-sm focus:border-slate-400 focus:ring-slate-300", placeholder: "URL" %>
+          <%= form.label :url %>
+          <%= form.text_field :url, class: "mt-2 w-full", placeholder: "URL" %>
           <% movie.errors.full_messages_for(:url).each do |message| %>
             <div class="mt-2 text-sm text-red-600"><%= message %></div>
           <% end %>
@@ -49,19 +49,19 @@
       </div>
 
       <div>
-        <%= form.label :picture_url, class: "text-sm font-semibold text-slate-700" %>
-        <%= form.text_field :picture_url, class: "mt-2 w-full rounded-md border-slate-200 bg-white px-3 py-2 text-sm shadow-sm focus:border-slate-400 focus:ring-slate-300", placeholder: "Picture URL" %>
+        <%= form.label :picture_url %>
+        <%= form.text_field :picture_url, class: "mt-2 w-full", placeholder: "Picture URL" %>
         <% movie.errors.full_messages_for(:picture_url).each do |message| %>
           <div class="mt-2 text-sm text-red-600"><%= message %></div>
         <% end %>
       </div>
 
       <div>
-        <%= form.label :genres, class: "text-sm font-semibold text-slate-700" %>
+        <%= form.label :genres %>
         <div class="mt-3 flex flex-wrap gap-4">
           <%= form.collection_check_boxes(:genre_ids, Genre.order(:name), :id, :name) do |checkbox| %>
             <label class="inline-flex items-center gap-2 text-sm text-slate-600">
-              <%= checkbox.check_box(class: "rounded border-slate-300 text-slate-900 focus:ring-slate-400") %>
+              <%= checkbox.check_box(class: "") %>
               <span><%= checkbox.text %></span>
             </label>
           <% end %>
@@ -69,11 +69,11 @@
       </div>
 
       <div>
-        <%= form.label :categories, class: "text-sm font-semibold text-slate-700" %>
+        <%= form.label :categories %>
         <div class="mt-3 flex flex-wrap gap-4">
           <%= form.collection_check_boxes(:category_ids, Category.order(:name), :id, :name) do |checkbox| %>
             <label class="inline-flex items-center gap-2 text-sm text-slate-600">
-              <%= checkbox.check_box(class: "rounded border-slate-300 text-slate-900 focus:ring-slate-400") %>
+              <%= checkbox.check_box(class: "") %>
               <span><%= checkbox.text %></span>
             </label>
           <% end %>

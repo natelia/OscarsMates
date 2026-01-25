@@ -6,19 +6,40 @@ class UsersController < ApplicationController
   before_action :require_signin, except: %i[new create]
   before_action :require_correct_user, only: %i[edit update destroy destroy_avatar]
 
+  # rubocop:disable Metrics/MethodLength
   def index
-    @users = User.all
     @year = current_year || default_year
-    @total_movies_count = Movie.for_year(@year).count
 
-    @users = UserFilterService.new(current_user, params[:filter]).call
+    # Ranking parameters
+    metric = params[:metric]&.to_sym || :films
+    mode = params[:mode]&.to_sym || :goals
+    scope = params[:scope]&.to_sym || :all
+    @query = params[:query]
 
-    # Calculate top watchers for podium display
-    @top_watchers = @users.sort_by { |u| -u.watched_movies_count_for_year(@year) }.first(3)
+    # Initialize ranking service
+    ranking_service = RankingService.new(
+      year: @year,
+      current_user: current_user,
+      metric: metric,
+      mode: mode,
+      scope: scope
+    )
 
-    # Exclude top watchers from main list to avoid duplication
-    @remaining_users = @users - @top_watchers
+    # Get ranked users
+    @ranked_users = ranking_service.ranked_users
+    @totals = ranking_service.totals
+    @metric = metric
+    @mode = mode
+    @scope = scope
+
+    # Apply search filter if query present
+    return if @query.blank?
+
+    @ranked_users = @ranked_users.select do |ranked_user|
+      ranked_user[:user].name.downcase.include?(@query.downcase)
+    end
   end
+  # rubocop:enable Metrics/MethodLength
 
   def show
     @user = User.find(params[:id])
@@ -47,7 +68,12 @@ class UsersController < ApplicationController
 
   def update
     if @user.update(user_params)
-      redirect_to root_path, notice: 'Account successfully updated!'
+      # Stay on edit page if only avatar was updated
+      if params[:user].keys == ['avatar']
+        redirect_to edit_user_path(@user), notice: 'Avatar updated!'
+      else
+        redirect_to user_path(@user), notice: 'Account successfully updated!'
+      end
     else
       render :edit, status: :unprocessable_content
     end
