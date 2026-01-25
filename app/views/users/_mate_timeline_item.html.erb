@@ -1,7 +1,7 @@
 <%# Mate Timeline Item - Shows a mate's review with poster and details %>
 <%# Local variables: review %>
 
-<div class="flex gap-4 rounded-lg border border-slate-200 bg-white p-4">
+<div class="flex flex-col sm:flex-row gap-4 rounded-lg border border-slate-200 bg-white p-4">
   <%# Left: Movie Poster %>
   <div class="flex-shrink-0 relative">
     <% my_review = current_user&.reviews&.find_by(movie: review.movie) %>
@@ -19,9 +19,9 @@
     <% if review.movie.picture_url.present? %>
       <%= image_tag review.movie.picture_url,
                     alt: review.movie.title,
-                    class: "h-[200px] w-[133px] rounded-lg object-cover shadow-sm" %>
+                    class: "w-20 h-[120px] sm:w-[100px] sm:h-[150px] md:w-[133px] md:h-[200px] rounded-lg object-cover shadow-sm" %>
     <% else %>
-      <div class="h-[200px] w-[133px] flex items-center justify-center rounded-lg bg-slate-100 shadow-sm">
+      <div class="w-20 h-[120px] sm:w-[100px] sm:h-[150px] md:w-[133px] md:h-[200px] flex items-center justify-center rounded-lg bg-slate-100 shadow-sm">
         <i data-lucide="film" class="text-slate-400" style="width: 48px; height: 48px;"></i>
       </div>
     <% end %>
