@@ -22,7 +22,7 @@
 
   <div>
     <%= f.label :watched_on, "Date Watched" %>
-    <%= f.date_field :watched_on, value: review.watched_on || Date.today, class: "mt-2 w-full sm:max-w-[180px]" %>
+    <%= f.datetime_local_field :watched_on, value: (review.watched_on || Time.current).strftime("%Y-%m-%dT%H:%M"), class: "mt-2" %>
   </div>
 
   <div>

@@ -15,8 +15,10 @@ class Review < ApplicationRecord
   private
 
   def unique_user_review_for_movie
-    return unless Review.exists?(user_id: user_id, movie_id: movie_id)
+    duplicate_exists = Review.where(user_id: user_id, movie_id: movie_id)
+                             .where.not(id: id || 0)
+                             .exists?
 
-    errors.add(:base, 'You have already reviewed this movie')
+    errors.add(:base, 'You have already reviewed this movie') if duplicate_exists
   end
 end

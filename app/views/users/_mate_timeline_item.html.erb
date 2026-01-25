@@ -40,7 +40,7 @@
           <div class="text-sm italic text-slate-600">
             Watched "<%= review.movie.title %>"
             <% days_ago = (Date.current - review.watched_on.to_date).to_i %>
-            <span title="<%= review.watched_on.strftime('%B %d, %Y') %>">
+            <span title="<%= review.watched_on.strftime('%B %d, %Y at %I:%M %p') %>">
               <% if days_ago == 0 %>
                 Today
               <% elsif days_ago == 1 %>

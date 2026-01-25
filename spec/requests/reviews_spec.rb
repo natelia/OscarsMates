@@ -15,7 +15,7 @@ RSpec.describe 'Reviews', type: :request do
       {
         review: {
           stars: 8,
-          watched_on: Time.zone.today
+          watched_on: Time.current
         }
       }
     end

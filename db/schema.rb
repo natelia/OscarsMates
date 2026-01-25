@@ -113,7 +113,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_01_24_182500) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "user_id", null: false
-    t.date "watched_on", null: false
+    t.datetime "watched_on", null: false
     t.index ["movie_id"], name: "index_reviews_on_movie_id"
     t.index ["user_id"], name: "index_reviews_on_user_id"
     t.index ["watched_on"], name: "index_reviews_on_watched_on"
