@@ -1915,6 +1915,7 @@ input[type="search"].search-input,
   position: absolute;
   z-index: 50;
   min-width: 12rem;
+  max-width: calc(100vw - 2rem);
 
   .dropdown-item {
     display: block;
@@ -1957,6 +1958,26 @@ input[type="search"].search-input,
     color: var(--slate-500);
     text-transform: uppercase;
     letter-spacing: 0.05em;
+  }
+}
+
+/* Mobile nav dropdowns - full width inside collapsed nav */
+@media (max-width: 1023.98px) {
+  .main-nav .dropdown-menu {
+    position: static;
+    width: 100%;
+    max-width: none;
+    box-shadow: none;
+    border: none;
+    border-radius: 0;
+    background: var(--bg-primary);
+    margin: 0;
+    padding: 0;
+  }
+
+  .main-nav .dropdown-item {
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-bottom: 1px solid var(--border-color-light);
   }
 }
 
