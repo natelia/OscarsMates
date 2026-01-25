@@ -321,6 +321,11 @@ a {
   grid-auto-rows: 1fr;
   gap: var(--spacing-lg);
 
+  /* Single column for very small screens */
+  @media (max-width: 374px) {
+    grid-template-columns: 1fr;
+  }
+
   @media (min-width: 576px) {
     grid-template-columns: repeat(3, 1fr);
   }
