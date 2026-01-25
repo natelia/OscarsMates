@@ -27,7 +27,7 @@ class User < ApplicationRecord
 
   def reviews_for_year(year)
     reviews.joins(movie: :nominations)
-           .where(nominations: { year: year })
+           .where(nominations: { oscar_year_id: year })
            .distinct
   end
 

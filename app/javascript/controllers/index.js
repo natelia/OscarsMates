@@ -12,6 +12,7 @@ import InfiniteScrollController from "./infinite_scroll_controller";
 import AvatarUploadController from "./avatar_upload_controller";
 import CategoryPickController from "./category_pick_controller";
 import RankingFilterController from "./ranking_filter_controller";
+import StarRatingController from "./star_rating_controller";
 
 application.register("hello", HelloController);
 application.register("confetti", ConfettiController);
@@ -22,3 +23,4 @@ application.register("infinite-scroll", InfiniteScrollController);
 application.register("avatar-upload", AvatarUploadController);
 application.register("category-pick", CategoryPickController);
 application.register("ranking-filter", RankingFilterController);
+application.register("star-rating", StarRatingController);

@@ -568,25 +568,30 @@ a {
 /* =================================== */
 .star-rating {
   display: inline-flex;
-  gap: 4px;
+  justify-content: center;
+  gap: 0.5rem;
+}
 
-  .star {
-    font-size: 1.5rem;
-    color: var(--text-muted);
-    cursor: pointer;
-    transition: var(--transition-smooth);
+.star-rating .star {
+  font-size: 2.5rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  padding: 0.5rem;
+  min-width: 44px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
 
-    &:hover,
-    &.active,
-    &.hovered {
-      color: var(--oscar-gold);
-      transform: scale(1.1);
-    }
+.star-rating .star:hover {
+  transform: scale(1.1);
+}
 
-    &.filled {
-      color: var(--oscar-gold);
-    }
-  }
+.star-rating .star.highlighted,
+.star-rating .star.selected {
+  color: var(--oscar-gold);
 }
 
 .star-rating-mini {
@@ -1347,21 +1352,29 @@ a {
   margin-bottom: var(--spacing-xl);
 }
 
-.toolbar-left {
+.toolbar-left,
+.toolbar-right {
   display: flex;
   align-items: center;
+}
+
+.toolbar-left {
   justify-self: flex-start;
 }
 
 .toolbar-right {
-  display: flex;
-  align-items: center;
   justify-self: flex-end;
   justify-content: flex-end;
 }
 
-/* Restore min-width on larger screens */
 @media (min-width: 768px) {
+  .toolbar-left,
+  .toolbar-right {
+    min-width: 200px;
+  }
+}
+
+@media (min-width: 1024px) {
   .toolbar-left,
   .toolbar-right {
     min-width: 280px;

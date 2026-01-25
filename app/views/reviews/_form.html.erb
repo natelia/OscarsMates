@@ -12,10 +12,13 @@
   <% end %>
 
   <div class="text-center">
-    <div class="star-rating flex flex-row-reverse justify-center gap-2">
-      <% Review::STARS.reverse.each do |star| %>
+    <div class="star-rating" data-controller="star-rating" data-action="mouseleave->star-rating#leave">
+      <% Review::STARS.each do |star| %>
         <%= f.radio_button :stars, star, id: "star_#{star}_#{review.object_id}", class: "hidden", checked: review.stars == star %>
-        <%= label_tag "star_#{star}_#{review.object_id}", "★", class: "star text-4xl sm:text-3xl p-2 sm:p-0" %>
+        <span class="star"
+              data-star-rating-target="star"
+              data-value="<%= star %>"
+              data-action="mouseenter->star-rating#hover click->star-rating#select">★</span>
       <% end %>
     </div>
   </div>
