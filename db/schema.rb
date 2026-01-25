@@ -43,6 +43,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_01_24_182500) do
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_categories_on_name", unique: true
   end
 
   create_table "characterizations", force: :cascade do |t|
@@ -51,6 +52,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_01_24_182500) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["genre_id"], name: "index_characterizations_on_genre_id"
+    t.index ["movie_id", "genre_id"], name: "index_characterizations_on_movie_id_and_genre_id", unique: true
     t.index ["movie_id"], name: "index_characterizations_on_movie_id"
   end
 
@@ -60,6 +62,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_01_24_182500) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["movie_id"], name: "index_favorites_on_movie_id"
+    t.index ["user_id", "movie_id"], name: "index_favorites_on_user_id_and_movie_id", unique: true
     t.index ["user_id"], name: "index_favorites_on_user_id"
   end
 
@@ -90,6 +93,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_01_24_182500) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "slug"
+    t.index ["slug"], name: "index_movies_on_slug", unique: true
     t.index ["title"], name: "index_movies_on_title", unique: true
   end
 
@@ -99,11 +103,21 @@ ActiveRecord::Schema[7.1].define(version: 2026_01_24_182500) do
     t.integer "movie_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "year", default: 2025, null: false
+    t.integer "oscar_year_id", null: false
     t.index ["category_id"], name: "index_nominations_on_category_id"
+    t.index ["movie_id", "category_id", "oscar_year_id"], name: "index_nominations_uniqueness", unique: true
     t.index ["movie_id"], name: "index_nominations_on_movie_id"
-    t.index ["year", "category_id"], name: "index_nominations_on_year_and_category_id"
-    t.index ["year", "movie_id"], name: "index_nominations_on_year_and_movie_id"
+    t.index ["oscar_year_id", "category_id"], name: "index_nominations_on_year_category"
+    t.index ["oscar_year_id", "movie_id"], name: "index_nominations_on_year_movie"
+    t.index ["oscar_year_id"], name: "index_nominations_on_oscar_year_id"
+  end
+
+  create_table "oscar_years", force: :cascade do |t|
+    t.date "nominations_announced_on"
+    t.date "ceremony_on"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["id"], name: "index_oscar_years_on_id", unique: true
   end
 
   create_table "reviews", force: :cascade do |t|
@@ -113,8 +127,12 @@ ActiveRecord::Schema[7.1].define(version: 2026_01_24_182500) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "user_id", null: false
+    t.integer "oscar_year_id", null: false
     t.datetime "watched_on", null: false
     t.index ["movie_id"], name: "index_reviews_on_movie_id"
+    t.index ["oscar_year_id"], name: "index_reviews_on_oscar_year_id"
+    t.index ["user_id", "movie_id", "oscar_year_id"], name: "index_reviews_uniqueness", unique: true
+    t.index ["user_id", "movie_id"], name: "index_reviews_on_user_id_and_movie_id", unique: true
     t.index ["user_id"], name: "index_reviews_on_user_id"
     t.index ["watched_on"], name: "index_reviews_on_watched_on"
   end
@@ -151,7 +169,9 @@ ActiveRecord::Schema[7.1].define(version: 2026_01_24_182500) do
   add_foreign_key "follows", "users", column: "follower_id"
   add_foreign_key "nominations", "categories"
   add_foreign_key "nominations", "movies"
+  add_foreign_key "nominations", "oscar_years"
   add_foreign_key "reviews", "movies"
+  add_foreign_key "reviews", "oscar_years"
   add_foreign_key "reviews", "users"
   add_foreign_key "user_picks", "categories"
   add_foreign_key "user_picks", "movies"

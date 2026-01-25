@@ -568,25 +568,37 @@ a {
 /* =================================== */
 .star-rating {
   display: inline-flex;
-  gap: 4px;
+  flex-direction: row-reverse;
+  justify-content: center;
+  gap: 0.5rem;
+}
 
-  .star {
-    font-size: 1.5rem;
-    color: var(--text-muted);
-    cursor: pointer;
-    transition: var(--transition-smooth);
+.star-rating .star {
+  font-size: 2.5rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  padding: 0.5rem;
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-    &:hover,
-    &.active,
-    &.hovered {
-      color: var(--oscar-gold);
-      transform: scale(1.1);
-    }
+/* All stars turn gold when hovering the container */
+.star-rating:hover .star {
+  color: var(--oscar-gold);
+}
 
-    &.filled {
-      color: var(--oscar-gold);
-    }
-  }
+/* Stars AFTER the hovered one (visually to the right) stay muted */
+.star-rating .star:hover ~ .star {
+  color: var(--text-muted);
+}
+
+/* Checked star and all after it (visually to the left) are gold */
+.star-rating input:checked ~ .star {
+  color: var(--oscar-gold);
 }
 
 .star-rating-mini {
@@ -1739,6 +1751,7 @@ input[type="search"].search-input,
   align-items: center;
   justify-content: space-between;
   gap: var(--spacing-xl);
+  position: relative;
 }
 
 .logo {
@@ -1764,8 +1777,9 @@ input[type="search"].search-input,
 .menu-toggle {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  gap: 5px;
   width: 44px;
   height: 44px;
   background: none;
@@ -1774,18 +1788,18 @@ input[type="search"].search-input,
   padding: var(--spacing-sm);
   border-radius: var(--radius-sm);
   transition: background var(--transition-fast);
-  gap: 5px;
 }
 
 .menu-toggle:hover {
   background: var(--bg-primary);
 }
 
-.menu-toggle .hamburger-line {
-  width: 24px;
+.hamburger-line {
+  display: block;
+  width: 22px;
   height: 2px;
-  background: var(--text-primary);
-  transition: var(--transition-smooth);
+  background-color: var(--text-primary);
+  border-radius: 1px;
 }
 
 .main-nav {
@@ -1796,17 +1810,55 @@ input[type="search"].search-input,
   justify-content: space-between;
 }
 
-/* Desktop: always show navigation (matches Tailwind lg: breakpoint = 1024px) */
+/* Desktop: always show navigation (matches Tailwind lg: = 1024px) */
 @media (min-width: 1024px) {
   .main-nav {
     display: flex !important;
   }
 }
 
-/* Mobile: hidden by default, shown when toggled */
+/* Mobile: full-width dropdown nav */
 @media (max-width: 1023.98px) {
+  .header-inner {
+    position: relative;
+  }
+
+  .main-nav {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    background: var(--bg-secondary);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    padding: var(--spacing-md);
+    z-index: 100;
+  }
+
   .main-nav.hidden {
     display: none;
+  }
+
+  .nav-links {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+  }
+
+  .nav-links .nav-link {
+    display: block;
+    padding: var(--spacing-md);
+  }
+
+  .header-actions {
+    flex-direction: column;
+    align-items: stretch;
+    padding-top: var(--spacing-md);
+    border-top: 1px solid var(--bg-primary);
+    margin-top: var(--spacing-md);
   }
 }
 
@@ -1981,8 +2033,8 @@ input[type="search"].search-input,
   }
 }
 
-/* Mobile responsive */
-@media (max-width: 991.98px) {
+/* Mobile responsive (matches Tailwind lg: = 1024px) */
+@media (max-width: 1023.98px) {
   .main-nav {
     position: absolute;
     top: 100%;
@@ -1993,6 +2045,8 @@ input[type="search"].search-input,
     flex-direction: column;
     padding: var(--spacing-lg);
     gap: var(--spacing-lg);
+    box-shadow: var(--shadow-lg);
+    z-index: 100;
   }
 
   .nav-links {
@@ -2011,9 +2065,25 @@ input[type="search"].search-input,
 
   .header-actions {
     width: 100%;
-    justify-content: center;
+    flex-direction: column;
+    gap: var(--spacing-sm);
     padding-top: var(--spacing-md);
     border-top: 1px solid var(--border-color-light);
+  }
+
+  .header-actions .btn-primary-minimal,
+  .header-actions .btn-secondary-minimal {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .user-menu {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .user-menu span {
+    display: inline !important;
   }
 }
 

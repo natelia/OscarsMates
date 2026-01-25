@@ -5,6 +5,6 @@ class Category < ApplicationRecord
   validates :name, presence: true
 
   scope :for_year, lambda { |year|
-    joins(:nominations).where(nominations: { year: year }).distinct
+    joins(:nominations).where(nominations: { oscar_year_id: year }).distinct
   }
 end

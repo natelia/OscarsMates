@@ -8,7 +8,7 @@ class MatesReviewsQuery
 
   def results
     reviews = Review.joins(movie: :nominations)
-                    .where(user: @user.following, nominations: { year: @year })
+                    .where(user: @user.following, nominations: { oscar_year_id: @year })
                     .distinct
                     .order(created_at: :desc)
 

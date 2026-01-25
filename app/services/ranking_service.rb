@@ -65,7 +65,7 @@ class RankingService
     movie_ids = user.reviews_for_year(year).select(:movie_id).distinct.pluck(:movie_id)
 
     minutes_sum = movie_ids.empty? ? 0 : Movie.where(id: movie_ids).sum(:runtime)
-    nominations_count = movie_ids.empty? ? 0 : Nomination.where(year: year, movie_id: movie_ids).count
+    nominations_count = movie_ids.empty? ? 0 : Nomination.where(oscar_year_id: year, movie_id: movie_ids).count
 
     {
       films: { watched: films_count },
@@ -131,7 +131,7 @@ class RankingService
   end
 
   def total_nominations
-    @total_nominations ||= Nomination.where(year: year).count
+    @total_nominations ||= Nomination.where(oscar_year_id: year).count
   end
 
   def safe_percentage(watched, total)
