@@ -28,7 +28,7 @@ export default class extends Controller {
     })
   }
 
-  select(event) {
+  select(_event) {
     // Radio button handles the actual selection, just update visuals
     setTimeout(() => this.updateSelected(), 0)
   }

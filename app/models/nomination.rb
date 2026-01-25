@@ -2,6 +2,9 @@ class Nomination < ApplicationRecord
   belongs_to :movie
   belongs_to :category
 
+  # Alias year to oscar_year_id for backwards compatibility
+  alias_attribute :year, :oscar_year_id
+
   validates :oscar_year_id, presence: true,
                             numericality: { only_integer: true,
                                             greater_than_or_equal_to: 1929,

@@ -32,7 +32,7 @@ RSpec.describe 'Factory traits' do
     it 'creates movie with nomination using :with_nomination trait' do
       movie = create(:movie, :with_nomination, nomination_year: 2024)
       expect(movie.nominations.count).to eq(1)
-      expect(movie.nominations.first.year).to eq(2024)
+      expect(movie.nominations.first.oscar_year_id).to eq(2024)
     end
 
     it 'creates movie with genres using :with_genres trait' do

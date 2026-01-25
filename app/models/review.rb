@@ -11,6 +11,7 @@ class Review < ApplicationRecord
   }
   validate :unique_user_review_for_movie
   validates :watched_on, presence: true
+  validates :oscar_year_id, presence: true
 
   private
 

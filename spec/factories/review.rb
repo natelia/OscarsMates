@@ -4,6 +4,7 @@ FactoryBot.define do
     association :user
     watched_on { Time.current }
     stars { 7 }
+    oscar_year_id { OscarYear.find_or_create_by(id: 2025) { |y| y.ceremony_on = Date.new(2025, 3, 2) }.id }
 
     trait :with_comment do
       comment { 'Great movie! Highly recommend.' }

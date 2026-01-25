@@ -24,9 +24,10 @@ FactoryBot.define do
         nomination_year { 2025 }
       end
       after(:create) do |category, evaluator|
+        oscar_year = OscarYear.find_or_create_by(id: evaluator.nomination_year) { |y| y.ceremony_on = Date.new(evaluator.nomination_year, 3, 2) }
         create_list(:nomination, evaluator.nominations_count,
                     category: category,
-                    year: evaluator.nomination_year)
+                    oscar_year_id: oscar_year.id)
       end
     end
   end

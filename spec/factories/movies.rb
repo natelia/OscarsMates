@@ -24,7 +24,8 @@ FactoryBot.define do
       end
       after(:create) do |movie, evaluator|
         category = evaluator.nomination_category || create(:category)
-        create(:nomination, movie: movie, category: category, year: evaluator.nomination_year)
+        oscar_year = OscarYear.find_or_create_by(id: evaluator.nomination_year) { |y| y.ceremony_on = Date.new(evaluator.nomination_year, 3, 2) }
+        create(:nomination, movie: movie, category: category, oscar_year_id: oscar_year.id)
       end
     end
 
