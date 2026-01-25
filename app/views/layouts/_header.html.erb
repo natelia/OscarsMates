@@ -1,16 +1,18 @@
 <header class="site-header">
   <div class="container mx-auto px-4">
-    <div class="header-inner">
+    <div class="header-inner" data-controller="mobile-menu" data-action="click@window->mobile-menu#closeOnClickOutside keydown.escape@window->mobile-menu#closeOnEscape">
       <%= link_to root_path, class: "logo" do %>
         <i class="bi bi-trophy-fill"></i>
         <span>OscarsMates</span>
       <% end %>
 
-      <button class="menu-toggle lg:hidden" type="button" data-hs-collapse="#mainNav" aria-controls="mainNav" aria-label="Toggle navigation">
-        <i class="bi bi-list"></i>
+      <button class="menu-toggle lg:hidden" type="button" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation" data-mobile-menu-target="button" data-action="click->mobile-menu#toggle">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
       </button>
 
-      <nav class="main-nav hs-collapse hidden lg:!flex" id="mainNav">
+      <nav class="main-nav hidden lg:!flex" id="mainNav" data-mobile-menu-target="nav">
         <% selected_year = current_year || default_year %>
 
         <ul class="nav-links">
