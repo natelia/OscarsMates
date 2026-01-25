@@ -2018,6 +2018,36 @@ input[type="search"].search-input,
 }
 
 /* =================================== */
+/* Date Picker */
+/* =================================== */
+input[type="date"] {
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  min-height: 44px;
+}
+
+input[type="date"]:focus {
+  border-color: var(--oscar-gold);
+  box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.1);
+  outline: none;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: 0.6;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+
+/* =================================== */
 /* Utilities */
 /* =================================== */
 .text-gold {
