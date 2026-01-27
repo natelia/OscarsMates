@@ -13,7 +13,7 @@ class UsersController < ApplicationController
     # Ranking parameters
     metric = params[:metric]&.to_sym || :films
     mode = params[:mode]&.to_sym || :goals
-    scope = params[:scope]&.to_sym || :all
+    scope = params[:scope]&.to_sym || :mates
     @query = params[:query]
 
     # Initialize ranking service
