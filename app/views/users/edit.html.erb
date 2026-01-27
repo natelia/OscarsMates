@@ -7,7 +7,7 @@
       <div class="mb-8 p-6 bg-white rounded-lg border border-slate-200 shadow-sm">
         <h2 class="text-lg font-semibold text-slate-900 mb-4">Profile Picture</h2>
 
-        <div class="flex items-center gap-6">
+        <div class="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
           <%= form_with model: @user, url: user_path(@user), method: :patch, local: true, data: { controller: "avatar-upload" } do |form| %>
             <div class="relative" data-avatar-upload-target="preview">
               <%= render "shared/avatar", user: @user, size: :xl, editable: true %>
