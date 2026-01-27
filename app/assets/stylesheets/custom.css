@@ -2131,6 +2131,8 @@ input[type="search"].search-input,
   z-index: 50;
   min-width: 12rem;
   max-width: calc(100vw - 2rem);
+  max-height: 70vh;
+  overflow-y: auto;
 
   .dropdown-item {
     display: block;
