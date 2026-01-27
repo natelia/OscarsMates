@@ -135,6 +135,7 @@ input[type="email"],
 input[type="password"],
 input[type="search"],
 input[type="date"],
+input[type="datetime-local"],
 input[type="number"],
 select,
 textarea {
@@ -157,6 +158,7 @@ input[type="email"]:focus,
 input[type="password"]:focus,
 input[type="search"]:focus,
 input[type="date"]:focus,
+input[type="datetime-local"]:focus,
 input[type="number"]:focus,
 select:focus,
 textarea:focus {
@@ -171,6 +173,32 @@ input[type="password"]::placeholder,
 input[type="search"]::placeholder,
 textarea::placeholder {
   color: var(--slate-400);
+}
+
+/* Date picker styling */
+input[type="date"],
+input[type="datetime-local"] {
+  min-height: 44px;
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  input[type="date"],
+  input[type="datetime-local"] {
+    width: auto;
+  }
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  padding: var(--spacing-xs);
+  border-radius: var(--radius-sm);
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator:hover,
+input[type="datetime-local"]::-webkit-calendar-picker-indicator:hover {
+  background-color: var(--bg-primary);
 }
 
 select {
