@@ -67,19 +67,20 @@
     <% elsif sort_by == 'most_watched_by_mates' %>
       <%# Show mate watch count when sorting by popularity %>
       <div class="movie-rating-left">
-        <% watch_count = movie.try(:mates_watch_count) || 0 %>
+        <% watch_count = movie['mates_watch_count']&.to_i || 0 %>
         <i data-lucide="users" class="text-muted"></i>
         <span><%= watch_count %> <%= 'mate'.pluralize(watch_count) %></span>
       </div>
     <% else %>
       <%# Show ratings normally %>
       <div class="movie-rating-left">
-        <% if movie.average_stars.zero? %>
+        <% mates_rating = current_user ? movie.mates_average_stars(current_user) : 0.0 %>
+        <% if mates_rating.zero? %>
           <i data-lucide="users" class="text-muted"></i>
           <span class="text-muted">No ratings</span>
         <% else %>
           <i data-lucide="users" class="text-muted"></i>
-          <span><%= number_with_precision(movie.average_stars, precision: 1) %></span>
+          <span><%= number_with_precision(mates_rating, precision: 1) %></span>
         <% end %>
       </div>
       <div class="movie-rating-right">
