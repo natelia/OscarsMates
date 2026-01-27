@@ -1935,6 +1935,19 @@ input[type="search"].search-input,
   transition: var(--transition-smooth);
 }
 
+/* Hamburger to X animation */
+.menu-toggle.open .hamburger-line:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.menu-toggle.open .hamburger-line:nth-child(2) {
+  opacity: 0;
+}
+
+.menu-toggle.open .hamburger-line:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
 .main-nav {
   display: flex;
   align-items: center;

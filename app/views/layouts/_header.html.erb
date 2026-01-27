@@ -1,4 +1,4 @@
-<header class="site-header">
+<header class="site-header" data-controller="menu">
   <div class="container mx-auto px-4">
     <div class="header-inner">
       <%= link_to root_path, class: "logo" do %>
@@ -6,13 +6,13 @@
         <span>OscarsMates</span>
       <% end %>
 
-      <button class="menu-toggle lg:hidden" type="button" data-hs-collapse="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+      <button class="menu-toggle lg:hidden" type="button" data-menu-target="toggle" data-action="click->menu#toggle" aria-label="Toggle navigation">
         <span class="hamburger-line"></span>
         <span class="hamburger-line"></span>
         <span class="hamburger-line"></span>
       </button>
 
-      <nav class="main-nav hs-collapse hidden lg:!flex" id="mainNav">
+      <nav class="main-nav hidden lg:!flex" id="mainNav" data-menu-target="nav">
         <% selected_year = current_year || default_year %>
 
         <ul class="nav-links">
