@@ -1347,6 +1347,10 @@ a {
   @media (min-width: 992px) {
     grid-template-columns: repeat(4, 1fr); /* 4 movies in one line on desktop */
   }
+
+  @media (min-width: 1200px) {
+    grid-template-columns: repeat(5, 1fr); /* 5 movies in one line on large desktop */
+  }
 }
 
 .category-movie-card {

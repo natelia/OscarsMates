@@ -65,7 +65,7 @@
       <%# Show mates' votes count on Categories page %>
       <div class="movie-rating-left">
         <i data-lucide="users" class="text-muted"></i>
-        <span><%= pick_count %> <%= pick_count == 1 ? "mate's" : "mates'" %> votes</span>
+        <span><%= pick_count %> <%= pick_count == 1 ? "mate's vote" : "mates' votes" %></span>
       </div>
     <% elsif sort_by == 'duration' || sort_by == 'shortest' %>
       <%# Show duration when sorting by duration %>
