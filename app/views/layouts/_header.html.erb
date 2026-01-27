@@ -6,11 +6,18 @@
         <span>OscarsMates</span>
       <% end %>
 
-      <button class="menu-toggle lg:hidden" type="button" data-menu-target="toggle" data-action="click->menu#toggle" aria-label="Toggle navigation">
-        <span class="hamburger-line"></span>
-        <span class="hamburger-line"></span>
-        <span class="hamburger-line"></span>
-      </button>
+      <% if current_user %>
+        <button class="menu-toggle lg:hidden" type="button" data-menu-target="toggle" data-action="click->menu#toggle" aria-label="Toggle navigation">
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+        </button>
+      <% else %>
+        <div class="header-actions-mobile lg:hidden">
+          <%= link_to "Sign In", signin_path, class: "btn-secondary-minimal" %>
+          <%= link_to "Sign Up", new_user_path, class: "btn-primary-minimal" %>
+        </div>
+      <% end %>
 
       <nav class="main-nav hidden lg:!flex" id="mainNav" data-menu-target="nav">
         <% selected_year = current_year || default_year %>
