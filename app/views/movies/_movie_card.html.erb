@@ -34,7 +34,7 @@
       </div>
     <% end %>
 
-    <%# Hover overlay with actions %>
+    <%# Hover overlay with actions (desktop only) %>
     <% if show_actions && current_user %>
       <div class="movie-card-overlay">
           <div class="movie-card-actions">
@@ -45,6 +45,15 @@
             <% end %>
           </div>
       </div>
+
+      <%# Mobile watched button - always visible at bottom of poster %>
+      <% unless review %>
+        <div class="movie-card-mobile-action">
+          <%= link_to new_movie_review_path(movie, year: current_year), class: "btn-outline-oscar btn-sm" do %>
+            <i data-lucide="popcorn" style="font-size: 1.75rem;"></i> Watched
+          <% end %>
+        </div>
+      <% end %>
     <% end %>
   </div>
 
