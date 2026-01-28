@@ -135,6 +135,7 @@ input[type="email"],
 input[type="password"],
 input[type="search"],
 input[type="date"],
+input[type="datetime-local"],
 input[type="number"],
 select,
 textarea {
@@ -157,6 +158,7 @@ input[type="email"]:focus,
 input[type="password"]:focus,
 input[type="search"]:focus,
 input[type="date"]:focus,
+input[type="datetime-local"]:focus,
 input[type="number"]:focus,
 select:focus,
 textarea:focus {
@@ -171,6 +173,32 @@ input[type="password"]::placeholder,
 input[type="search"]::placeholder,
 textarea::placeholder {
   color: var(--slate-400);
+}
+
+/* Date picker styling */
+input[type="date"],
+input[type="datetime-local"] {
+  min-height: 44px;
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  input[type="date"],
+  input[type="datetime-local"] {
+    width: auto;
+  }
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  padding: var(--spacing-xs);
+  border-radius: var(--radius-sm);
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator:hover,
+input[type="datetime-local"]::-webkit-calendar-picker-indicator:hover {
+  background-color: var(--bg-primary);
 }
 
 select {
@@ -334,7 +362,7 @@ a {
     grid-template-columns: repeat(4, 1fr);
   }
 
-  @media (min-width: 992px) {
+  @media (min-width: 1024px) {
     grid-template-columns: repeat(5, 1fr);
   }
 
@@ -661,25 +689,51 @@ a {
 /* =================================== */
 .star-rating {
   display: inline-flex;
-  gap: 4px;
+  flex-direction: row-reverse;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
 
-  .star {
-    font-size: 1.5rem;
-    color: var(--text-muted);
-    cursor: pointer;
-    transition: var(--transition-smooth);
+.star-rating .star {
+  font-size: 1.5rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  padding: 0.25rem;
+  min-width: 28px;
+  min-height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-    &:hover,
-    &.active,
-    &.hovered {
-      color: var(--oscar-gold);
-      transform: scale(1.1);
-    }
-
-    &.filled {
-      color: var(--oscar-gold);
-    }
+  &.filled {
+    color: var(--oscar-gold);
   }
+}
+
+@media (min-width: 640px) {
+  .star-rating {
+    gap: 0.5rem;
+  }
+
+  .star-rating .star {
+    font-size: 2.5rem;
+    padding: 0.5rem;
+    min-width: 44px;
+    min-height: 44px;
+  }
+}
+
+/* Hovered star and all to the left turn gold */
+.star-rating .star:hover,
+.star-rating .star:hover ~ .star {
+  color: var(--oscar-gold);
+}
+
+/* Checked star and all to the left are gold */
+.star-rating input:checked ~ .star {
+  color: var(--oscar-gold);
 }
 
 .star-rating-mini {
@@ -990,7 +1044,7 @@ a {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  @media (min-width: 992px) {
+  @media (min-width: 1024px) {
     grid-template-columns: repeat(3, 1fr);
   }
 }
@@ -1043,7 +1097,7 @@ a {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  @media (min-width: 992px) {
+  @media (min-width: 1024px) {
     grid-template-columns: repeat(3, 1fr);
   }
 }
@@ -1180,7 +1234,7 @@ a {
     grid-template-columns: repeat(4, 1fr);
   }
 
-  @media (min-width: 992px) {
+  @media (min-width: 1024px) {
     grid-template-columns: repeat(5, 1fr);
   }
 
@@ -1344,7 +1398,7 @@ a {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  @media (min-width: 992px) {
+  @media (min-width: 1024px) {
     grid-template-columns: repeat(4, 1fr); /* 4 movies in one line on desktop */
   }
 
@@ -1831,13 +1885,18 @@ input[type="search"].search-input,
   color: var(--charcoal-light);
 
   .empty-icon {
-    width: 120px;
-    height: 120px;
+    width: 80px;
+    height: 80px;
     color: var(--oscar-gold-dark);
     margin: 0 auto var(--spacing-sm);
     display: flex;
     align-items: center;
     justify-content: center;
+
+    @media (min-width: 640px) {
+      width: 120px;
+      height: 120px;
+    }
   }
 
   .empty-state-svg {
@@ -1935,6 +1994,19 @@ input[type="search"].search-input,
   transition: var(--transition-smooth);
 }
 
+/* Hamburger to X animation */
+.menu-toggle.open .hamburger-line:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.menu-toggle.open .hamburger-line:nth-child(2) {
+  opacity: 0;
+}
+
+.menu-toggle.open .hamburger-line:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
 .main-nav {
   display: flex;
   align-items: center;
@@ -1980,7 +2052,8 @@ input[type="search"].search-input,
   }
 }
 
-.header-actions {
+.header-actions,
+.header-actions-mobile {
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
@@ -2063,6 +2136,8 @@ input[type="search"].search-input,
   z-index: 50;
   min-width: 12rem;
   max-width: calc(100vw - 2rem);
+  max-height: 70vh;
+  overflow-y: auto;
 
   .dropdown-item {
     display: block;
@@ -2129,7 +2204,7 @@ input[type="search"].search-input,
 }
 
 /* Mobile responsive */
-@media (max-width: 991.98px) {
+@media (max-width: 1023px) {
   .main-nav {
     position: absolute;
     top: 100%;
@@ -2645,11 +2720,18 @@ input[type="search"].search-input,
 }
 
 .profile-movie-poster {
-  width: 60px;
-  height: 90px;
+  width: 48px;
+  height: 72px;
   object-fit: cover;
   border-radius: var(--radius-sm);
   flex-shrink: 0;
+}
+
+@media (min-width: 640px) {
+  .profile-movie-poster {
+    width: 60px;
+    height: 90px;
+  }
 }
 
 .profile-movie-info {
