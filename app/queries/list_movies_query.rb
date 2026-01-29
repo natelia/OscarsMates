@@ -41,13 +41,15 @@ class ListMoviesQuery
   end
 
   def filter_unwatched
-    reviewed_movie_ids = user.reviews.select(:movie_id)
-    @results = @results.where.not(id: reviewed_movie_ids)
+    @results = @results.where.not(id: rated_movie_ids)
   end
 
   def filter_watched
-    reviewed_movie_ids = user.reviews.select(:movie_id)
-    @results = @results.where(id: reviewed_movie_ids)
+    @results = @results.where(id: rated_movie_ids)
+  end
+
+  def rated_movie_ids
+    user.reviews.where.not(stars: nil).select(:movie_id)
   end
 
   def sort_movies
@@ -90,11 +92,8 @@ class ListMoviesQuery
     mate_ids = user.following.pluck(:id)
     return @results = @results.order(:title) if mate_ids.empty?
 
-    # Subquery to get average rating from mates for each movie
-    mates_avg = Review
-                .where(user_id: mate_ids)
-                .group(:movie_id)
-                .select('movie_id, AVG(stars) as avg_rating')
+    mates_avg = Review.where(user_id: mate_ids).where.not(stars: nil)
+                      .group(:movie_id).select('movie_id, AVG(stars) as avg_rating')
 
     @results = @results
                .joins("LEFT JOIN (#{mates_avg.to_sql}) AS mates_reviews ON movies.id = mates_reviews.movie_id")
@@ -107,11 +106,8 @@ class ListMoviesQuery
     mate_ids = user.following.pluck(:id)
     return @results = @results.order(:title) if mate_ids.empty?
 
-    # Subquery to count how many mates watched each movie
-    mates_count = Review
-                  .where(user_id: mate_ids)
-                  .group(:movie_id)
-                  .select('movie_id, COUNT(*) as watch_count')
+    mates_count = Review.where(user_id: mate_ids).where.not(stars: nil)
+                        .group(:movie_id).select('movie_id, COUNT(*) as watch_count')
 
     @results = @results
                .joins("LEFT JOIN (#{mates_count.to_sql}) AS mates_watches ON movies.id = mates_watches.movie_id")

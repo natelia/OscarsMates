@@ -44,6 +44,16 @@ RSpec.describe ListMoviesQuery do
         expect(result).to include(movie2)
         expect(result).not_to include(movie1)
       end
+
+      it 'excludes movies with unrated reviews from watched' do
+        create(:review, user: user, movie: movie2, stars: nil)
+        query = described_class.new({ filter_by: 'unwatched' }, user, 2025)
+
+        result = query.results
+
+        expect(result).to include(movie2) # Unrated = unwatched
+        expect(result).not_to include(movie1)
+      end
     end
 
     context 'with filter_by watched' do
@@ -56,6 +66,16 @@ RSpec.describe ListMoviesQuery do
 
         expect(result).to include(movie1)
         expect(result).not_to include(movie2)
+      end
+
+      it 'excludes movies with only unrated reviews' do
+        create(:review, user: user, movie: movie2, stars: nil)
+        query = described_class.new({ filter_by: 'watched' }, user, 2025)
+
+        result = query.results
+
+        expect(result).to include(movie1)
+        expect(result).not_to include(movie2) # Unrated = not watched
       end
     end
 

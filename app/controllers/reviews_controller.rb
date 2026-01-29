@@ -20,6 +20,7 @@ class ReviewsController < ApplicationController
   def create
     @review = @movie.reviews.new(review_params)
     @review.user = current_user
+    set_watched_on_time
 
     if @review.save
       redirect_to movies_path(year: current_year),
@@ -31,10 +32,17 @@ class ReviewsController < ApplicationController
 
   def update
     @review = find_review
+    @review.assign_attributes(review_params)
 
-    if @review.update(review_params)
+    # Convert blank stars to nil (keeps review for date/comment but marks as unwatched)
+    @review.stars = nil if params[:review][:stars].blank?
+
+    set_watched_on_time
+
+    if @review.save
+      notice_message = @review.stars.present? ? 'Review updated!' : 'Movie marked as Unwatched!'
       redirect_to movies_path(year: current_year),
-                  notice: 'Review updated!'
+                  notice: notice_message
     else
       render :edit, status: :unprocessable_content
     end
@@ -59,5 +67,17 @@ class ReviewsController < ApplicationController
 
   def find_review
     current_user.reviews.find_by(movie_id: @movie.id)
+  end
+
+  def set_watched_on_time
+    return if @review.watched_on.blank?
+
+    # Date field returns datetime at midnight, so set the time to current time
+    watched_date = @review.watched_on.to_date
+    @review.watched_on = watched_date.to_time.change(
+      hour: Time.current.hour,
+      min: Time.current.min,
+      sec: Time.current.sec
+    )
   end
 end

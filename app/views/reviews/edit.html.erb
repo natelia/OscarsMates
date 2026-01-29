@@ -1,11 +1,65 @@
 <section class="new-review py-10">
   <div class="container mx-auto px-4">
-    <h1 class="mb-4 text-center text-2xl font-semibold text-slate-900">
-      <%= link_to @movie.title, movie_path(@movie, year: params[:year]), class: "text-slate-600 hover:text-slate-800" %>
-    </h1>
+    <div class="relative">
+      <%# Back Button - Outside of centered content %>
+      <button onclick="history.back()" class="back-button-review" title="Go back">
+        <i data-lucide="arrow-left" style="color: var(--text-tertiary);"></i>
+      </button>
 
-    <div class="mx-auto max-w-2xl">
-      <%= render "form", movie: @movie, review: @review, year: params[:year] %>
+      <%# Centered Content Container %>
+      <div class="flex flex-col lg:flex-row gap-8 items-start justify-center mx-auto" style="max-width: fit-content;">
+        <%# Movie Poster - Left Side %>
+        <div class="w-full lg:w-auto flex-shrink-0">
+          <% if @movie.picture_url.present? %>
+            <%= image_tag @movie.picture_url, alt: @movie.title, class: "w-full lg:w-[300px] rounded-lg shadow-lg" %>
+          <% else %>
+            <div class="w-full lg:w-[300px] h-[450px] flex items-center justify-center bg-slate-100 rounded-lg shadow-lg">
+              <i data-lucide="film" class="text-slate-400" style="width: 96px; height: 96px;"></i>
+            </div>
+          <% end %>
+        </div>
+
+        <%# Form Content - Right Side %>
+        <div class="flex-1 max-w-[450px]">
+          <h1 class="mb-6 text-3xl font-semibold text-slate-900">
+            <%= link_to @movie.title, movie_path(@movie, year: params[:year]), class: "text-slate-900 hover:text-slate-700" %>
+          </h1>
+          <%= render "form", movie: @movie, review: @review, year: params[:year] %>
+        </div>
+      </div>
     </div>
   </div>
 </section>
+
+<style>
+.back-button-review {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--card-shadow-lg);
+  opacity: 0.9;
+  transition: var(--transition-smooth);
+  background: var(--bg-secondary);
+  border: none;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.back-button-review:hover {
+  opacity: 1;
+  transform: translateX(-4px);
+}
+
+@media (max-width: 1023px) {
+  .back-button-review {
+    position: relative;
+    margin-bottom: 1rem;
+  }
+}
+</style>

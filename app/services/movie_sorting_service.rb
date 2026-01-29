@@ -13,6 +13,7 @@ class MovieSortingService
       mate_ids = @user.following.pluck(:id)
       @movies.joins(:reviews)
              .where(reviews: { user_id: mate_ids })
+             .where.not(reviews: { stars: nil })
              .group('movies.id')
              .order('COUNT(reviews.id) DESC')
     when 'most_nominated'

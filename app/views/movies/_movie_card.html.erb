@@ -5,10 +5,10 @@
 <% sort_by ||= nil %>
 <% pick_count = local_assigns[:pick_count] %>
 
-<div class="movie-card <%= 'is-watched' if review %>"
+<div class="movie-card <%= 'is-watched' if review&.stars.present? %>"
      data-controller="movie-card"
      data-movie-id="<%= movie.id %>"
-     data-reviewed="<%= !!review %>"
+     data-reviewed="<%= !!(review&.stars.present?) %>"
      id="movie-card-<%= movie.id %>">
 
   <%# User's rating badge - clickable to edit review %>
@@ -38,8 +38,8 @@
     <% if show_actions && current_user %>
       <div class="movie-card-overlay">
           <div class="movie-card-actions">
-            <% unless review %>
-              <%= link_to new_movie_review_path(movie, year: current_year), class: "btn-outline-oscar btn-sm" do %>
+            <% unless review&.stars.present? %>
+              <%= link_to review ? edit_movie_review_path(movie, review, year: current_year) : new_movie_review_path(movie, year: current_year), class: "btn-outline-oscar btn-sm" do %>
                 <i data-lucide="popcorn" style="font-size: 1.75rem;"></i> Watched
               <% end %>
             <% end %>

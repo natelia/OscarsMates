@@ -2,8 +2,7 @@
   <div class="container mx-auto px-4">
     <div class="header-inner">
       <%= link_to root_path, class: "logo" do %>
-        <i class="bi bi-trophy-fill"></i>
-        <span>OscarsMates</span>
+        <%= image_tag "logo.svg", alt: "OscarsMates", class: "logo-svg" %>
       <% end %>
 
       <% if current_user %>

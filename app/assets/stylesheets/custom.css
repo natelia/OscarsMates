@@ -45,10 +45,25 @@
   /* Background Colors */
   --warning-bg: var(--carpet-light);
 
+  /* White transparent variations */
+  --white-80: rgba(255, 255, 255, 0.8);
+  --white-90: rgba(255, 255, 255, 0.9);
+  --white-60: rgba(255, 255, 255, 0.6);
+
+  /* Black transparent variations (for shadows) */
+  --black-04: rgba(0, 0, 0, 0.04);
+  --black-05: rgba(0, 0, 0, 0.05);
+  --black-06: rgba(0, 0, 0, 0.06);
+  --black-10: rgba(0, 0, 0, 0.1);
+  --black-20: rgba(0, 0, 0, 0.2);
+
+  /* Slate transparent */
+  --slate-focus: rgba(148, 163, 184, 0.1);
+
   /* Shadows - very subtle */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
-  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.06);
-  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.04), 0 4px 6px rgba(0, 0, 0, 0.04);
+  --shadow-sm: 0 1px 2px var(--black-04);
+  --shadow-md: 0 4px 6px var(--black-04), 0 1px 3px var(--black-06);
+  --shadow-lg: 0 10px 15px var(--black-04), 0 4px 6px var(--black-04);
   --card-shadow: var(--shadow-md);
   --card-shadow-hover: var(--shadow-lg);
   --card-shadow-lg: var(--shadow-lg);
@@ -150,7 +165,7 @@ textarea {
   border: 1px solid var(--slate-300);
   border-radius: var(--radius-md);
   transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  box-shadow: 0 1px 2px 0 var(--black-05);
 }
 
 input[type="text"]:focus,
@@ -164,7 +179,7 @@ select:focus,
 textarea:focus {
   outline: none;
   border-color: var(--slate-400);
-  box-shadow: 0 0 0 3px rgba(148, 163, 184, 0.1);
+  box-shadow: 0 0 0 3px var(--slate-focus);
 }
 
 input[type="text"]::placeholder,
@@ -224,7 +239,7 @@ input[type="checkbox"]:focus,
 input[type="radio"]:focus {
   outline: none;
   border-color: var(--slate-400);
-  box-shadow: 0 0 0 3px rgba(148, 163, 184, 0.1);
+  box-shadow: 0 0 0 3px var(--slate-focus);
 }
 
 label {
@@ -419,7 +434,7 @@ a {
 .movie-card-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(255, 255, 255, 0.9);
+  background: var(--white-90);
   opacity: 0;
   transition: opacity 0.2s ease;
   display: flex;
@@ -527,7 +542,7 @@ a {
   font-size: 0.85rem;
   padding: var(--spacing-xs) var(--spacing-sm);
   border-radius: var(--border-radius-sm);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 8px var(--black-20);
   z-index: 50;
   text-decoration: none;
   display: inline-flex;
@@ -736,6 +751,169 @@ a {
   color: var(--oscar-gold);
 }
 
+/* Star Icon Styles (SVG) */
+.star-icon {
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.star-filled {
+  fill: var(--oscar-gold);
+}
+
+.star-unfilled {
+  fill: var(--slate-300);
+}
+
+.star-hovered {
+  fill: var(--oscar-gold);
+  transform: scale(1.1);
+}
+
+/* =================================== */
+/* Custom Date Picker */
+/* =================================== */
+.date-picker-wrapper {
+  position: relative;
+}
+
+.date-picker-input {
+  cursor: pointer;
+  padding-right: 2.5rem;
+}
+
+.date-picker-icon {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: var(--slate-400);
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.date-picker-dropdown {
+  position: absolute;
+  top: calc(100% + 0.25rem);
+  left: 0;
+  right: 0;
+  background: var(--bg-secondary);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-md);
+  box-shadow: 0 10px 15px -3px var(--black-10), 0 4px 6px -4px var(--black-10);
+  padding: var(--spacing-md);
+  z-index: 50;
+  min-width: 280px;
+}
+
+.date-picker-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-md);
+  gap: var(--spacing-sm);
+}
+
+.date-picker-nav-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  border: none;
+  color: var(--slate-600);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.date-picker-nav-btn:hover {
+  background: var(--slate-100);
+  color: var(--slate-900);
+}
+
+.date-picker-month-year {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  flex: 1;
+  text-align: center;
+}
+
+.date-picker-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
+.date-picker-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: var(--spacing-md);
+  padding-top: var(--spacing-md);
+  border-top: 1px solid var(--slate-200);
+}
+
+.date-picker-today-btn {
+  padding: var(--spacing-xs) var(--spacing-md);
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--oscar-gold-dark);
+  background: transparent;
+  border: 1px solid var(--oscar-gold-dark);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.date-picker-today-btn:hover {
+  background: var(--oscar-gold-light);
+}
+
+/* Date picker weekday headers */
+.date-weekday {
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--slate-400);
+  padding: 0.5rem 0;
+}
+
+/* Date picker day cells */
+.date-day {
+  color: var(--slate-700);
+}
+
+.date-day:hover {
+  background-color: var(--oscar-gold-dark);
+  color: white;
+}
+
+.date-selected {
+  background-color: var(--oscar-gold);
+  color: white;
+  font-weight: 600;
+}
+
+.date-selected:hover {
+  background-color: var(--oscar-gold-dark);
+  color: white;
+}
+
+.date-today {
+  color: var(--oscar-gold);
+  font-weight: 600;
+}
+
+.date-today:hover {
+  background-color: var(--oscar-gold-dark);
+  color: white;
+}
+
 .star-rating-mini {
   .star {
     font-size: 1rem;
@@ -749,7 +927,7 @@ a {
   .your-rating-label {
     display: block;
     font-size: 0.65rem;
-    color: rgba(255, 255, 255, 0.6);
+    color: var(--white-60);
     text-transform: uppercase;
     letter-spacing: 0.05em;
     margin-bottom: 2px;
@@ -1556,7 +1734,7 @@ input[type="search"].search-input,
 
   &:focus {
     border-color: var(--text-tertiary);
-    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 0 0 3px var(--black-04);
     outline: none;
   }
 
@@ -1741,7 +1919,7 @@ input[type="search"].search-input,
   padding: var(--spacing-xs);
   border: 1px solid var(--slate-200);
   border-radius: var(--radius-md);
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 15px -3px var(--black-10), 0 4px 6px -4px var(--black-10);
   background: var(--bg-secondary);
   position: absolute;
   z-index: 50;
@@ -1925,7 +2103,7 @@ input[type="search"].search-input,
 /* Site Header - Clean & Minimal */
 /* =================================== */
 .site-header {
-  background: rgba(255, 255, 255, 0.8);
+  background: var(--white-80);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border-color-light);
@@ -1936,7 +2114,7 @@ input[type="search"].search-input,
   transition: box-shadow var(--transition-fast);
 
   &:hover {
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 1px 3px var(--black-04);
   }
 }
 
@@ -1945,6 +2123,7 @@ input[type="search"].search-input,
   align-items: center;
   justify-content: space-between;
   gap: var(--spacing-xl);
+  position: relative;
 }
 
 .logo {
@@ -1956,6 +2135,8 @@ input[type="search"].search-input,
   color: var(--text-primary);
   text-decoration: none;
   letter-spacing: -0.02em;
+  position: relative;
+  z-index: 10;
 
   i {
     color: var(--accent);
@@ -1965,6 +2146,11 @@ input[type="search"].search-input,
   &:hover {
     color: var(--text-primary);
   }
+}
+
+.logo-svg {
+  height: 30px;
+  width: auto;
 }
 
 .menu-toggle {
@@ -2011,14 +2197,27 @@ input[type="search"].search-input,
   display: flex;
   align-items: center;
   gap: var(--spacing-xl);
-  flex: 1;
-  justify-content: space-between;
 }
 
-/* Desktop: always show navigation (matches Tailwind lg: breakpoint = 1024px) */
+/* Desktop: center navigation on page */
 @media (min-width: 1024px) {
   .main-nav {
     display: flex !important;
+    position: static;
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .nav-links {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+  }
+
+  .header-actions {
+    position: relative;
+    z-index: 10;
   }
 }
 
@@ -2128,7 +2327,7 @@ input[type="search"].search-input,
 .dropdown-menu {
   border: 1px solid var(--slate-200);
   border-radius: var(--radius-md);
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 15px -3px var(--black-10), 0 4px 6px -4px var(--black-10);
   padding: var(--spacing-xs);
   margin-top: var(--spacing-xs);
   background: var(--bg-secondary);

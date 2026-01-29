@@ -10,9 +10,9 @@ RSpec.describe Review, type: :model do
       expect(review).to be_valid
     end
 
-    it 'is invalid without stars' do
+    it 'is valid without stars (unrated review)' do
       review = build(:review, user: user, movie: movie, stars: nil)
-      expect(review).not_to be_valid
+      expect(review).to be_valid
     end
 
     it 'is invalid with stars less than 1' do
@@ -39,6 +39,25 @@ RSpec.describe Review, type: :model do
 
       expect(duplicate_review).not_to be_valid
       expect(duplicate_review.errors[:base]).to include('You have already reviewed this movie')
+    end
+  end
+
+  describe 'unrated reviews (null stars)' do
+    it 'allows saving a review without stars' do
+      review = create(:review, user: user, movie: movie, stars: nil, comment: 'Great movie!')
+      expect(review).to be_persisted
+      expect(review.stars).to be_nil
+      expect(review.comment).to eq('Great movie!')
+    end
+
+    it 'preserves comment and date when stars are nil' do
+      watched_date = 2.days.ago
+      review = create(:review, user: user, movie: movie, stars: nil,
+                               comment: 'My thoughts', watched_on: watched_date)
+
+      expect(review.reload.stars).to be_nil
+      expect(review.comment).to eq('My thoughts')
+      expect(review.watched_on).to be_within(1.second).of(watched_date)
     end
   end
 

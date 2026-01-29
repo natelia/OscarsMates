@@ -8,7 +8,7 @@ class Review < ApplicationRecord
   validates :stars, inclusion: {
     in: STARS,
     message: 'must be between 1 and 10'
-  }
+  }, allow_nil: true
   validate :unique_user_review_for_movie
   validates :watched_on, presence: true
 

@@ -58,4 +58,31 @@ RSpec.describe 'Reviews', type: :request do
       end
     end
   end
+
+  describe 'PATCH /:year/movies/:movie_id/reviews/:id' do
+    let!(:review) { create(:review, user: user, movie: movie, stars: 8, comment: 'Great movie!') }
+
+    context 'when logged in as review owner' do
+      before { sign_in(user) }
+
+      it 'removes the rating while preserving comment' do
+        patch "/2025/movies/#{movie.slug}/reviews/#{review.id}", params: {
+          review: { stars: '', comment: 'Great movie!' }
+        }
+
+        review.reload
+        expect(review.stars).to be_nil
+        expect(review.comment).to eq('Great movie!')
+      end
+
+      it 'marks movie as unwatched when rating is removed' do
+        patch "/2025/movies/#{movie.slug}/reviews/#{review.id}", params: {
+          review: { stars: '', comment: 'Changed my mind' }
+        }
+
+        expect(response).to redirect_to(movies_path(year: 2025))
+        expect(flash[:notice]).to include('Unwatched')
+      end
+    end
+  end
 end
