@@ -10,10 +10,11 @@ class CategoriesController < ApplicationController
     @user_picks = current_user ? current_user.user_picks.where(year: current_year).index_by(&:category_id) : {}
 
     # Preload movies by category for the current year to prevent N+1 queries
+    # Keep duplicates - a movie with multiple nominations in the same category should appear multiple times
     nominations = Nomination.where(year: current_year, category_id: @categories.select(:id))
                             .includes(movie: :reviews)
     @category_movies = nominations.group_by(&:category_id).transform_values do |noms|
-      noms.map(&:movie).uniq
+      noms.map(&:movie)
     end
 
     # Get pick counts per category/movie from users the current user follows

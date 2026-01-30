@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h2>New Feedback from OscarsMates</h2>
+
+    <p><strong>From:</strong> <%= @email %></p>
+    <% if @user_name %>
+      <p><strong>User:</strong> <%= @user_name %></p>
+    <% end %>
+
+    <p><strong>Message:</strong></p>
+    <div style="background: #f5f5f5; padding: 15px; border-radius: 5px; margin-top: 10px;">
+      <%= simple_format(@message) %>
+    </div>
+  </body>
+</html>

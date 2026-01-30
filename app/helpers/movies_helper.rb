@@ -34,17 +34,17 @@ module MoviesHelper
   def sort_label(sort_by)
     case sort_by
     when 'my_rating'
-      'My Rating'
+      'My rating'
     when 'imdb_rating'
-      'IMDB'
+      'IMDB rating'
     when 'duration'
       'Longest'
     when 'shortest'
       'Shortest'
     when 'watched_by_mates'
-      'Mates'
+      "Mates' rating"
     when 'most_watched_by_mates'
-      'Most Watched'
+      'Most watched'
     when 'most_nominated'
       'Nominations'
     else
