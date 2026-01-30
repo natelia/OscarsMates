@@ -473,7 +473,7 @@
         <h3 class="mb-4 text-lg font-semibold text-slate-700">Tailwind Button Classes</h3>
 
         <div class="mb-4 flex flex-wrap items-center gap-4">
-          <button class="inline-flex items-center rounded-md bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800">
+          <button class="inline-flex items-center rounded-md bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-[var(--oscar-gold-dark)]">
             Slate Primary
           </button>
 
@@ -481,11 +481,13 @@
             Slate Outline
           </button>
 
-          <button class="btn-watched">
+          <button class="btn-outline-oscar btn-watched">
+            <i data-lucide="check-circle-2"></i>
             Success / Teal
           </button>
 
-          <button class="btn-unwatch">
+          <button class="btn-outline-oscar btn-unwatch">
+            <i data-lucide="x-circle"></i>
             Red Carpet
           </button>
         </div>
@@ -515,18 +517,40 @@
             <input type="email" placeholder="Enter email...">
           </div>
 
-          <div>
+          <div data-controller="date-picker">
             <label>Date Input</label>
-            <input type="date">
+            <div class="date-picker-wrapper mt-2">
+              <input type="text" value="<%= Date.current.strftime('%Y-%m-%d') %>" readonly data-date-picker-target="input" data-action="click->date-picker#toggleDropdown" class="date-picker-input">
+              <i data-lucide="calendar" class="date-picker-icon"></i>
+              <div class="date-picker-dropdown hidden" data-date-picker-target="dropdown">
+                <div class="date-picker-header">
+                  <button type="button" class="date-picker-nav-btn" data-action="click->date-picker#previousMonth">
+                    <i data-lucide="chevron-left"></i>
+                  </button>
+                  <div class="date-picker-month-year" data-date-picker-target="monthYear"></div>
+                  <button type="button" class="date-picker-nav-btn" data-action="click->date-picker#nextMonth">
+                    <i data-lucide="chevron-right"></i>
+                  </button>
+                </div>
+                <div class="date-picker-grid" data-date-picker-target="grid"></div>
+                <div class="date-picker-footer">
+                  <button type="button" class="date-picker-today-btn" data-action="click->date-picker#today">Today</button>
+                </div>
+              </div>
+            </div>
           </div>
 
-          <div>
+          <div class="hs-dropdown relative" style="max-width: 400px;">
             <label>Select Dropdown</label>
-            <select>
-              <option>Option 1</option>
-              <option>Option 2</option>
-              <option>Option 3</option>
-            </select>
+            <button type="button" class="form-select-btn hs-dropdown-toggle w-full justify-between mt-1" aria-expanded="false">
+              <span>Select an option</span>
+              <i data-lucide="chevron-down" class="w-4 h-4 opacity-60"></i>
+            </button>
+            <ul class="dropdown-menu hs-dropdown-menu transition-[opacity,margin] duration-200 opacity-0 hs-dropdown-open:opacity-100 hidden mt-2 w-full" style="max-width: 400px;">
+              <li><button type="button" class="dropdown-item">Option 1</button></li>
+              <li><button type="button" class="dropdown-item">Option 2</button></li>
+              <li><button type="button" class="dropdown-item">Option 3</button></li>
+            </ul>
           </div>
 
           <div>
@@ -537,15 +561,15 @@
           <div>
             <label>Checkboxes</label>
             <div class="flex flex-wrap gap-4">
-              <label class="inline-flex items-center gap-2 text-sm text-slate-600">
+              <label class="inline-flex items-center gap-2 text-sm text-slate-600 cursor-pointer">
                 <input type="checkbox">
                 <span>Option 1</span>
               </label>
-              <label class="inline-flex items-center gap-2 text-sm text-slate-600">
+              <label class="inline-flex items-center gap-2 text-sm text-slate-600 cursor-pointer">
                 <input type="checkbox">
                 <span>Option 2</span>
               </label>
-              <label class="inline-flex items-center gap-2 text-sm text-slate-600">
+              <label class="inline-flex items-center gap-2 text-sm text-slate-600 cursor-pointer">
                 <input type="checkbox" checked>
                 <span>Checked</span>
               </label>
@@ -563,12 +587,14 @@
         <h3 class="mb-4 text-lg font-semibold text-slate-700">Search Input</h3>
 
         <div class="relative max-w-sm">
-          <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style="color: var(--text-tertiary);"></i>
-          <input type="text" placeholder="Search..." class="search-input">
+          <form class="search-form" role="search">
+            <i data-lucide="search" class="search-icon"></i>
+            <input class="search-input" type="search" placeholder="Search..." aria-label="Search">
+          </form>
         </div>
 
         <div class="mt-4 text-sm text-slate-600">
-          <p><strong>Classes:</strong> <code class="rounded bg-slate-100 px-2 py-0.5 text-xs">.search-input</code></p>
+          <p><strong>Classes:</strong> <code class="rounded bg-slate-100 px-2 py-0.5 text-xs">.search-form</code> + <code class="rounded bg-slate-100 px-2 py-0.5 text-xs">.search-input</code> + <code class="rounded bg-slate-100 px-2 py-0.5 text-xs">.search-icon</code></p>
         </div>
       </div>
     </section>
@@ -637,6 +663,50 @@
 
       <div class="mt-4 text-sm text-slate-600">
         <p><strong>Classes:</strong> Uses Tailwind utility classes for success/error variants</p>
+      </div>
+    </section>
+
+    <!-- Flash Notifications (Overlay) -->
+    <section class="mb-16">
+      <h2 class="mb-8 text-2xl font-semibold text-slate-900">Flash Notifications (Desktop Overlay)</h2>
+
+      <div class="overflow-hidden rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+        <h3 class="mb-4 text-lg font-semibold text-slate-700">Auto-Dismissing Notifications</h3>
+
+        <p class="mb-4 text-sm text-slate-600">
+          On desktop (≥1024px), flash notifications appear as auto-dismissing overlays in the bottom-left corner.
+          On mobile, they display inline at the top of the content area.
+        </p>
+
+        <div class="mb-6 space-y-3">
+          <!-- Notice Example -->
+          <div class="relative flex items-start gap-3 rounded-lg border border-emerald-200 bg-emerald-50 pl-4 pr-10 py-3 text-emerald-900 shadow-lg max-w-sm">
+            <span class="flex-1">Your changes have been saved successfully!</span>
+            <button type="button" class="absolute top-2 right-2 w-6 h-6 flex items-center justify-center text-emerald-700 hover:text-emerald-900 transition-colors" aria-label="Close">
+              &times;
+            </button>
+          </div>
+
+          <!-- Alert Example -->
+          <div class="relative flex items-start gap-3 rounded-lg border border-red-200 bg-red-50 pl-4 pr-10 py-3 text-red-900 shadow-lg max-w-sm">
+            <span class="flex-1">An error occurred. Please try again.</span>
+            <button type="button" class="absolute top-2 right-2 w-6 h-6 flex items-center justify-center text-red-700 hover:text-red-900 transition-colors" aria-label="Close">
+              &times;
+            </button>
+          </div>
+        </div>
+
+        <div class="space-y-2 text-sm text-slate-600">
+          <p><strong>Behavior:</strong></p>
+          <ul class="list-disc list-inside space-y-1 ml-2">
+            <li>Auto-dismisses after 3 seconds on desktop</li>
+            <li>Click X to dismiss immediately</li>
+            <li>Multiple notifications stack vertically</li>
+            <li>Smooth slide-in and fade-out animations</li>
+            <li>Mobile shows inline version (no auto-dismiss)</li>
+          </ul>
+          <p class="mt-3"><strong>Usage:</strong> Set <code class="rounded bg-slate-100 px-2 py-0.5 text-xs">flash[:notice]</code> or <code class="rounded bg-slate-100 px-2 py-0.5 text-xs">flash[:alert]</code> in controllers</p>
+        </div>
       </div>
     </section>
 

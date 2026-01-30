@@ -1,10 +1,12 @@
+# rubocop:disable Metrics/ClassLength
 class ListMoviesQuery
-  attr_reader :query, :user, :sort_by, :filter_by, :year
+  attr_reader :query, :user, :sort_by, :filter_by, :category_id, :year
 
   def initialize(params, user, year)
     @query = params[:query]
     @filter_by = params[:filter_by]
     @sort_by = params[:sort_by]
+    @category_id = params[:category_id]
     @user = user
     @year = year
   end
@@ -13,6 +15,7 @@ class ListMoviesQuery
     prepare_collection
 
     search_movies if query.present?
+    filter_by_category if category_id.present?
     apply_filters
     sort_movies
 
@@ -41,13 +44,21 @@ class ListMoviesQuery
   end
 
   def filter_unwatched
-    reviewed_movie_ids = user.reviews.select(:movie_id)
-    @results = @results.where.not(id: reviewed_movie_ids)
+    @results = @results.where.not(id: rated_movie_ids)
   end
 
   def filter_watched
-    reviewed_movie_ids = user.reviews.select(:movie_id)
-    @results = @results.where(id: reviewed_movie_ids)
+    @results = @results.where(id: rated_movie_ids)
+  end
+
+  def filter_by_category
+    @results = @results
+               .joins(:nominations)
+               .where(nominations: { category_id: category_id, year: year })
+  end
+
+  def rated_movie_ids
+    user.reviews.where.not(stars: nil).select(:movie_id)
   end
 
   def sort_movies
@@ -90,11 +101,8 @@ class ListMoviesQuery
     mate_ids = user.following.pluck(:id)
     return @results = @results.order(:title) if mate_ids.empty?
 
-    # Subquery to get average rating from mates for each movie
-    mates_avg = Review
-                .where(user_id: mate_ids)
-                .group(:movie_id)
-                .select('movie_id, AVG(stars) as avg_rating')
+    mates_avg = Review.where(user_id: mate_ids).where.not(stars: nil)
+                      .group(:movie_id).select('movie_id, AVG(stars) as avg_rating')
 
     @results = @results
                .joins("LEFT JOIN (#{mates_avg.to_sql}) AS mates_reviews ON movies.id = mates_reviews.movie_id")
@@ -107,11 +115,8 @@ class ListMoviesQuery
     mate_ids = user.following.pluck(:id)
     return @results = @results.order(:title) if mate_ids.empty?
 
-    # Subquery to count how many mates watched each movie
-    mates_count = Review
-                  .where(user_id: mate_ids)
-                  .group(:movie_id)
-                  .select('movie_id, COUNT(*) as watch_count')
+    mates_count = Review.where(user_id: mate_ids).where.not(stars: nil)
+                        .group(:movie_id).select('movie_id, COUNT(*) as watch_count')
 
     @results = @results
                .joins("LEFT JOIN (#{mates_count.to_sql}) AS mates_watches ON movies.id = mates_watches.movie_id")
@@ -120,9 +125,14 @@ class ListMoviesQuery
   end
 
   def sort_by_nominations
+    nominations_count = Nomination.where(year: year)
+                                  .group(:movie_id)
+                                  .select('movie_id, COUNT(*) as nom_count')
+
     @results = @results
-               .joins(:categories)
-               .group('movies.id')
-               .order('COUNT(categories.id) DESC')
+               .joins("LEFT JOIN (#{nominations_count.to_sql}) AS nom_counts ON movies.id = nom_counts.movie_id")
+               .select('movies.*, COALESCE(nom_counts.nom_count, 0) as nominations_count')
+               .order(Arel.sql('nom_counts.nom_count DESC NULLS LAST, movies.title ASC'))
   end
 end
+# rubocop:enable Metrics/ClassLength

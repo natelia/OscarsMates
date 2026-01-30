@@ -41,4 +41,42 @@ RSpec.describe MoviesHelper, type: :helper do
       expect(result).to include('Unwatch!')
     end
   end
+
+  describe '#sort_label' do
+    it 'returns "A-Z" for nil sort_by' do
+      expect(helper.sort_label(nil)).to eq('A-Z')
+    end
+
+    it 'returns "A-Z" for empty sort_by' do
+      expect(helper.sort_label('')).to eq('A-Z')
+    end
+
+    it 'returns "My Rating" for my_rating' do
+      expect(helper.sort_label('my_rating')).to eq('My Rating')
+    end
+
+    it 'returns "IMDB" for imdb_rating' do
+      expect(helper.sort_label('imdb_rating')).to eq('IMDB')
+    end
+
+    it 'returns "Longest" for duration' do
+      expect(helper.sort_label('duration')).to eq('Longest')
+    end
+
+    it 'returns "Shortest" for shortest' do
+      expect(helper.sort_label('shortest')).to eq('Shortest')
+    end
+
+    it 'returns "Mates" for watched_by_mates' do
+      expect(helper.sort_label('watched_by_mates')).to eq('Mates')
+    end
+
+    it 'returns "Most Watched" for most_watched_by_mates' do
+      expect(helper.sort_label('most_watched_by_mates')).to eq('Most Watched')
+    end
+
+    it 'returns "Nominations" for most_nominated' do
+      expect(helper.sort_label('most_nominated')).to eq('Nominations')
+    end
+  end
 end

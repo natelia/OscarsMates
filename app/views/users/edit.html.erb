@@ -33,7 +33,7 @@
               <div class="mt-4">
                 <%= button_to avatar_user_path(@user),
                       method: :delete,
-                      class: "rounded-md border border-red-200 px-4 py-2 text-sm font-semibold text-red-600 hover:bg-red-50",
+                      class: "btn-danger",
                       data: { turbo_confirm: "Remove your avatar?" } do %>
                   Remove avatar
                 <% end %>

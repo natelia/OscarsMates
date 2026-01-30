@@ -1,64 +1,23 @@
 services:
   web:
-    build:
-      context: .
-      dockerfile: Dockerfile.production
+    build: .
+    command: bash -c "./bin/dev"
+    volumes:
+      - .:/app
+      - /app/node_modules
     ports:
       - "${APP_PORT:-3001}:3000"
     environment:
-      RAILS_ENV: production
-      SECRET_KEY_BASE: ${SECRET_KEY_BASE}
-      RAILS_LOG_LEVEL: info
+      RAILS_ENV: development
       APP_HOST: ${APP_HOST}
-      RAILS_SERVE_STATIC_FILES: "true"
-    volumes:
-      - ./storage:/app/storage
-      - ./log:/app/log
+      USER_ID: ${USER_ID:-1000}
+      GROUP_ID: ${GROUP_ID:-1000}
+    tty: true
+    stdin_open: true
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000/up"]
       interval: 30s
       timeout: 10s
       retries: 3
-      start_period: 60s
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "3"
-    deploy:
-      resources:
-        limits:
-          cpus: '4'
-          memory: 2G
-        reservations:
-          cpus: '1'
-          memory: 512M
-
-  backup:
-    image: alpine:latest
-    volumes:
-      - ./storage:/data/storage:ro
-      - ${BACKUP_PATH:-./backups}:/backups
-    command: >
-      sh -c "
-        apk add --no-cache sqlite >/dev/null 2>&1 &&
-        echo '[Backup] Service started' &&
-        while true; do
-          for db in /data/storage/*.sqlite3; do
-            if [ -f \"$$db\" ]; then
-              filename=$$(basename $$db)
-              backup_file=\"/backups/$${filename%.sqlite3}_$$(date +%Y%m%d_%H%M%S).sqlite3\"
-              echo \"[Backup] Backing up $$filename...\"
-              if sqlite3 \"$$db\" \".backup '$$backup_file'\"; then
-                echo \"[Backup] Success: $$backup_file\"
-              else
-                echo \"[Backup] FAILED: $$filename\" >&2
-              fi
-            fi
-          done
-          find /backups -name '*.sqlite3' -mtime +7 -delete
-          echo '[Backup] Cleanup complete. Sleeping for 24 hours...'
-          sleep 86400
-        done"
-    restart: unless-stopped
+      start_period: 40s

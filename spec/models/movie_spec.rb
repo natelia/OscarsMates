@@ -1,6 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe Movie, type: :model do
+  let(:user) { create(:user) }
+  let(:movie) { create(:movie) }
+
   describe 'validations' do
     it 'is invalid if rating is below 0' do
       movie = build(:movie, rating: -3)
@@ -34,6 +37,53 @@ RSpec.describe Movie, type: :model do
         expect(movie).not_to be_valid
         expect(movie.errors[attr]).to include("can't be blank")
       end
+    end
+  end
+
+  describe '#average_stars' do
+    it 'calculates average from rated reviews only' do
+      create(:review, movie: movie, stars: 8)
+      create(:review, movie: movie, stars: 6)
+      create(:review, movie: movie, stars: nil) # Unrated - should be excluded
+
+      expect(movie.average_stars).to eq(7.0)
+    end
+
+    it 'returns 0.0 when all reviews are unrated' do
+      create(:review, movie: movie, stars: nil)
+      create(:review, movie: movie, stars: nil)
+
+      expect(movie.average_stars).to eq(0.0)
+    end
+
+    it 'returns 0.0 when there are no reviews' do
+      expect(movie.average_stars).to eq(0.0)
+    end
+  end
+
+  describe '#mates_average_stars' do
+    let(:mate1) { create(:user) }
+    let(:mate2) { create(:user) }
+
+    before do
+      Follow.create!(follower: user, followed: mate1)
+      Follow.create!(follower: user, followed: mate2)
+    end
+
+    it 'calculates average from rated mate reviews only' do
+      movie2 = create(:movie)
+      create(:review, user: mate1, movie: movie, stars: 9)
+      create(:review, user: mate2, movie: movie2, stars: 7)
+      create(:review, user: create(:user), movie: movie, stars: 5) # Not a mate
+      create(:review, user: mate1, movie: movie2, stars: nil) # Unrated - excluded
+
+      expect(movie.mates_average_stars(user)).to eq(9.0)
+    end
+
+    it 'returns 0.0 when mates have only unrated reviews' do
+      create(:review, user: mate1, movie: movie, stars: nil)
+
+      expect(movie.mates_average_stars(user)).to eq(0.0)
     end
   end
 end

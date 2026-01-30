@@ -28,6 +28,7 @@ class User < ApplicationRecord
   def reviews_for_year(year)
     reviews.joins(movie: :nominations)
            .where(nominations: { year: year })
+           .where.not(stars: nil)
            .distinct
   end
 

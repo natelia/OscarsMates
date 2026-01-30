@@ -1,17 +1,43 @@
-<% if flash[:notice] %>
-  <div class="flash flex items-start justify-between gap-4 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-emerald-900" role="alert" data-controller="flash">
-    <span><%= flash[:notice] %></span>
-    <button type="button" class="text-emerald-700 hover:text-emerald-900" data-action="flash#dismiss" aria-label="Close">
-      &times;
-    </button>
-  </div>
-<% end %>
+<%# Mobile version (inline, pushes content down) %>
+<div class="lg:hidden">
+  <% if flash[:notice] %>
+    <div class="flash flex items-start justify-between gap-4 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-emerald-900" role="alert" data-controller="flash">
+      <span><%= flash[:notice] %></span>
+      <button type="button" class="text-emerald-700 hover:text-emerald-900" data-action="flash#dismiss" aria-label="Close">
+        &times;
+      </button>
+    </div>
+  <% end %>
 
-<% if flash[:alert] %>
-  <div class="flash flex items-start justify-between gap-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-red-900" role="alert" data-controller="flash">
-    <span><%= flash[:alert] %></span>
-    <button type="button" class="text-red-700 hover:text-red-900" data-action="flash#dismiss" aria-label="Close">
-      &times;
-    </button>
+  <% if flash[:alert] %>
+    <div class="flash flex items-start justify-between gap-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-red-900" role="alert" data-controller="flash">
+      <span><%= flash[:alert] %></span>
+      <button type="button" class="text-red-700 hover:text-red-900" data-action="flash#dismiss" aria-label="Close">
+        &times;
+      </button>
+    </div>
+  <% end %>
+</div>
+
+<%# Desktop version (fixed overlay in bottom-left corner) %>
+<div class="hidden lg:block fixed bottom-4 left-4 z-50 pointer-events-none">
+  <div class="flex flex-col-reverse gap-3 max-w-sm pointer-events-auto">
+    <% if flash[:notice] %>
+      <div class="flash relative flex items-start gap-3 rounded-lg border border-emerald-200 bg-emerald-50 pl-4 pr-10 py-3 text-emerald-900 shadow-lg transition-all duration-300" role="alert" data-controller="flash" data-flash-auto-dismiss-value="true">
+        <span class="flex-1"><%= flash[:notice] %></span>
+        <button type="button" class="absolute top-2 right-2 w-6 h-6 flex items-center justify-center text-emerald-700 hover:text-emerald-900 transition-colors" data-action="flash#dismiss" aria-label="Close">
+          &times;
+        </button>
+      </div>
+    <% end %>
+
+    <% if flash[:alert] %>
+      <div class="flash relative flex items-start gap-3 rounded-lg border border-red-200 bg-red-50 pl-4 pr-10 py-3 text-red-900 shadow-lg transition-all duration-300" role="alert" data-controller="flash" data-flash-auto-dismiss-value="true">
+        <span class="flex-1"><%= flash[:alert] %></span>
+        <button type="button" class="absolute top-2 right-2 w-6 h-6 flex items-center justify-center text-red-700 hover:text-red-900 transition-colors" data-action="flash#dismiss" aria-label="Close">
+          &times;
+        </button>
+      </div>
+    <% end %>
   </div>
-<% end %>
+</div>

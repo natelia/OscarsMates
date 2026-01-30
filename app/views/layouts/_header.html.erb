@@ -2,8 +2,7 @@
   <div class="container mx-auto px-4">
     <div class="header-inner">
       <%= link_to root_path, class: "logo" do %>
-        <i class="bi bi-trophy-fill"></i>
-        <span>OscarsMates</span>
+        <%= image_tag "logo.svg", alt: "OscarsMates", class: "logo-svg" %>
       <% end %>
 
       <% if current_user %>
@@ -26,7 +25,7 @@
           <% if available_years.any? %>
             <li class="hs-dropdown relative">
               <button type="button" class="nav-link hs-dropdown-toggle flex items-center gap-2">
-                <span><%= selected_year %> Oscars</span>
+                <span><%= selected_year %> Awards</span>
                 <i class="bi bi-chevron-down text-xs opacity-60"></i>
               </button>
               <ul class="dropdown-menu hs-dropdown-menu transition-[opacity,margin] duration-200 opacity-0 hs-dropdown-open:opacity-100 hidden mt-2 w-48">
@@ -38,7 +37,6 @@
           <% end %>
           <li><%= link_to "Ranking", users_path, class: "nav-link" %></li>
           <li><%= link_to "Timeline", timeline_users_path(year: selected_year), class: "nav-link" %></li>
-          <li><%= link_to "Stats", stats_users_path(year: selected_year), class: "nav-link" %></li>
           <li><%= link_to "Nominations", categories_path(year: selected_year), class: "nav-link" %></li>
         </ul>
 

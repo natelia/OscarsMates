@@ -49,15 +49,15 @@
       <% if current_user.present? %>
         <div class="toolbar-left">
           <div class="filter-pill">
-            <%= link_to movies_path(year: current_year, sort_by: params[:sort_by], query: params[:query]),
+            <%= link_to movies_path(year: current_year, sort_by: params[:sort_by], category_id: params[:category_id], query: params[:query]),
                 class: "filter-option #{'active' if params[:filter_by].blank?}" do %>
               <i data-lucide="gallery-horizontal-end"></i> All
             <% end %>
-            <%= link_to movies_path(year: current_year, filter_by: 'unwatched', sort_by: params[:sort_by], query: params[:query]),
+            <%= link_to movies_path(year: current_year, filter_by: 'unwatched', sort_by: params[:sort_by], category_id: params[:category_id], query: params[:query]),
                 class: "filter-option #{'active' if params[:filter_by] == 'unwatched'}" do %>
               <i data-lucide="eye-off"></i> Unwatched
             <% end %>
-            <%= link_to movies_path(year: current_year, filter_by: 'watched', sort_by: params[:sort_by], query: params[:query]),
+            <%= link_to movies_path(year: current_year, filter_by: 'watched', sort_by: params[:sort_by], category_id: params[:category_id], query: params[:query]),
                 class: "filter-option #{'active' if params[:filter_by] == 'watched'}" do %>
               <i data-lucide="eye"></i> Watched
             <% end %>
@@ -75,8 +75,11 @@
                  placeholder="Search movies..."
                  aria-label="Search"
                  value="<%= params[:query] %>">
+          <input type="hidden" name="filter_by" value="<%= params[:filter_by] %>">
+          <input type="hidden" name="sort_by" value="<%= params[:sort_by] %>">
+          <input type="hidden" name="category_id" value="<%= params[:category_id] %>">
           <% if params[:query].present? %>
-            <%= link_to movies_path(year: current_year, filter_by: params[:filter_by], sort_by: params[:sort_by]), class: "search-clear" do %>
+            <%= link_to movies_path(year: current_year, filter_by: params[:filter_by], sort_by: params[:sort_by], category_id: params[:category_id]), class: "search-clear" do %>
               <i data-lucide="x" class="text-muted"></i>
             <% end %>
           <% end %>
@@ -92,7 +95,33 @@
             <% end %>
           <% end %>
 
-          <%# Desktop Dropdown %>
+          <%# Desktop Category Dropdown %>
+          <div class="hs-dropdown relative hidden sm:block">
+            <button class="toolbar-dropdown-btn hs-dropdown-toggle" type="button" aria-expanded="false">
+              <i data-lucide="trophy" class="text-muted"></i>
+              <span><%= @selected_category&.name || 'All Categories' %></span>
+              <i data-lucide="chevron-down" class="text-muted"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-sort hs-dropdown-menu transition-[opacity,margin] duration-200 opacity-0 hs-dropdown-open:opacity-100 hidden mt-2" style="max-height: 400px; overflow-y: auto;">
+              <li>
+                <%= link_to movies_path(year: current_year, sort_by: params[:sort_by], filter_by: params[:filter_by], query: params[:query]),
+                    class: "dropdown-item #{'active' if params[:category_id].blank?}" do %>
+                  <i data-lucide="gallery-horizontal-end" class="text-muted"></i> All Categories
+                <% end %>
+              </li>
+              <li><hr class="dropdown-divider"></li>
+              <% @categories.each do |category| %>
+                <li>
+                  <%= link_to movies_path(year: current_year, category_id: category.id, sort_by: params[:sort_by], filter_by: params[:filter_by], query: params[:query]),
+                      class: "dropdown-item #{'active' if params[:category_id].to_s == category.id.to_s}" do %>
+                    <%= category.name %>
+                  <% end %>
+                </li>
+              <% end %>
+            </ul>
+          </div>
+
+          <%# Desktop Sort Dropdown %>
           <div class="hs-dropdown relative hidden sm:block">
             <button class="toolbar-dropdown-btn hs-dropdown-toggle" type="button" aria-expanded="false">
               <i data-lucide="arrow-down-wide-narrow" class="text-muted"></i>
@@ -101,7 +130,7 @@
             </button>
             <ul class="dropdown-menu dropdown-menu-sort hs-dropdown-menu transition-[opacity,margin] duration-200 opacity-0 hs-dropdown-open:opacity-100 hidden mt-2">
               <li>
-                <%= link_to movies_path(year: current_year, sort_by: '', filter_by: params[:filter_by], query: params[:query]),
+                <%= link_to movies_path(year: current_year, sort_by: '', filter_by: params[:filter_by], category_id: params[:category_id], query: params[:query]),
                     class: "dropdown-item #{'active' if params[:sort_by].blank?}" do %>
                   <i data-lucide="sort-desc" class="text-muted"></i> A-Z
                 <% end %>
@@ -109,19 +138,19 @@
               <li><hr class="dropdown-divider"></li>
               <li class="dropdown-header">By Rating</li>
               <li>
-                <%= link_to movies_path(year: current_year, sort_by: 'watched_by_mates', filter_by: params[:filter_by], query: params[:query]),
+                <%= link_to movies_path(year: current_year, sort_by: 'watched_by_mates', filter_by: params[:filter_by], category_id: params[:category_id], query: params[:query]),
                     class: "dropdown-item #{'active' if params[:sort_by] == 'watched_by_mates'}" do %>
                   <i data-lucide="users" class="text-muted"></i> Mates' Rating
                 <% end %>
               </li>
               <li>
-                <%= link_to movies_path(year: current_year, sort_by: 'imdb_rating', filter_by: params[:filter_by], query: params[:query]),
+                <%= link_to movies_path(year: current_year, sort_by: 'imdb_rating', filter_by: params[:filter_by], category_id: params[:category_id], query: params[:query]),
                     class: "dropdown-item #{'active' if params[:sort_by] == 'imdb_rating'}" do %>
                   <i data-lucide="film" class="text-muted"></i> IMDB Rating
                 <% end %>
               </li>
               <li>
-                <%= link_to movies_path(year: current_year, sort_by: 'my_rating', filter_by: params[:filter_by], query: params[:query]),
+                <%= link_to movies_path(year: current_year, sort_by: 'my_rating', filter_by: params[:filter_by], category_id: params[:category_id], query: params[:query]),
                     class: "dropdown-item #{'active' if params[:sort_by] == 'my_rating'}" do %>
                   <i data-lucide="star" class="text-muted"></i> My Rating
                 <% end %>
@@ -129,13 +158,13 @@
               <li><hr class="dropdown-divider"></li>
               <li class="dropdown-header">By Duration</li>
               <li>
-                <%= link_to movies_path(year: current_year, sort_by: 'duration', filter_by: params[:filter_by], query: params[:query]),
+                <%= link_to movies_path(year: current_year, sort_by: 'duration', filter_by: params[:filter_by], category_id: params[:category_id], query: params[:query]),
                     class: "dropdown-item #{'active' if params[:sort_by] == 'duration'}" do %>
                   <i data-lucide="timer" class="text-muted"></i> Longest First
                 <% end %>
               </li>
               <li>
-                <%= link_to movies_path(year: current_year, sort_by: 'shortest', filter_by: params[:filter_by], query: params[:query]),
+                <%= link_to movies_path(year: current_year, sort_by: 'shortest', filter_by: params[:filter_by], category_id: params[:category_id], query: params[:query]),
                     class: "dropdown-item #{'active' if params[:sort_by] == 'shortest'}" do %>
                   <i data-lucide="clock" class="text-muted"></i> Shortest First
                 <% end %>
@@ -143,7 +172,13 @@
               <li><hr class="dropdown-divider"></li>
               <li class="dropdown-header">By Popularity</li>
               <li>
-                <%= link_to movies_path(year: current_year, sort_by: 'most_watched_by_mates', filter_by: params[:filter_by], query: params[:query]),
+                <%= link_to movies_path(year: current_year, sort_by: 'most_nominated', filter_by: params[:filter_by], category_id: params[:category_id], query: params[:query]),
+                    class: "dropdown-item #{'active' if params[:sort_by] == 'most_nominated'}" do %>
+                  <i data-lucide="trophy" class="text-muted"></i> Most Nominated
+                <% end %>
+              </li>
+              <li>
+                <%= link_to movies_path(year: current_year, sort_by: 'most_watched_by_mates', filter_by: params[:filter_by], category_id: params[:category_id], query: params[:query]),
                     class: "dropdown-item #{'active' if params[:sort_by] == 'most_watched_by_mates'}" do %>
                   <i data-lucide="eye" class="text-muted"></i> Most Watched by Mates
                 <% end %>
@@ -151,7 +186,10 @@
             </ul>
           </div>
 
-          <%# Mobile Modal Button %>
+          <%# Mobile Modal Buttons %>
+          <button type="button" class="toolbar-dropdown-btn sm:hidden" data-hs-overlay="#category-modal" aria-label="Category filter">
+            <i data-lucide="trophy" class="text-muted"></i>
+          </button>
           <button type="button" class="toolbar-dropdown-btn sm:hidden" data-hs-overlay="#sort-modal" aria-label="Sort options">
             <i data-lucide="arrow-down-wide-narrow" class="text-muted"></i>
           </button>
@@ -200,7 +238,7 @@
           You haven't watched any movies yet. Start watching!
         <% end %>
       </p>
-        <% if params[:query].present? || params[:filter_by].present? %>
+        <% if params[:query].present? || params[:filter_by].present? || params[:category_id].present? %>
           <%= link_to movies_path(year: current_year), class: "btn-clear-filters" do %>
             <i data-lucide="x" class="text-muted"></i> Clear Filters
           <% end %>
@@ -235,7 +273,7 @@
         <%# Body with Sort Options %>
         <div class="p-4 overflow-y-auto">
           <div class="space-y-2">
-            <%= link_to movies_path(year: current_year, sort_by: '', filter_by: params[:filter_by], query: params[:query]),
+            <%= link_to movies_path(year: current_year, sort_by: '', filter_by: params[:filter_by], category_id: params[:category_id], query: params[:query]),
                 class: "flex items-center gap-3 px-4 py-3 text-sm text-gray-800 rounded-lg hover:bg-gray-100 #{'bg-gray-100 font-semibold' if params[:sort_by].blank?}" do %>
               <i data-lucide="sort-desc" class="text-muted w-5 h-5"></i>
               <span>A-Z</span>
@@ -243,17 +281,17 @@
 
             <div class="border-t border-gray-200 pt-2">
               <p class="px-4 py-2 text-xs font-semibold text-gray-500">By Rating</p>
-              <%= link_to movies_path(year: current_year, sort_by: 'watched_by_mates', filter_by: params[:filter_by], query: params[:query]),
+              <%= link_to movies_path(year: current_year, sort_by: 'watched_by_mates', filter_by: params[:filter_by], category_id: params[:category_id], query: params[:query]),
                   class: "flex items-center gap-3 px-4 py-3 text-sm text-gray-800 rounded-lg hover:bg-gray-100 #{'bg-gray-100 font-semibold' if params[:sort_by] == 'watched_by_mates'}" do %>
                 <i data-lucide="users" class="text-muted w-5 h-5"></i>
                 <span>Mates' Rating</span>
               <% end %>
-              <%= link_to movies_path(year: current_year, sort_by: 'imdb_rating', filter_by: params[:filter_by], query: params[:query]),
+              <%= link_to movies_path(year: current_year, sort_by: 'imdb_rating', filter_by: params[:filter_by], category_id: params[:category_id], query: params[:query]),
                   class: "flex items-center gap-3 px-4 py-3 text-sm text-gray-800 rounded-lg hover:bg-gray-100 #{'bg-gray-100 font-semibold' if params[:sort_by] == 'imdb_rating'}" do %>
                 <i data-lucide="film" class="text-muted w-5 h-5"></i>
                 <span>IMDB Rating</span>
               <% end %>
-              <%= link_to movies_path(year: current_year, sort_by: 'my_rating', filter_by: params[:filter_by], query: params[:query]),
+              <%= link_to movies_path(year: current_year, sort_by: 'my_rating', filter_by: params[:filter_by], category_id: params[:category_id], query: params[:query]),
                   class: "flex items-center gap-3 px-4 py-3 text-sm text-gray-800 rounded-lg hover:bg-gray-100 #{'bg-gray-100 font-semibold' if params[:sort_by] == 'my_rating'}" do %>
                 <i data-lucide="star" class="text-muted w-5 h-5"></i>
                 <span>My Rating</span>
@@ -262,12 +300,12 @@
 
             <div class="border-t border-gray-200 pt-2">
               <p class="px-4 py-2 text-xs font-semibold text-gray-500">By Duration</p>
-              <%= link_to movies_path(year: current_year, sort_by: 'duration', filter_by: params[:filter_by], query: params[:query]),
+              <%= link_to movies_path(year: current_year, sort_by: 'duration', filter_by: params[:filter_by], category_id: params[:category_id], query: params[:query]),
                   class: "flex items-center gap-3 px-4 py-3 text-sm text-gray-800 rounded-lg hover:bg-gray-100 #{'bg-gray-100 font-semibold' if params[:sort_by] == 'duration'}" do %>
                 <i data-lucide="timer" class="text-muted w-5 h-5"></i>
                 <span>Longest First</span>
               <% end %>
-              <%= link_to movies_path(year: current_year, sort_by: 'shortest', filter_by: params[:filter_by], query: params[:query]),
+              <%= link_to movies_path(year: current_year, sort_by: 'shortest', filter_by: params[:filter_by], category_id: params[:category_id], query: params[:query]),
                   class: "flex items-center gap-3 px-4 py-3 text-sm text-gray-800 rounded-lg hover:bg-gray-100 #{'bg-gray-100 font-semibold' if params[:sort_by] == 'shortest'}" do %>
                 <i data-lucide="clock" class="text-muted w-5 h-5"></i>
                 <span>Shortest First</span>
@@ -276,10 +314,53 @@
 
             <div class="border-t border-gray-200 pt-2">
               <p class="px-4 py-2 text-xs font-semibold text-gray-500">By Popularity</p>
-              <%= link_to movies_path(year: current_year, sort_by: 'most_watched_by_mates', filter_by: params[:filter_by], query: params[:query]),
+              <%= link_to movies_path(year: current_year, sort_by: 'most_nominated', filter_by: params[:filter_by], category_id: params[:category_id], query: params[:query]),
+                  class: "flex items-center gap-3 px-4 py-3 text-sm text-gray-800 rounded-lg hover:bg-gray-100 #{'bg-gray-100 font-semibold' if params[:sort_by] == 'most_nominated'}" do %>
+                <i data-lucide="trophy" class="text-muted w-5 h-5"></i>
+                <span>Most Nominated</span>
+              <% end %>
+              <%= link_to movies_path(year: current_year, sort_by: 'most_watched_by_mates', filter_by: params[:filter_by], category_id: params[:category_id], query: params[:query]),
                   class: "flex items-center gap-3 px-4 py-3 text-sm text-gray-800 rounded-lg hover:bg-gray-100 #{'bg-gray-100 font-semibold' if params[:sort_by] == 'most_watched_by_mates'}" do %>
                 <i data-lucide="eye" class="text-muted w-5 h-5"></i>
                 <span>Most Watched by Mates</span>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <%# Mobile Category Modal %>
+  <div id="category-modal" class="hs-overlay hidden w-full h-full fixed top-0 start-0 z-[80] overflow-x-hidden overflow-y-auto pointer-events-none">
+    <div class="hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 mt-0 opacity-0 ease-out transition-all sm:max-w-lg sm:w-full m-3 sm:mx-auto min-h-[calc(100%-3.5rem)] flex items-center">
+      <div class="w-full max-w-md mx-auto flex flex-col bg-white border border-gray-200 shadow-lg rounded-xl pointer-events-auto">
+        <%# Header %>
+        <div class="flex justify-between items-center py-3 px-4 border-b border-gray-200">
+          <h3 class="font-bold text-gray-800">
+            Filter by Category
+          </h3>
+          <button type="button" class="flex justify-center items-center w-7 h-7 text-sm font-semibold rounded-full border border-transparent text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none" data-hs-overlay="#category-modal">
+            <span class="sr-only">Close</span>
+            <i data-lucide="x" class="w-4 h-4"></i>
+          </button>
+        </div>
+
+        <%# Body with Category Options %>
+        <div class="p-4 overflow-y-auto" style="max-height: 60vh;">
+          <div class="space-y-2">
+            <%= link_to movies_path(year: current_year, sort_by: params[:sort_by], filter_by: params[:filter_by], query: params[:query]),
+                class: "flex items-center gap-3 px-4 py-3 text-sm text-gray-800 rounded-lg hover:bg-gray-100 #{'bg-gray-100 font-semibold' if params[:category_id].blank?}" do %>
+              <i data-lucide="gallery-horizontal-end" class="text-muted w-5 h-5"></i>
+              <span>All Categories</span>
+            <% end %>
+
+            <div class="border-t border-gray-200 pt-2">
+              <% @categories.each do |category| %>
+                <%= link_to movies_path(year: current_year, category_id: category.id, sort_by: params[:sort_by], filter_by: params[:filter_by], query: params[:query]),
+                    class: "flex items-center gap-3 px-4 py-3 text-sm text-gray-800 rounded-lg hover:bg-gray-100 #{'bg-gray-100 font-semibold' if params[:category_id].to_s == category.id.to_s}" do %>
+                  <span><%= category.name %></span>
+                <% end %>
               <% end %>
             </div>
           </div>
