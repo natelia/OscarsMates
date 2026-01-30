@@ -473,7 +473,7 @@
         <h3 class="mb-4 text-lg font-semibold text-slate-700">Tailwind Button Classes</h3>
 
         <div class="mb-4 flex flex-wrap items-center gap-4">
-          <button class="inline-flex items-center rounded-md bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800">
+          <button class="inline-flex items-center rounded-md bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-[var(--oscar-gold-dark)]">
             Slate Primary
           </button>
 
@@ -481,11 +481,13 @@
             Slate Outline
           </button>
 
-          <button class="btn-watched">
+          <button class="btn-outline-oscar btn-watched">
+            <i data-lucide="check-circle-2"></i>
             Success / Teal
           </button>
 
-          <button class="btn-unwatch">
+          <button class="btn-outline-oscar btn-unwatch">
+            <i data-lucide="x-circle"></i>
             Red Carpet
           </button>
         </div>
@@ -515,18 +517,40 @@
             <input type="email" placeholder="Enter email...">
           </div>
 
-          <div>
+          <div data-controller="date-picker">
             <label>Date Input</label>
-            <input type="date">
+            <div class="date-picker-wrapper mt-2">
+              <input type="text" value="<%= Date.current.strftime('%Y-%m-%d') %>" readonly data-date-picker-target="input" data-action="click->date-picker#toggleDropdown" class="date-picker-input">
+              <i data-lucide="calendar" class="date-picker-icon"></i>
+              <div class="date-picker-dropdown hidden" data-date-picker-target="dropdown">
+                <div class="date-picker-header">
+                  <button type="button" class="date-picker-nav-btn" data-action="click->date-picker#previousMonth">
+                    <i data-lucide="chevron-left"></i>
+                  </button>
+                  <div class="date-picker-month-year" data-date-picker-target="monthYear"></div>
+                  <button type="button" class="date-picker-nav-btn" data-action="click->date-picker#nextMonth">
+                    <i data-lucide="chevron-right"></i>
+                  </button>
+                </div>
+                <div class="date-picker-grid" data-date-picker-target="grid"></div>
+                <div class="date-picker-footer">
+                  <button type="button" class="date-picker-today-btn" data-action="click->date-picker#today">Today</button>
+                </div>
+              </div>
+            </div>
           </div>
 
-          <div>
+          <div class="hs-dropdown relative" style="max-width: 400px;">
             <label>Select Dropdown</label>
-            <select>
-              <option>Option 1</option>
-              <option>Option 2</option>
-              <option>Option 3</option>
-            </select>
+            <button type="button" class="form-select-btn hs-dropdown-toggle w-full justify-between mt-1" aria-expanded="false">
+              <span>Select an option</span>
+              <i data-lucide="chevron-down" class="w-4 h-4 opacity-60"></i>
+            </button>
+            <ul class="dropdown-menu hs-dropdown-menu transition-[opacity,margin] duration-200 opacity-0 hs-dropdown-open:opacity-100 hidden mt-2 w-full" style="max-width: 400px;">
+              <li><button type="button" class="dropdown-item">Option 1</button></li>
+              <li><button type="button" class="dropdown-item">Option 2</button></li>
+              <li><button type="button" class="dropdown-item">Option 3</button></li>
+            </ul>
           </div>
 
           <div>
@@ -537,15 +561,15 @@
           <div>
             <label>Checkboxes</label>
             <div class="flex flex-wrap gap-4">
-              <label class="inline-flex items-center gap-2 text-sm text-slate-600">
+              <label class="inline-flex items-center gap-2 text-sm text-slate-600 cursor-pointer">
                 <input type="checkbox">
                 <span>Option 1</span>
               </label>
-              <label class="inline-flex items-center gap-2 text-sm text-slate-600">
+              <label class="inline-flex items-center gap-2 text-sm text-slate-600 cursor-pointer">
                 <input type="checkbox">
                 <span>Option 2</span>
               </label>
-              <label class="inline-flex items-center gap-2 text-sm text-slate-600">
+              <label class="inline-flex items-center gap-2 text-sm text-slate-600 cursor-pointer">
                 <input type="checkbox" checked>
                 <span>Checked</span>
               </label>
@@ -563,12 +587,14 @@
         <h3 class="mb-4 text-lg font-semibold text-slate-700">Search Input</h3>
 
         <div class="relative max-w-sm">
-          <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style="color: var(--text-tertiary);"></i>
-          <input type="text" placeholder="Search..." class="search-input">
+          <form class="search-form" role="search">
+            <i data-lucide="search" class="search-icon"></i>
+            <input class="search-input" type="search" placeholder="Search..." aria-label="Search">
+          </form>
         </div>
 
         <div class="mt-4 text-sm text-slate-600">
-          <p><strong>Classes:</strong> <code class="rounded bg-slate-100 px-2 py-0.5 text-xs">.search-input</code></p>
+          <p><strong>Classes:</strong> <code class="rounded bg-slate-100 px-2 py-0.5 text-xs">.search-form</code> + <code class="rounded bg-slate-100 px-2 py-0.5 text-xs">.search-input</code> + <code class="rounded bg-slate-100 px-2 py-0.5 text-xs">.search-icon</code></p>
         </div>
       </div>
     </section>

@@ -18,13 +18,13 @@
           <%= f.password_field :password, class: "mt-2 w-full", placeholder: "Enter your password" %>
         </div>
 
-        <label class="flex items-center gap-2 text-sm text-slate-600">
+        <label class="flex items-center gap-2 text-sm text-slate-600 cursor-pointer">
           <%= f.check_box :remember_me %>
           <span>Remember me</span>
         </label>
 
         <div>
-          <%= f.submit "Sign In!", class: "w-full rounded-md bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800" %>
+          <%= f.submit "Sign In!", class: "btn-oscar w-full" %>
         </div>
       <% end %>
     </div>

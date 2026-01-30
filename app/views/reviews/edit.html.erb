@@ -1,41 +1,61 @@
 <section class="new-review py-10">
   <div class="container mx-auto px-4">
-    <div class="relative">
-      <%# Back Button - Outside of centered content %>
+    <%# Mobile Layout: Back button, title, form, then poster %>
+    <%# Desktop Layout: Back button absolute, poster left, form right %>
+    
+    <%# Mobile Header Container - aligns with form %>
+    <div class="lg:hidden mx-auto max-w-[450px]">
+      <%# Back Button %>
       <button onclick="history.back()" class="back-button-review" title="Go back">
         <i data-lucide="arrow-left" style="color: var(--text-tertiary);"></i>
       </button>
 
-      <%# Centered Content Container %>
-      <div class="flex flex-col lg:flex-row gap-8 items-start justify-center mx-auto" style="max-width: fit-content;">
-        <%# Movie Poster - Left Side %>
-        <div class="w-full lg:w-auto flex-shrink-0">
-          <% if @movie.picture_url.present? %>
-            <%= image_tag @movie.picture_url, alt: @movie.title, class: "w-full lg:w-[300px] rounded-lg shadow-lg" %>
-          <% else %>
-            <div class="w-full lg:w-[300px] h-[450px] flex items-center justify-center bg-slate-100 rounded-lg shadow-lg">
-              <i data-lucide="film" class="text-slate-400" style="width: 96px; height: 96px;"></i>
-            </div>
-          <% end %>
-        </div>
-
-        <%# Form Content - Right Side %>
-        <div class="flex-1 max-w-[450px]">
-          <h1 class="mb-6 text-3xl font-semibold text-slate-900">
-            <%= link_to @movie.title, movie_path(@movie, year: params[:year]), class: "text-slate-900 hover:text-slate-700" %>
-          </h1>
-          <%= render "form", movie: @movie, review: @review, year: params[:year] %>
-        </div>
+      <%# Mobile: Title %>
+      <div class="mb-6">
+        <h1 class="text-3xl font-semibold text-slate-900">
+          <%= link_to @movie.title, movie_path(@movie, year: params[:year]), class: "text-slate-900 hover:text-slate-700" %>
+        </h1>
       </div>
+    </div>
+
+    <%# Centered Content Container %>
+    <div class="flex flex-col lg:flex-row gap-8 items-start justify-center mx-auto" style="max-width: fit-content;">
+      <%# Movie Poster - Hidden on mobile, Left Side on desktop %>
+      <div class="hidden lg:block w-full lg:w-auto flex-shrink-0">
+        <% if @movie.picture_url.present? %>
+          <%= image_tag @movie.picture_url, alt: @movie.title, class: "w-full lg:w-[300px] rounded-lg shadow-lg" %>
+        <% else %>
+          <div class="w-full lg:w-[300px] h-[450px] flex items-center justify-center bg-slate-100 rounded-lg shadow-lg">
+            <i data-lucide="film" class="text-slate-400" style="width: 96px; height: 96px;"></i>
+          </div>
+        <% end %>
+      </div>
+
+      <%# Form Content - Right Side on desktop %>
+      <div class="flex-1 max-w-[450px]">
+        <%# Desktop: Title here %>
+        <h1 class="hidden lg:block mb-6 text-3xl font-semibold text-slate-900">
+          <%= link_to @movie.title, movie_path(@movie, year: params[:year]), class: "text-slate-900 hover:text-slate-700" %>
+        </h1>
+        <%= render "form", movie: @movie, review: @review, year: params[:year] %>
+      </div>
+    </div>
+
+    <%# Movie Poster - Below form on mobile only %>
+    <div class="lg:hidden mt-8 flex justify-center">
+      <% if @movie.picture_url.present? %>
+        <%= image_tag @movie.picture_url, alt: @movie.title, class: "w-full max-w-[300px] rounded-lg shadow-lg" %>
+      <% else %>
+        <div class="w-full max-w-[300px] h-[450px] flex items-center justify-center bg-slate-100 rounded-lg shadow-lg">
+          <i data-lucide="film" class="text-slate-400" style="width: 96px; height: 96px;"></i>
+        </div>
+      <% end %>
     </div>
   </div>
 </section>
 
 <style>
 .back-button-review {
-  position: absolute;
-  left: 0;
-  top: 0;
   width: 48px;
   height: 48px;
   border-radius: 50%;
@@ -48,18 +68,12 @@
   background: var(--bg-secondary);
   border: none;
   cursor: pointer;
-  z-index: 10;
+  margin-bottom: 1rem;
+  position: relative;
 }
 
 .back-button-review:hover {
   opacity: 1;
   transform: translateX(-4px);
-}
-
-@media (max-width: 1023px) {
-  .back-button-review {
-    position: relative;
-    margin-bottom: 1rem;
-  }
 }
 </style>

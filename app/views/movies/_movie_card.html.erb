@@ -86,7 +86,7 @@
         <% mates_rating = current_user ? movie.mates_average_stars(current_user) : 0.0 %>
         <% if mates_rating.zero? %>
           <i data-lucide="users" class="text-muted"></i>
-          <span class="text-muted">No ratings</span>
+          <span class="text-muted">–</span>
         <% else %>
           <i data-lucide="users" class="text-muted"></i>
           <span><%= number_with_precision(mates_rating, precision: 1) %></span>

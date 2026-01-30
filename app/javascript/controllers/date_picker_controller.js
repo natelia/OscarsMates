@@ -52,6 +52,25 @@ export default class extends Controller {
   openDropdown() {
     this.renderCalendar();
     this.dropdownTarget.classList.remove("hidden");
+    this.positionDropdown();
+  }
+
+  positionDropdown() {
+    const inputRect = this.inputTarget.getBoundingClientRect();
+    const dropdownHeight = this.dropdownTarget.offsetHeight;
+    const spaceBelow = window.innerHeight - inputRect.bottom;
+    const spaceAbove = inputRect.top;
+
+    // Position horizontally aligned with input
+    this.dropdownTarget.style.left = `${inputRect.left}px`;
+    this.dropdownTarget.style.width = `${Math.min(450, inputRect.width)}px`;
+
+    // Position vertically - prefer below, but if not enough space, show above
+    if (spaceBelow >= dropdownHeight || spaceBelow >= spaceAbove) {
+      this.dropdownTarget.style.top = `${inputRect.bottom + 4}px`;
+    } else {
+      this.dropdownTarget.style.top = `${inputRect.top - dropdownHeight - 4}px`;
+    }
   }
 
   closeDropdown() {
