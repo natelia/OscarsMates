@@ -8,6 +8,8 @@ class MoviesController < ApplicationController
 
   def index
     @movies = ListMoviesQuery.new(params, current_user, current_year).results
+    @categories = Category.for_year(current_year).order(:name)
+    @selected_category = @categories.find_by(id: params[:category_id]) if params[:category_id].present?
 
     @user_reviews = []
     if current_user

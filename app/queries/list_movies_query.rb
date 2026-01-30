@@ -1,10 +1,11 @@
 class ListMoviesQuery
-  attr_reader :query, :user, :sort_by, :filter_by, :year
+  attr_reader :query, :user, :sort_by, :filter_by, :category_id, :year
 
   def initialize(params, user, year)
     @query = params[:query]
     @filter_by = params[:filter_by]
     @sort_by = params[:sort_by]
+    @category_id = params[:category_id]
     @user = user
     @year = year
   end
@@ -13,6 +14,7 @@ class ListMoviesQuery
     prepare_collection
 
     search_movies if query.present?
+    filter_by_category if category_id.present?
     apply_filters
     sort_movies
 
@@ -46,6 +48,12 @@ class ListMoviesQuery
 
   def filter_watched
     @results = @results.where(id: rated_movie_ids)
+  end
+
+  def filter_by_category
+    @results = @results
+               .joins(:nominations)
+               .where(nominations: { category_id: category_id, year: year })
   end
 
   def rated_movie_ids
@@ -116,9 +124,13 @@ class ListMoviesQuery
   end
 
   def sort_by_nominations
+    nominations_count = Nomination.where(year: year)
+                                  .group(:movie_id)
+                                  .select('movie_id, COUNT(*) as nom_count')
+
     @results = @results
-               .joins(:categories)
-               .group('movies.id')
-               .order('COUNT(categories.id) DESC')
+               .joins("LEFT JOIN (#{nominations_count.to_sql}) AS nom_counts ON movies.id = nom_counts.movie_id")
+               .select('movies.*, COALESCE(nom_counts.nom_count, 0) as nominations_count')
+               .order(Arel.sql('nom_counts.nom_count DESC NULLS LAST, movies.title ASC'))
   end
 end
