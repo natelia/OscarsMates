@@ -59,7 +59,7 @@
 
   <%# Title and ratings (always visible) %>
   <div class="movie-card-info">
-    <h4><%= movie.title %></h4>
+    <h2 title="<%= movie.title %>"><%= movie.title %></h2>
   <div class="movie-rating-row">
     <% if !pick_count.nil? %>
       <%# Show mates' votes count on Categories page %>

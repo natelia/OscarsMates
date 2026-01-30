@@ -497,6 +497,7 @@ a {
   position: relative;
   overflow: hidden;
   cursor: default;
+  padding-bottom: var(--radius-lg);
 }
 
 .movie-card-overlay {
@@ -544,22 +545,26 @@ a {
 }
 
 .movie-card-info {
-  padding: var(--spacing-sm) var(--spacing-md) var(--spacing-md);
+  padding: var(--spacing-md) var(--spacing-md) var(--spacing-md);
   background: white;
   cursor: default;
   flex: 1;
   display: flex;
   flex-direction: column;
+  border-radius: var(--radius-lg);
+  margin-top: calc(-3 * var(--radius-lg));
+  position: relative;
+  z-index: 10;
 
-  h4 {
+  h2 {
     font-size: 1.1rem;
-    font-weight: 600;
-    margin: 0 0 var(--spacing-xs);
+    font-weight: 500;
+    margin: 0 0 var(--spacing-sm);
     color: var(--text-primary);
     line-height: 1.2;
     letter-spacing: -0.02em;
     display: -webkit-box;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
     overflow: hidden;
     cursor: default;
@@ -737,15 +742,15 @@ a {
     bottom: 0;
     left: 0;
     right: 0;
-    padding: var(--spacing-lg) var(--spacing-md) var(--spacing-md);
+    padding: var(--spacing-lg) var(--spacing-md) calc(3 * var(--radius-lg) + var(--spacing-md));
     background: linear-gradient(
       to top,
       rgba(0, 0, 0, 0.95) 0%,
       rgba(0, 0, 0, 0.7) 50%,
       transparent 100%
     );
-    min-height: 80px;
-    z-index: 20;
+    min-height: 160px;
+    z-index: 5;
     pointer-events: none;
   }
 
