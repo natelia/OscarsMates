@@ -370,6 +370,28 @@
   </div>
 <% end %>
 
+<%# Footer - Temporarily hidden %>
+<footer class="footer" style="display: none; background-color: var(--oscar-gold-dark); margin-top: 120px;">
+  <div class="footer-content">
+    <%# Left column - All links %>
+    <div class="footer-links">
+      <%= link_to "Report bug", report_bug_path, class: "footer-link" %>
+      <%= link_to "Request a feature", request_feature_path, class: "footer-link" %>
+      <%= link_to "GitHub", "https://github.com/natelia/OscarsMates", class: "footer-link", target: "_blank", rel: "noopener noreferrer" %>
+    </div>
+
+    <%# Center - Logo %>
+    <div class="footer-logo">
+      <%= image_tag 'logo_hands_h-01.svg', alt: 'Oscars Mates Logo', class: 'h-64 w-auto' %>
+    </div>
+
+    <%# Right column - Bubble image %>
+    <div class="footer-bubble">
+      <%= image_tag 'love.svg', alt: 'Love what we do', class: 'footer-bubble-image' %>
+    </div>
+  </div>
+</footer>
+
 <style>
 /* Toolbar responsive - handled in custom.css */
 @media (max-width: 1023px) {

@@ -16,7 +16,7 @@ SimpleCov.start 'rails' do
 end
 
 require 'spec_helper'
-ENV['RAILS_ENV'] ||= 'test'
+ENV['RAILS_ENV'] = 'test'
 require_relative '../config/environment'
 # Prevent database truncation if the environment is production
 abort('The Rails environment is running in production mode!') if Rails.env.production?
@@ -49,6 +49,18 @@ end
 RSpec.configure do |config|
   # Include FactoryBot methods
   config.include FactoryBot::Syntax::Methods
+
+  # Ensure a clean database state even if the test DB was seeded.
+  config.before(:suite) do
+    connection = ActiveRecord::Base.connection
+    tables = connection.tables - %w[schema_migrations ar_internal_metadata]
+
+    connection.disable_referential_integrity do
+      tables.each do |table|
+        connection.execute("DELETE FROM \"#{table}\"")
+      end
+    end
+  end
 
   # System specs configuration
   config.before(:each, type: :system) do
