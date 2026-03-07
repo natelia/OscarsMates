@@ -16,8 +16,9 @@ SimpleCov.start 'rails' do
 end
 
 require 'spec_helper'
-ENV['RAILS_ENV'] ||= 'test'
+ENV['RAILS_ENV'] = 'test'
 require_relative '../config/environment'
+# rubocop:disable Rails/Exit
 # Prevent database truncation if the environment is production
 abort('The Rails environment is running in production mode!') if Rails.env.production?
 require 'rspec/rails'
@@ -46,6 +47,7 @@ begin
 rescue ActiveRecord::PendingMigrationError => e
   abort e.to_s.strip
 end
+# rubocop:enable Rails/Exit
 RSpec.configure do |config|
   # Include FactoryBot methods
   config.include FactoryBot::Syntax::Methods
@@ -53,6 +55,8 @@ RSpec.configure do |config|
   # System specs configuration
   config.before(:each, type: :system) do
     driven_by :rack_test
+    Capybara.default_host = 'http://localhost'
+    Capybara.app_host = 'http://localhost'
   end
 
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures

@@ -61,4 +61,33 @@ class ApplicationController < ActionController::Base
   end
 
   helper_method :current_user_admin?
+
+  def safe_internal_path(location)
+    return if location.blank?
+
+    parsed = URI.parse(location)
+    return if parsed.scheme.present? || parsed.host.present?
+
+    path = parsed.path.presence || '/'
+    return unless path.start_with?('/') && !path.start_with?('//')
+
+    [
+      path,
+      parsed.query.present? ? "?#{parsed.query}" : nil,
+      parsed.fragment.present? ? "##{parsed.fragment}" : nil
+    ].compact.join
+  rescue URI::InvalidURIError
+    nil
+  end
+
+  def safe_internal_referer_path
+    return if request.referer.blank?
+    return unless request.referer.start_with?(request.base_url)
+
+    safe_internal_path(request.referer.delete_prefix(request.base_url))
+  end
+
+  def path_without_query(location)
+    location.to_s.split(/[?#]/).first
+  end
 end

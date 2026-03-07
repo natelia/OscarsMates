@@ -284,7 +284,7 @@ label {
   display: block;
   margin-bottom: 0.5rem;
   font-size: 0.875rem;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--slate-700);
 }
 
@@ -573,6 +573,17 @@ a {
     text-overflow: ellipsis;
     white-space: nowrap;
     cursor: default;
+  }
+
+  .movie-title-link {
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.2s ease;
+  }
+
+  .movie-title-link:hover {
+    color: var(--oscar-gold-dark);
   }
 }
 
@@ -1698,10 +1709,32 @@ a {
   grid-template-columns: 1fr;
   gap: var(--spacing-lg);
   align-items: start;
+  scroll-margin-top: 120px;
+  position: relative;
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
 
   @media (min-width: 768px) {
     grid-template-columns: 4fr 8fr; /* 4/12 for name, 8/12 for movies */
   }
+}
+
+/* Category highlight animation - single pop effect */
+@keyframes categoryHighlight {
+  0%, 100% {
+    background-color: transparent;
+    box-shadow: none;
+    transform: scale(1);
+  }
+  50% {
+    background-color: rgba(212, 175, 55, 0.3);
+    box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.2);
+    transform: scale(1.02);
+  }
+}
+
+.category-row.category-highlight {
+  animation: categoryHighlight 1s ease-in-out;
 }
 
 .category-name-column {
@@ -3301,6 +3334,76 @@ input[type="search"]:-webkit-autofill:active {
   color: var(--oscar-gold-dark);
 }
 
+/* Movie Details Page */
+.movie-details-page .movie-poster-container {
+  position: relative;
+}
+
+.movie-details-page .movie-card {
+  border: none;
+  box-shadow: none;
+  display: block;
+}
+
+.movie-details-page .movie-card-poster-container {
+  position: relative;
+  aspect-ratio: 2/3;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.movie-details-page .movie-card-poster {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Category Nomination Tiles */
+.category-nomination-tile {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-md);
+  background: white;
+  border: 2px solid var(--oscar-gold);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+  text-decoration: none;
+}
+
+.category-nomination-tile:hover {
+  background: var(--oscar-gold-light);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.category-star-icon {
+  color: var(--oscar-gold);
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+}
+
+.category-nomination-tile .category-name {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  margin: 0;
+  line-height: 20px;
+}
+
+/* Review Items in Watched By Section */
+.review-item {
+  display: flex;
+  gap: var(--spacing-md);
+  align-items: flex-start;
+}
+
+.review-info {
+  flex: 1;
+  min-width: 0;
+}
+
 .profile-danger-zone {
   padding-top: var(--spacing-lg);
   border-top: 1px solid var(--border-color);
@@ -3332,20 +3435,26 @@ input[type="search"]:-webkit-autofill:active {
 .btn-danger {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: var(--spacing-xs);
-  padding: var(--spacing-sm) var(--spacing-md);
-  background: transparent;
-  color: var(--danger);
-  border: 1px solid var(--danger);
-  border-radius: var(--radius-md);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  background: var(--danger);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
   font-size: 0.875rem;
   font-weight: 500;
   cursor: pointer;
-  transition: var(--transition-fast);
+  transition: all var(--transition-fast);
 }
 
 .btn-danger:hover {
-  background: var(--carpet-light);
+  background: #6b0303;
+  transform: translateY(-1px);
+}
+
+.btn-danger:active {
+  transform: translateY(0);
 }
 
 @media (max-width: 640px) {
@@ -3614,6 +3723,13 @@ input[type="search"]:-webkit-autofill:active {
 
   .timeline-movie-title {
     font-weight: 500;
+    color: inherit;
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+
+  .timeline-movie-title:hover {
+    color: var(--oscar-gold-dark);
   }
 
   /* Comment below rating */

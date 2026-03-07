@@ -37,6 +37,22 @@ RSpec.describe 'Movies', type: :request do
       expect(response).to have_http_status(:ok)
       expect(response.body).to include(movie.title)
     end
+
+    it 'uses back_to param for the details back button' do
+      get "/2025/movies/#{movie.slug}", params: { back_to: '/2025/timeline' }, headers: {
+        'HTTP_REFERER' => "http://www.example.com/2025/movies/#{movie.slug}/edit"
+      }
+
+      expect(response.body).to include('href="/2025/timeline"')
+    end
+
+    it 'ignores transient referer pages for the details back button' do
+      get "/2025/movies/#{movie.slug}", headers: {
+        'HTTP_REFERER' => "http://www.example.com/2025/movies/#{movie.slug}/edit"
+      }
+
+      expect(response.body).to include("href=\"#{movies_path(year: 2025)}\"")
+    end
   end
 
   describe 'GET /:year/movies/new' do
@@ -98,6 +114,28 @@ RSpec.describe 'Movies', type: :request do
 
         expect(response).to have_http_status(:redirect)
       end
+    end
+  end
+
+  describe 'PATCH /:year/movies/:id' do
+    before { sign_in(admin) }
+
+    it 'redirects back to movie details with preserved back_to context' do
+      patch "/2025/movies/#{movie.slug}", params: {
+        movie: { runtime: movie.runtime + 1 },
+        back_to: '/2025/timeline'
+      }
+
+      expect(response).to redirect_to(movie_path(movie, year: 2025, back_to: '/2025/timeline'))
+    end
+
+    it 'ignores unsafe back_to values' do
+      patch "/2025/movies/#{movie.slug}", params: {
+        movie: { runtime: movie.runtime + 1 },
+        back_to: '//evil.example'
+      }
+
+      expect(response).to redirect_to(movie_path(movie, year: 2025))
     end
   end
 end

@@ -8,7 +8,7 @@
 
     <%# My rating badge - clickable to edit review %>
     <% if my_review&.stars.present? %>
-      <%= link_to edit_movie_review_path(review.movie, my_review, year: current_year),
+      <%= link_to edit_movie_review_path(review.movie, my_review, year: current_year, return_to: request.fullpath),
           class: "movie-card-badge animate-float",
           data: { turbo: false } do %>
         <span class="rating-number"><%= my_review.stars %></span>
@@ -38,7 +38,7 @@
             <%= link_to review.user.name, user_path(review.user), class: "timeline-username-link" %>
           </div>
           <div class="text-lg italic text-slate-600 timeline-event">
-            Watched "<span class="timeline-movie-title"><%= review.movie.title %></span>"
+            Watched "<%= link_to review.movie.title, movie_path(review.movie, year: current_year, back_to: request.fullpath), class: "timeline-movie-title" %>"
             <% days_ago = (Date.current - review.watched_on.to_date).to_i %>
             <span title="<%= review.watched_on.strftime('%B %d, %Y at %I:%M %p') %>">
               <% if days_ago == 0 %>

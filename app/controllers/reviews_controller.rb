@@ -1,9 +1,12 @@
 # ReviewsController handles the creation and deletion of reviews for movies.
 # It ensures that only signed-in users can create or delete reviews.
 class ReviewsController < ApplicationController
+  REVIEW_FORM_PATH_PATTERN = %r{\A/\d{4}/movies/[^/]+/reviews/(?:new|\d+/edit)\z}
+
   before_action :require_year
   before_action :require_signin
   before_action :set_movie
+  before_action :set_return_to_path, only: %i[new edit]
 
   def index
     @reviews = @movie.reviews
@@ -23,7 +26,7 @@ class ReviewsController < ApplicationController
     set_watched_on_time
 
     if @review.save
-      redirect_to movies_path(year: current_year),
+      redirect_to return_location,
                   notice: 'Thanks for your review!'
     else
       render :new, status: :unprocessable_content
@@ -41,7 +44,7 @@ class ReviewsController < ApplicationController
 
     if @review.save
       notice_message = @review.stars.present? ? 'Review updated!' : 'Movie marked as Unwatched!'
-      redirect_to movies_path(year: current_year),
+      redirect_to return_location,
                   notice: notice_message
     else
       render :edit, status: :unprocessable_content
@@ -52,10 +55,27 @@ class ReviewsController < ApplicationController
     @review = find_review
     @review&.destroy
 
-    redirect_to movies_path(year: current_year), notice: 'Movie marked as Unwatched!'
+    redirect_to return_location(fallback: movie_path(@movie, year: current_year)),
+                notice: 'Movie marked as Unwatched!'
   end
 
   private
+
+  def set_return_to_path
+    @return_to_path = return_location(fallback: movie_path(@movie, year: current_year))
+  end
+
+  def return_location(fallback: movies_path(year: current_year))
+    location = safe_internal_path(params[:return_to]) || safe_internal_referer_path
+    return fallback if location.blank?
+    return fallback if review_form_path?(location)
+
+    location
+  end
+
+  def review_form_path?(location)
+    REVIEW_FORM_PATH_PATTERN.match?(path_without_query(location))
+  end
 
   def review_params
     params.require(:review).permit(:comment, :stars, :watched_on)

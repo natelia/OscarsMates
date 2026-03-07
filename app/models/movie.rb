@@ -1,5 +1,20 @@
 # Represents a movie in the application
 class Movie < ApplicationRecord
+  STREAMING_SERVICES = [
+    'Netflix',
+    'Amazon Prime Video',
+    'Max',
+    'Disney+',
+    'Apple TV+',
+    'Hulu',
+    'Paramount+',
+    'Peacock',
+    'YouTube',
+    'VOD',
+    'CinemaCity',
+    'Multikino'
+  ].freeze
+
   before_save :set_slug
   has_many :reviews, dependent: :destroy
   has_many :favorites, dependent: :destroy
@@ -41,6 +56,31 @@ class Movie < ApplicationRecord
 
   def to_param
     slug
+  end
+
+  def streaming_services_array
+    where_to_watch.to_s.split(',').map(&:strip).compact_blank
+  end
+
+  def streaming_services_array=(services)
+    self.where_to_watch = services.compact_blank.join(', ')
+  end
+
+  def self.streaming_service_url(service)
+    {
+      'Netflix' => 'https://www.netflix.com',
+      'Amazon Prime Video' => 'https://www.primevideo.com',
+      'Max' => 'https://www.max.com',
+      'Disney+' => 'https://www.disneyplus.com',
+      'Apple TV+' => 'https://tv.apple.com',
+      'Hulu' => 'https://www.hulu.com',
+      'Paramount+' => 'https://www.paramountplus.com',
+      'Peacock' => 'https://www.peacocktv.com',
+      'YouTube' => 'https://www.youtube.com',
+      'VOD' => nil,
+      'CinemaCity' => 'https://www.cinema-city.pl',
+      'Multikino' => 'https://www.multikino.pl'
+    }[service]
   end
 
   private

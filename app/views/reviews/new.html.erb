@@ -6,9 +6,9 @@
     <%# Mobile Header Container - aligns with form %>
     <div class="lg:hidden mx-auto max-w-[450px]">
       <%# Back Button %>
-      <button onclick="history.back()" class="back-button-review" title="Go back">
+      <%= link_to @return_to_path, class: "back-button-review", title: "Go back" do %>
         <i data-lucide="arrow-left" style="color: var(--text-tertiary);"></i>
-      </button>
+      <% end %>
 
       <%# Mobile: Title %>
       <div class="mb-6">

@@ -2,49 +2,58 @@
 // Run that command whenever you add a new controller or create them with
 // ./bin/rails generate stimulus controllerName
 
-import { application } from "./application"
+import { application } from "./application";
 
-import AvatarUploadController from "./avatar_upload_controller"
-application.register("avatar-upload", AvatarUploadController)
+import AvatarUploadController from "./avatar_upload_controller";
+application.register("avatar-upload", AvatarUploadController);
 
-import CategoryPickController from "./category_pick_controller"
-application.register("category-pick", CategoryPickController)
+import CategoryPickController from "./category_pick_controller";
+application.register("category-pick", CategoryPickController);
 
-import ChartController from "./chart_controller"
-application.register("chart", ChartController)
+import ChartController from "./chart_controller";
+application.register("chart", ChartController);
 
-import ConfettiController from "./confetti_controller"
-application.register("confetti", ConfettiController)
+import ConfettiController from "./confetti_controller";
+application.register("confetti", ConfettiController);
 
-import DatePickerController from "./date_picker_controller"
-application.register("date-picker", DatePickerController)
+import DatePickerController from "./date_picker_controller";
+application.register("date-picker", DatePickerController);
 
-import DeleteAccountController from "./delete_account_controller"
-application.register("delete-account", DeleteAccountController)
+import DeleteAccountController from "./delete_account_controller";
+application.register("delete-account", DeleteAccountController);
 
-import FlashController from "./flash_controller"
-application.register("flash", FlashController)
+import FlashController from "./flash_controller";
+application.register("flash", FlashController);
 
-import HelloController from "./hello_controller"
-application.register("hello", HelloController)
+import HelloController from "./hello_controller";
+application.register("hello", HelloController);
 
-import InfiniteScrollController from "./infinite_scroll_controller"
-application.register("infinite-scroll", InfiniteScrollController)
+import InfiniteScrollController from "./infinite_scroll_controller";
+application.register("infinite-scroll", InfiniteScrollController);
 
-import MenuController from "./menu_controller"
-application.register("menu", MenuController)
+import MenuController from "./menu_controller";
+application.register("menu", MenuController);
 
-import MovieCardController from "./movie_card_controller"
-application.register("movie-card", MovieCardController)
+import MovieCardController from "./movie_card_controller";
+application.register("movie-card", MovieCardController);
 
-import QuickRatingController from "./quick_rating_controller"
-application.register("quick-rating", QuickRatingController)
+import QuickRatingController from "./quick_rating_controller";
+application.register("quick-rating", QuickRatingController);
 
-import RankingFilterController from "./ranking_filter_controller"
-application.register("ranking-filter", RankingFilterController)
+import RankingFilterController from "./ranking_filter_controller";
+application.register("ranking-filter", RankingFilterController);
 
-import SearchController from "./search_controller"
-application.register("search", SearchController)
+import SearchController from "./search_controller";
+application.register("search", SearchController);
 
-import StarRatingController from "./star_rating_controller"
-application.register("star-rating", StarRatingController)
+import StarRatingController from "./star_rating_controller";
+application.register("star-rating", StarRatingController);
+
+import StreamingSelectController from "./streaming_select_controller";
+application.register("streaming-select", StreamingSelectController);
+
+import CategoriesSelectController from "./categories_select_controller";
+application.register("categories-select", CategoriesSelectController);
+
+import CategoryHighlightController from "./category_highlight_controller";
+application.register("category-highlight", CategoryHighlightController);

@@ -13,7 +13,7 @@
 
   <%# User's rating badge - clickable to edit review %>
   <% if review&.stars.present? %>
-    <%= link_to edit_movie_review_path(movie, review, year: current_year),
+    <%= link_to edit_movie_review_path(movie, review, year: current_year, return_to: request.fullpath),
         class: "movie-card-badge animate-float",
         data: { turbo: false } do %>
       <span class="rating-number"><%= review.stars %></span>
@@ -39,7 +39,7 @@
       <div class="movie-card-overlay">
           <div class="movie-card-actions">
             <% unless review&.stars.present? %>
-              <%= link_to review ? edit_movie_review_path(movie, review, year: current_year) : new_movie_review_path(movie, year: current_year), class: "btn-outline-oscar btn-sm" do %>
+              <%= link_to review ? edit_movie_review_path(movie, review, year: current_year, return_to: request.fullpath) : new_movie_review_path(movie, year: current_year, return_to: request.fullpath), class: "btn-outline-oscar btn-sm" do %>
                 <i data-lucide="popcorn" style="font-size: 1.75rem;"></i> Watched
               <% end %>
             <% end %>
@@ -49,7 +49,7 @@
       <%# Mobile watched button - always visible at bottom of poster %>
       <% unless review&.stars.present? %>
         <div class="movie-card-mobile-action">
-          <%= link_to new_movie_review_path(movie, year: current_year), class: "btn-outline-oscar btn-sm" do %>
+          <%= link_to new_movie_review_path(movie, year: current_year, return_to: request.fullpath), class: "btn-outline-oscar btn-sm" do %>
             <i data-lucide="popcorn" style="font-size: 1.75rem;"></i> Watched
           <% end %>
         </div>
@@ -59,7 +59,9 @@
 
   <%# Title and ratings (always visible) %>
   <div class="movie-card-info">
-    <h2 title="<%= movie.title %>"><%= movie.title %></h2>
+    <h2 title="<%= movie.title %>">
+      <%= link_to movie.title, movie_path(movie, year: current_year, back_to: request.fullpath), class: "movie-title-link" %>
+    </h2>
   <div class="movie-rating-row">
     <% if !pick_count.nil? %>
       <%# Show mates' votes count on Categories page %>

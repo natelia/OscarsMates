@@ -31,7 +31,11 @@ class ListMoviesQuery
   def search_movies
     sanitized = ActiveRecord::Base.sanitize_sql_like(query)
     query_term = "%#{sanitized}%"
-    @results = @results.where('title LIKE ? OR english_title LIKE ?', query_term, query_term)
+    @results = @results.where(
+      "title LIKE ? ESCAPE '\\' OR english_title LIKE ? ESCAPE '\\'",
+      query_term,
+      query_term
+    )
   end
 
   def apply_filters

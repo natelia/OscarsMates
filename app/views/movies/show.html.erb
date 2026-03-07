@@ -1,101 +1,242 @@
-<section class="movie-details py-10">
-  <div class="container mx-auto px-4">
-    <div class="mx-auto max-w-4xl">
+<main class="movie-details-page">
+  <div class="container mx-auto px-4 py-8">
+    <%# Two-Column: Poster + Info with floating back button %>
+    <div class="grid gap-6 md:grid-cols-[300px_1fr] lg:grid-cols-[400px_1fr] mb-8">
+      <%# Left: Movie Poster with Watch Overlay %>
+      <div class="movie-poster-container">
+        <%# Back Button - floating to the left %>
+        <%= link_to @back_path, class: "back-button-movie-show", title: "Go back" do %>
+          <i data-lucide="arrow-left" style="color: var(--text-tertiary);"></i>
+        <% end %>
+        <div class="movie-card <%= 'is-watched' if @review&.stars.present? %>"
+             data-controller="movie-card"
+             data-movie-id="<%= @movie.id %>"
+             data-reviewed="<%= !!(@review&.stars.present?) %>">
 
-        <!-- Movie Card -->
-        <div class="rounded-xl border border-slate-200 bg-white shadow-sm">
-          <div class="grid gap-6 md:grid-cols-[1fr_2fr]">
+          <%# User's rating badge - clickable to edit review %>
+          <% if @review&.stars.present? %>
+            <%= link_to edit_movie_review_path(@movie, @review, year: current_year, return_to: request.fullpath),
+                class: "movie-card-badge animate-float",
+                data: { turbo: false } do %>
+              <span class="rating-number"><%= @review.stars %></span>
+              <i data-lucide="edit-2" class="edit-icon"></i>
+            <% end %>
+          <% end %>
 
-            <!-- Movie Picture -->
-            <div class="h-full w-full overflow-hidden rounded-t-xl md:rounded-l-xl md:rounded-tr-none">
-              <img src="<%= @movie.picture_url %>" class="h-full w-full object-cover" alt="<%= @movie.title %>">
-            </div>
-
-            <!-- Movie Details -->
-            <div class="px-6 pb-6 pt-2 md:pt-6">
-              <h2 class="text-xl sm:text-2xl font-semibold text-slate-900"><%= @movie.title %></h2>
-              <h4 class="mt-1 text-sm font-medium text-muted"><%= @movie.english_title %></h4>
-              <div class="mt-4 space-y-2 text-sm text-slate-700">
-                <p><span class="font-semibold text-slate-900">Where to watch:</span> <%= @movie.where_to_watch %></p>
-                <p><span class="font-semibold text-slate-900">IMDB Rating:</span> <%= @movie.rating %></p>
-                <p><span class="font-semibold text-slate-900">Runtime:</span> <%= @movie.runtime %> mins</p>
+          <div class="movie-card-poster-container">
+            <% if @movie.picture_url.present? %>
+              <img src="<%= @movie.picture_url %>"
+                   alt="<%= @movie.title %>"
+                   class="movie-card-poster"
+                   loading="lazy">
+            <% else %>
+              <div class="movie-card-poster flex items-center justify-center bg-gold-light">
+                <i data-lucide="film" class="text-muted text-4xl"></i>
               </div>
-              <a href="<%= @movie.url %>" class="mt-4 btn-outline-oscar btn-sm" target="_blank">Details</a>
+            <% end %>
 
-                <!-- Genres -->
-                <% if @genres.present? %>
-                  <div class="mt-4 flex flex-wrap gap-2">
-                    <% @genres.each do |genre| %>
-                      <span class="inline-flex items-center rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-700"><%= genre.name %></span>
+            <%# Hover overlay with actions (desktop only) %>
+            <% if current_user %>
+              <div class="movie-card-overlay">
+                <div class="movie-card-actions">
+                  <% unless @review&.stars.present? %>
+                    <%= link_to @review ? edit_movie_review_path(@movie, @review, year: current_year, return_to: request.fullpath) : new_movie_review_path(@movie, year: current_year, return_to: request.fullpath), class: "btn-outline-oscar btn-sm" do %>
+                      <i data-lucide="popcorn" style="font-size: 1.75rem;"></i> Watched
                     <% end %>
-                  </div>
-                <% end %>
-            </div>
+                  <% end %>
+                </div>
+              </div>
+
+              <%# Mobile watched button - always visible at bottom of poster %>
+              <% unless @review&.stars.present? %>
+                <div class="movie-card-mobile-action">
+                  <%= link_to new_movie_review_path(@movie, year: current_year, return_to: request.fullpath), class: "btn-outline-oscar btn-sm" do %>
+                    <i data-lucide="popcorn" style="font-size: 1.75rem;"></i> Watched
+                  <% end %>
+                </div>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+      <%# Right: Title, Pills, Stats & Info %>
+      <div class="movie-info-column">
+        <%# Title %>
+        <div class="flex items-center gap-3 mb-2">
+          <h1 class="page-title mb-0"><%= @movie.english_title %></h1>
+          <% if current_user_admin? %>
+            <%= link_to edit_movie_path(@movie, year: current_year, back_to: @back_path), class: "text-slate-400 hover:text-[var(--oscar-gold-dark)] transition-colors", title: "Edit movie" do %>
+              <i data-lucide="pencil" class="w-5 h-5"></i>
+            <% end %>
+          <% end %>
+        </div>
+        <% if @movie.title != @movie.english_title %>
+          <p class="text-muted text-lg mb-3"><%= @movie.title %></p>
+        <% end %>
+
+        <%# Runtime + Genre Pills %>
+        <div class="flex flex-wrap gap-2 mb-6">
+          <%# Runtime Pill %>
+          <span class="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-3 py-1 text-sm font-medium text-slate-700">
+            <i data-lucide="timer" class="w-3.5 h-3.5"></i>
+            <%= @movie.runtime %> mins
+          </span>
+
+          <%# Genre Pills %>
+          <% @genres.each do |genre| %>
+            <span class="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-sm font-medium text-slate-700">
+              <%= genre.name %>
+            </span>
+          <% end %>
+        </div>
+
+        <%# Stat Badges Row %>
+        <div class="flex flex-wrap items-center gap-3 mb-6">
+          <%# IMDB Rating %>
+          <div class="stat-badge">
+            <% if @movie.rating.present? && @movie.rating > 0 %>
+              <%= link_to @movie.url, target: "_blank", class: "flex items-center gap-2 text-slate-700 hover:text-[var(--oscar-gold-dark)] transition-colors duration-150 no-underline" do %>
+                <i data-lucide="film"></i>
+                <span>IMDB: <strong><%= number_with_precision(@movie.rating, precision: 1) %></strong></span>
+              <% end %>
+            <% else %>
+              <i data-lucide="film" class="text-muted"></i>
+              <span class="text-muted">IMDB: –</span>
+            <% end %>
+          </div>
+
+          <%# Mates' Rating %>
+          <div class="stat-badge">
+            <% mates_avg = current_user ? @movie.mates_average_stars(current_user) : 0.0 %>
+            <% mates_count = current_user ? @movie.reviews.joins(:user).merge(current_user.following).count : 0 %>
+            <i data-lucide="users"></i>
+            <% if mates_avg > 0 %>
+              <span>Mates: <strong><%= number_with_precision(mates_avg, precision: 1) %></strong>/<%= mates_count %> <%= 'mate'.pluralize(mates_count) %> voted</span>
+            <% else %>
+              <span class="text-muted">Mates: –</span>
+            <% end %>
           </div>
         </div>
 
-        <!-- Categories -->
-        <% if @categories.present? %> 
-          <div class="mt-4 flex flex-wrap gap-2">
-            <% @categories.each do |category| %>
-              <span class="inline-flex items-center rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-700"><%= category.name %></span>
+        <%# Watch On %>
+        <div class="mb-4">
+          <p class="text-sm font-semibold text-slate-900 mb-2">Watch on:</p>
+          <div class="flex flex-wrap gap-2">
+            <% @movie.streaming_services_array.each do |service| %>
+              <% url = Movie.streaming_service_url(service) %>
+              <% if url %>
+                <%= link_to service, url, target: "_blank", class: "inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-sm font-medium text-slate-700 hover:bg-slate-200 transition-colors" %>
+              <% else %>
+                <span class="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-sm font-medium text-slate-700">
+                  <%= service %>
+                </span>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+
+        <%# Trailer Link (if available) %>
+        <% if @movie.respond_to?(:trailer_url) && @movie.trailer_url.present? %>
+          <div class="mb-4">
+            <%= link_to @movie.trailer_url, target: "_blank", class: "btn-outline-oscar btn-sm" do %>
+              <i data-lucide="play-circle"></i> Watch Trailer
             <% end %>
           </div>
         <% end %>
 
-        <!-- Reviews and Actions -->
-        <div class="mt-6">
-          <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <div class="flex flex-wrap items-center gap-2 text-sm">
-              <%= average_stars(@movie) %>
-              <%= link_to pluralize(@movie.reviews.size, "review"), movie_reviews_path(@movie, year: params[:year]), class: "text-slate-600 hover:text-slate-900" %>
-            </div>
+      </div>
+    </div>
 
-            <% if current_user %>
-              <div class="flex flex-wrap items-center gap-3">
-                <%= fave_or_unfave_button(@movie, @favorite) %>
-                <span class="text-sm text-slate-600"><%= @fans.size %></span>
-
-                <% if @fans.present? %>
-                  <div class="relative">
-                    <button class="btn-outline-oscar btn-sm" type="button" data-hs-collapse="#fansList" aria-expanded="false" aria-controls="fansList">
-                      Mates who liked
-                    </button>
-                    <div class="hs-collapse hidden mt-2 rounded-lg border border-slate-200 bg-white shadow-sm" id="fansList">
-                      <ul class="divide-y divide-slate-200 text-sm text-slate-700">
-                        <% @fans.each do |user| %>
-                          <li class="px-4 py-2">
-                            <%= link_to user.name, user_path(user), class: "hover:text-slate-900" %>
-                          </li>
-                        <% end %>
-                      </ul>
-                    </div>
-                  </div>
-                <% end %>
-                <%= watch_or_unwatch_button(@movie, @review) %>
-              </div>
+    <%# Nominated in Categories Section %>
+    <% if @categories.present? %>
+      <div class="profile-section mb-8">
+        <div class="profile-section-header">
+          <i data-lucide="trophy" class="text-muted"></i>
+          <h2 class="profile-section-title">Nominated in Categories</h2>
+          <span class="profile-section-count"><%= @categories.count %></span>
+        </div>
+        <div class="profile-section-content">
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            <% @categories.each do |category| %>
+              <%= link_to categories_path(year: current_year, anchor: "category-#{category.id}"), class: "category-nomination-tile" do %>
+                <i data-lucide="star" class="category-star-icon"></i>
+                <span class="category-name"><%= category.name %></span>
+              <% end %>
             <% end %>
           </div>
         </div>
-
-        <!-- Additional Actions -->
-        <ul class="mt-6 space-y-3">
-          <li>
-            <%= link_to "Home Page", movies_path(year: params[:year]), class: "btn-outline-oscar w-full justify-center" %>
-          </li>
-
-          <% if current_user_admin? %>
-            <li>
-              <%= link_to "Edit", edit_movie_path(@movie, year: params[:year]), class: "btn-outline-oscar w-full justify-center" %>
-            </li>
-            <li>
-              <%= link_to "Destroy", movie_path(@movie, year: params[:year]), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, class: "btn-danger w-full justify-center" %>
-            </li>
-          <% end %>
-        </ul>
-
       </div>
-    </div>
-  </div>
-</section>
+    <% end %>
 
+    <%# Watched by Section %>
+    <% if @reviews.present? %>
+      <div class="profile-section">
+        <div class="profile-section-header">
+          <i data-lucide="eye" class="text-muted"></i>
+          <h2 class="profile-section-title">Watched by</h2>
+          <span class="profile-section-count"><%= @reviews.count %></span>
+        </div>
+        <div class="profile-section-content">
+          <% @reviews.each do |review| %>
+            <div class="profile-movie-item review-item">
+              <%= render "shared/avatar", user: review.user, size: :md %>
+              <div class="review-info">
+                <div class="flex items-center gap-3 mb-1">
+                  <%= link_to review.user.name, user_path(review.user), class: "font-semibold text-slate-900 hover:text-[var(--oscar-gold-dark)]" %>
+                  <div class="flex items-center gap-1">
+                    <%= render "shared/mate_rating", rating: review.stars, size: :sm %>
+                  </div>
+                </div>
+                <div class="text-sm text-muted mb-1">
+                  Watched on <%= review.watched_on.strftime('%B %d, %Y') %>
+                </div>
+                <% if review.comment.present? %>
+                  <p class="text-sm text-slate-700 mt-2"><%= review.comment %></p>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+  </div>
+</main>
+
+<style>
+.movie-poster-container {
+  position: relative;
+}
+
+.back-button-movie-show {
+  position: absolute;
+  left: -60px;
+  top: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  opacity: 0.8;
+  z-index: 10;
+}
+
+.back-button-movie-show:hover {
+  opacity: 1;
+  transform: translateX(-4px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 767px) {
+  .back-button-movie-show {
+    position: static;
+    margin-bottom: 1rem;
+  }
+}
+</style>

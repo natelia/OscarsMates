@@ -89,7 +89,7 @@
                 <% end %>
                 <div class="profile-movie-info">
                   <div class="profile-movie-title">
-                    <%= link_to review.movie.title, movie_path(year: current_year, id: review.movie.id) %>
+                    <%= link_to review.movie.title, movie_path(review.movie, year: current_year, back_to: request.fullpath) %>
                   </div>
                   <div class="mt-1">
                     <%= render "shared/mate_rating", rating: review.stars, size: :sm %>
@@ -125,7 +125,7 @@
                 <% end %>
                 <div class="profile-movie-info">
                   <div class="profile-movie-title">
-                    <%= link_to movie.title, movie_path(year: current_year, id: movie.id) %>
+                    <%= link_to movie.title, movie_path(movie, year: current_year, back_to: request.fullpath) %>
                   </div>
                 </div>
               </div>

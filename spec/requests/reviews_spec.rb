@@ -42,6 +42,18 @@ RSpec.describe 'Reviews', type: :request do
 
         expect(response).to have_http_status(:redirect)
       end
+
+      it 'redirects to return_to when provided' do
+        post "/2025/movies/#{movie.slug}/reviews", params: valid_params.merge(return_to: '/2025/timeline')
+
+        expect(response).to redirect_to('/2025/timeline')
+      end
+
+      it 'ignores unsafe return_to values' do
+        post "/2025/movies/#{movie.slug}/reviews", params: valid_params.merge(return_to: '//evil.example')
+
+        expect(response).to redirect_to(movies_path(year: 2025))
+      end
     end
   end
 

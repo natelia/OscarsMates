@@ -1,5 +1,6 @@
 # Seed script to create test reviews for 2025 nominated movies
 # Run with: rails runner db/seeds/ranking_test_data.rb
+# rubocop:disable Rails/Exit
 
 Rails.logger.debug 'Creating test reviews for 2025 ranking...'
 
@@ -59,3 +60,4 @@ User.find_each do |user|
   count = user.watched_movies_count_for_year(2025)
   Rails.logger.debug { "  #{user.name}: #{count}/#{nominated_movies.count} movies watched" }
 end
+# rubocop:enable Rails/Exit

@@ -44,10 +44,10 @@ class ListCategoryQuery
   end
 
   def category_search_sql
-    'categories.name LIKE ? OR movies.title LIKE ? OR movies.english_title LIKE ?'
+    "categories.name LIKE ? ESCAPE '\\' OR movies.title LIKE ? ESCAPE '\\' OR movies.english_title LIKE ? ESCAPE '\\'"
   end
 
   def movie_search_sql
-    'movies.title LIKE ? OR movies.english_title LIKE ?'
+    "movies.title LIKE ? ESCAPE '\\' OR movies.english_title LIKE ? ESCAPE '\\'"
   end
 end

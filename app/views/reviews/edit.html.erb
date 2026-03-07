@@ -6,9 +6,9 @@
     <%# Mobile Header Container - aligns with form %>
     <div class="lg:hidden mx-auto max-w-[450px]">
       <%# Back Button %>
-      <button onclick="history.back()" class="back-button-review" title="Go back">
+      <%= link_to @return_to_path, class: "back-button-review", title: "Go back" do %>
         <i data-lucide="arrow-left" style="color: var(--text-tertiary);"></i>
-      </button>
+      <% end %>
 
       <%# Mobile: Title %>
       <div class="mb-6">
@@ -38,6 +38,14 @@
           <%= link_to @movie.title, movie_path(@movie, year: params[:year]), class: "text-slate-900 hover:text-slate-700" %>
         </h1>
         <%= render "form", movie: @movie, review: @review, year: params[:year] %>
+
+        <div class="mt-6 flex items-center justify-end">
+          <%= button_to "Unwatch!",
+              movie_review_path(@movie, @review, year: params[:year], return_to: @return_to_path),
+              method: :delete,
+              class: "btn-unwatch",
+              data: { turbo_confirm: "Are you sure you want to mark this as Unwatched?" } %>
+        </div>
       </div>
     </div>
 

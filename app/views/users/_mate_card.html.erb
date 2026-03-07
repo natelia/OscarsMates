@@ -57,7 +57,7 @@
 
       <%# Last Watched Movie (mini poster) %>
       <% if last_movie %>
-        <%= link_to movie_path(last_movie, year: year), class: "flex items-center no-underline hover:text-slate-700", title: "Last watched: #{last_movie.title}" do %>
+        <%= link_to movie_path(last_movie, year: year, back_to: request.fullpath), class: "flex items-center no-underline hover:text-slate-700", title: "Last watched: #{last_movie.title}" do %>
           <small class="text-muted mr-2">Last:</small>
           <% if last_movie.picture_url.present? %>
             <img src="<%= last_movie.picture_url %>"

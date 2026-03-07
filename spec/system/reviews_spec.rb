@@ -7,17 +7,14 @@ RSpec.describe 'Reviews', type: :system do
   let!(:nomination) { create(:nomination, movie: movie, category: category, year: 2025) }
 
   before do
-    visit signin_path
-    fill_in 'Email', with: 'reviewer@example.com'
-    fill_in 'Password', with: 'password123'
-    click_button 'Sign In!'
+    page.driver.post create_session_path, { email: user.email, password: 'password123' }
   end
 
   describe 'adding a review' do
     it 'allows a logged in user to navigate to review form' do
       visit "/2025/movies/#{movie.slug}"
 
-      click_link 'Watched!'
+      click_link 'Watched', match: :first
 
       expect(page).to have_content('Reviewable Movie')
       expect(page).to have_button('Mark as Watched')
@@ -69,7 +66,7 @@ RSpec.describe 'Reviews', type: :system do
     let!(:review) { create(:review, user: user, movie: movie, stars: 7) }
 
     it 'allows a user to delete their review' do
-      visit "/2025/movies/#{movie.slug}"
+      visit edit_movie_review_path(movie, review, year: 2025)
 
       click_button 'Unwatch!'
 
