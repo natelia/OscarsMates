@@ -78,7 +78,7 @@ class ReviewsController < ApplicationController
   end
 
   def review_params
-    params.require(:review).permit(:comment, :stars, :watched_on)
+    params.expect(review: %i[comment stars watched_on])
   end
 
   def set_movie

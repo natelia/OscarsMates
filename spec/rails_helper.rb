@@ -52,6 +52,18 @@ RSpec.configure do |config|
   # Include FactoryBot methods
   config.include FactoryBot::Syntax::Methods
 
+  # Ensure a clean database state even if the test DB was seeded.
+  config.before(:suite) do
+    connection = ActiveRecord::Base.connection
+    tables = connection.tables - %w[schema_migrations ar_internal_metadata]
+
+    connection.disable_referential_integrity do
+      tables.each do |table|
+        connection.execute("DELETE FROM \"#{table}\"")
+      end
+    end
+  end
+
   # System specs configuration
   config.before(:each, type: :system) do
     driven_by :rack_test
