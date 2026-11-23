@@ -82,7 +82,7 @@ class ReviewsController < ApplicationController
   end
 
   def set_movie
-    @movie = Movie.for_year(current_year).find_by!(slug: params[:movie_id])
+    @movie = Movie.for_year(current_year).find_by!(slug: params.expect(:movie_id))
   end
 
   def find_review

@@ -1,6 +1,6 @@
 # MoviesController handles the CRUD operations for movies in the application.
 # It allows users to view movies and admins to create, update, and delete movies.
-# rubocop:disable Metrics/ClassLength
+# rubocop:disable-next Metrics/ClassLength
 class MoviesController < ApplicationController
   MOVIE_TRANSIENT_PATH_PATTERNS = [
     %r{\A/\d{4}/movies/[^/]+/edit\z},
@@ -91,18 +91,18 @@ class MoviesController < ApplicationController
   def set_movie_by_slug
     # Admins can view any movie, others can only view movies nominated in current year
     @movie = if current_user_admin?
-               Movie.find_by!(slug: params[:id])
+               Movie.find_by!(slug: params.expect(:id))
              else
-               Movie.for_year(current_year).find_by!(slug: params[:id])
+               Movie.for_year(current_year).find_by!(slug: params.expect(:id))
              end
   end
 
   def set_movie
-    @movie = Movie.for_year(current_year).find_by!(slug: params[:id])
+    @movie = Movie.for_year(current_year).find_by!(slug: params.expect(:id))
   end
 
   def set_movie_for_admin
-    @movie = Movie.find_by!(slug: params[:id])
+    @movie = Movie.find_by!(slug: params.expect(:id))
   end
 
   def movie_params
@@ -164,4 +164,3 @@ class MoviesController < ApplicationController
     movie_path(@movie, options)
   end
 end
-# rubocop:enable Metrics/ClassLength
