@@ -1,0 +1,33 @@
+<section class="password-reset py-10">
+  <div class="container mx-auto px-4">
+    <div class="mx-auto max-w-md">
+      <h1 class="text-center text-2xl font-semibold text-slate-900">Choose a New Password</h1>
+
+      <%= form_with(url: password_reset_path, method: :patch, local: true, class: "mt-8 space-y-4") do |f| %>
+        <%= f.hidden_field :token, value: @token %>
+
+        <%= render "shared/errors", object: @user %>
+
+        <div>
+          <%= f.label :password, "New password" %>
+          <%= f.password_field :password, required: true, class: "mt-2 w-full", placeholder: "Enter a new password" %>
+          <% @user.errors.full_messages_for(:password).each do |message| %>
+            <div class="mt-2 text-sm text-red-600"><%= message %></div>
+          <% end %>
+        </div>
+
+        <div>
+          <%= f.label :password_confirmation, "Confirm new password" %>
+          <%= f.password_field :password_confirmation, required: true, class: "mt-2 w-full", placeholder: "Repeat the new password" %>
+          <% @user.errors.full_messages_for(:password_confirmation).each do |message| %>
+            <div class="mt-2 text-sm text-red-600"><%= message %></div>
+          <% end %>
+        </div>
+
+        <div>
+          <%= f.submit "Reset Password", class: "btn-oscar w-full" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</section>

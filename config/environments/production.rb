@@ -77,7 +77,9 @@ Rails.application.configure do
 
   config.action_mailer.perform_caching = false
 
-  # Ignore bad email addresses and do not raise email delivery errors.
+  # Host for URLs inside emails (e.g. password reset links)
+  config.action_mailer.default_url_options = { host: ENV.fetch('APP_HOST', 'localhost') }
+
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
   # config.action_mailer.raise_delivery_errors = false
 

@@ -42,6 +42,8 @@ Rails.application.routes.draw do
   delete '/session', to: 'sessions#destroy', as: :destroy_session
   get 'signin' => 'sessions#new'
 
+  resource :password_reset, only: %i[new create edit update], controller: 'password_resets'
+
   # Static pages
   get 'about', to: 'pages#about', as: :about
 end

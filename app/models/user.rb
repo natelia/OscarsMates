@@ -26,6 +26,11 @@ class User < ApplicationRecord
                     uniqueness: { case_sensitive: false }
   validate :acceptable_avatar
 
+  generates_token_for :password_reset, expires_in: 30.minutes do
+    # Any password change invalidates outstanding reset tokens
+    password_salt&.last(10)
+  end
+
   # allow_nil keeps profile updates (blank password) valid
   validates :password, length: { minimum: 8 }, allow_nil: true
 
