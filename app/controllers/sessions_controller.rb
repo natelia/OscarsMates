@@ -7,12 +7,7 @@ class SessionsController < ApplicationController
 
     if user
       session[:user_id] = user.id
-      cookies.signed[:remember_me] = {
-        value: "#{user.id}:#{user.session_token}",
-        expires: 30.days.from_now,
-        httponly: true,
-        same_site: :lax
-      }
+      remember_user(user)
       redirect_to root_path, notice: 'Logged in successfully!'
     else
       failed_authentication
@@ -29,6 +24,17 @@ class SessionsController < ApplicationController
 
   def authenticate_user
     User.find_by(email: params[:email])&.authenticate(params[:password])
+  end
+
+  def remember_user(user)
+    return unless params[:remember_me] == '1'
+
+    cookies.signed[:remember_me] = {
+      value: "#{user.id}:#{user.session_token}",
+      expires: 30.days.from_now,
+      httponly: true,
+      same_site: :lax
+    }
   end
 
   def failed_authentication
