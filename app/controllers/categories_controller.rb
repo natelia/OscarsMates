@@ -91,6 +91,6 @@ class CategoriesController < ApplicationController
 
   # Strong parameters for category creation and updates.
   def category_params
-    params.require(:category).permit(:name)
+    params.expect(category: [:name])
   end
 end
