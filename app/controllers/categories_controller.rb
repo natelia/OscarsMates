@@ -3,7 +3,7 @@ class CategoriesController < ApplicationController
   before_action :require_admin, only: %i[new create edit update destroy]
   before_action :set_category, only: %i[show edit update destroy]
 
-  # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+  # rubocop:disable-next Metrics/AbcSize, Metrics/MethodLength
   def index
     @query_obj = ListCategoryQuery.new(params, current_year)
     @categories = @query_obj.results
@@ -18,7 +18,7 @@ class CategoriesController < ApplicationController
       movies = noms.map(&:movie)
       next movies if params[:query].blank?
 
-      query_lower = params[:query].downcase
+      query_lower = params.expect(:query).downcase
       movies.select { |m| m.title.downcase.include?(query_lower) || m.english_title&.downcase&.include?(query_lower) }
     end
 
@@ -37,17 +37,16 @@ class CategoriesController < ApplicationController
     @days_until_ceremony = (@ceremony_date - Time.zone.today).to_i
     @categories_count = @categories.count - @user_picks.count
   end
-  # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
   def show
-    @category = Category.find(params[:id])
+    @category = Category.find(params.expect(:id))
     @movies = @category.movies.for_year(current_year).includes(:reviews)
     @user_reviews = current_user ? current_user.reviews.index_by(&:movie_id) : {}
 
     # Handle unwatched action
     return unless params[:unwatched] && current_user
 
-    movie = Movie.find(params[:unwatched])
+    movie = Movie.find(params.expect(:unwatched))
     review = current_user.reviews.find_by(movie_id: movie.id)
     review&.update(watched: false)
     redirect_to category_path(@category, year: current_year), notice: "#{movie.title} marked as unwatched"
@@ -86,7 +85,7 @@ class CategoriesController < ApplicationController
 
   # Sets the category instance variable for specific actions.
   def set_category
-    @category = Category.find(params[:id])
+    @category = Category.find(params.expect(:id))
   end
 
   # Strong parameters for category creation and updates.

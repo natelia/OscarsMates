@@ -57,7 +57,7 @@ RSpec.describe FeedbackController, type: :controller do
       post :submit_bug, params: { email: 'test@example.com', message: 'a' * 100 }
 
       expect(response).to redirect_to('/report-bug')
-      expect(flash[:alert]).to match(/Please wait/)
+      expect(flash[:alert]).to include('Please wait')
       expect(enqueued_jobs).to be_empty
     end
   end
