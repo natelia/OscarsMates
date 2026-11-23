@@ -6,7 +6,7 @@ class UsersController < ApplicationController
   before_action :require_signin, except: %i[new create]
   before_action :require_correct_user, only: %i[edit update destroy destroy_avatar]
 
-  # rubocop:disable Metrics/MethodLength
+  # rubocop:disable-next Metrics/MethodLength
   def index
     @year = current_year || default_year
 
@@ -39,10 +39,9 @@ class UsersController < ApplicationController
       ranked_user[:user].name.downcase.include?(@query.downcase)
     end
   end
-  # rubocop:enable Metrics/MethodLength
 
   def show
-    @user = User.find(params[:id])
+    @user = User.find(params.expect(:id))
     year = current_year || default_year
     @reviews = @user.reviews_for_year(year).includes(:movie).order(watched_on: :desc, created_at: :desc)
     @favorite_movies = @user.favorite_movies.for_year(year)
@@ -114,7 +113,7 @@ class UsersController < ApplicationController
   private
 
   def require_correct_user
-    @user = User.find(params[:id])
+    @user = User.find(params.expect(:id))
     redirect_to root_url, status: :see_other unless current_user?(@user)
   end
 
