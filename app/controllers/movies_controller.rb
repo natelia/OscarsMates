@@ -84,10 +84,6 @@ class MoviesController < ApplicationController
     redirect_to movies_path(year: default_year)
   end
 
-  def sort_movies
-    @movies = MovieSortingService.new(@movies, params[:sort_by], current_user).call
-  end
-
   def set_movie_by_slug
     # Admins can view any movie, others can only view movies nominated in current year
     @movie = if current_user_admin?
@@ -97,10 +93,6 @@ class MoviesController < ApplicationController
              end
   end
 
-  def set_movie
-    @movie = Movie.for_year(current_year).find_by!(slug: params.expect(:id))
-  end
-
   def set_movie_for_admin
     @movie = Movie.find_by!(slug: params.expect(:id))
   end
@@ -108,14 +100,6 @@ class MoviesController < ApplicationController
   def movie_params
     params.expect(movie: [:title, :english_title, :where_to_watch, :runtime, :rating, :url, :picture_url,
                           { genre_ids: [], category_ids: [], streaming_services_array: [] }])
-  end
-
-  def filter_movies
-    @movies = MovieFilteringService.new(@movies, current_user).filter_unwatched
-  end
-
-  def search_movies
-    @movies = @movies.where('title LIKE ? OR english_title LIKE ?', "%#{params[:query]}%", "%#{params[:query]}%")
   end
 
   def calculate_progress
