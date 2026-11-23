@@ -18,7 +18,6 @@ end
 require 'spec_helper'
 ENV['RAILS_ENV'] = 'test'
 require_relative '../config/environment'
-# rubocop:disable Rails/Exit
 # Prevent database truncation if the environment is production
 abort('The Rails environment is running in production mode!') if Rails.env.production?
 require 'rspec/rails'
@@ -47,7 +46,6 @@ begin
 rescue ActiveRecord::PendingMigrationError => e
   abort e.to_s.strip
 end
-# rubocop:enable Rails/Exit
 RSpec.configure do |config|
   # Include FactoryBot methods
   config.include FactoryBot::Syntax::Methods

@@ -1,4 +1,4 @@
-# rubocop:disable Metrics/ClassLength
+# rubocop:disable-next Metrics/ClassLength
 class ListMoviesQuery
   attr_reader :query, :user, :sort_by, :filter_by, :category_id, :year
 
@@ -141,4 +141,3 @@ class ListMoviesQuery
                .order(Arel.sql('nom_counts.nom_count DESC NULLS LAST, movies.title ASC'))
   end
 end
-# rubocop:enable Metrics/ClassLength
