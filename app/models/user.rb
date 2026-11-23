@@ -26,6 +26,9 @@ class User < ApplicationRecord
                     uniqueness: { case_sensitive: false }
   validate :acceptable_avatar
 
+  # allow_nil keeps profile updates (blank password) valid
+  validates :password, length: { minimum: 8 }, allow_nil: true
+
   def reviews_for_year(year)
     reviews.joins(movie: :nominations)
            .where(nominations: { year: year })
