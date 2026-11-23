@@ -4,6 +4,10 @@
 # Modes:
 # - goals: percentage = watched / total available (e.g., 4/16 films = 25%)
 # - totals: percentage = watched / best user's watched (e.g., if top user has 4, you have 2 = 50%)
+#
+# Watched stats for all ranked users are computed with three grouped queries
+# instead of one set of queries per user.
+# rubocop:disable Metrics/ClassLength
 class RankingService
   attr_reader :year, :current_user, :metric, :mode, :scope
 
@@ -23,14 +27,14 @@ class RankingService
     users = base_users
 
     # First pass: calculate raw watched counts for all users
-    users_with_raw_stats = users.map { |u| [u, calculate_raw_stats(u)] }
+    raw_stats_by_user_id = batched_raw_stats(users)
 
     # Find max values for "totals" mode (the best user's counts)
-    max_values = calculate_max_values(users_with_raw_stats)
+    max_values = calculate_max_values(users, raw_stats_by_user_id)
 
     # Second pass: calculate percentages based on mode
-    users_with_stats = users_with_raw_stats.map do |user, raw_stats|
-      [user, calculate_percentages(raw_stats, max_values)]
+    users_with_stats = users.map do |user|
+      [user, calculate_percentages(raw_stats_by_user_id[user.id], max_values)]
     end
 
     # Sort and rank
@@ -56,30 +60,54 @@ class RankingService
     end
   end
 
-  # Calculate raw watched counts without percentages
-  def calculate_raw_stats(user)
-    # Use User model's existing method (proven to work)
-    films_count = user.watched_movies_count_for_year(year)
+  # Calculate raw watched counts for all users with three grouped queries:
+  # distinct (user, movie) watch pairs, movie runtimes, and nomination counts.
+  def batched_raw_stats(users)
+    movies_by_user = watch_pairs_by_user
+    runtime_by_movie = runtime_by_movie_for(movies_by_user.values.flatten.uniq)
+    nominations_by_movie = nominations_by_movie_for
 
-    # Get movie IDs from user's reviews for this year
-    movie_ids = user.reviews_for_year(year).select(:movie_id).distinct.pluck(:movie_id)
+    users.index_by(&:id).transform_values do |user|
+      raw_stats_for(movies_by_user[user.id], runtime_by_movie, nominations_by_movie)
+    end
+  end
 
-    minutes_sum = movie_ids.empty? ? 0 : Movie.where(id: movie_ids).sum(:runtime)
-    nominations_count = movie_ids.empty? ? 0 : Nomination.where(year: year, movie_id: movie_ids).count
+  def watch_pairs_by_user
+    watch_pairs = Review.where.not(stars: nil)
+                        .joins(movie: :nominations)
+                        .where(nominations: { year: year })
+                        .distinct
+                        .pluck(:user_id, :movie_id)
+
+    watch_pairs.each_with_object(Hash.new { |hash, key| hash[key] = [] }) do |(user_id, movie_id), hash|
+      hash[user_id] << movie_id
+    end
+  end
+
+  def runtime_by_movie_for(movie_ids)
+    Movie.where(id: movie_ids).pluck(:id, :runtime).to_h
+  end
+
+  def nominations_by_movie_for
+    Nomination.where(year: year).group(:movie_id).count
+  end
+
+  def raw_stats_for(movie_ids, runtime_by_movie, nominations_by_movie)
+    return { films: 0, minutes: 0, nominations: 0 } if movie_ids.empty?
 
     {
-      films: { watched: films_count },
-      minutes: { watched: minutes_sum },
-      nominations: { watched: nominations_count }
+      films: movie_ids.length,
+      minutes: movie_ids.sum { |movie_id| runtime_by_movie[movie_id].to_i },
+      nominations: movie_ids.sum { |movie_id| nominations_by_movie[movie_id].to_i }
     }
   end
 
   # Find the maximum watched value for each metric across all users
-  def calculate_max_values(users_with_raw_stats)
+  def calculate_max_values(users, raw_stats_by_user_id)
     {
-      films: users_with_raw_stats.map { |_, s| s[:films][:watched] }.max || 0,
-      minutes: users_with_raw_stats.map { |_, s| s[:minutes][:watched] }.max || 0,
-      nominations: users_with_raw_stats.map { |_, s| s[:nominations][:watched] }.max || 0
+      films: users.map { |user| raw_stats_by_user_id[user.id][:films] }.max || 0,
+      minutes: users.map { |user| raw_stats_by_user_id[user.id][:minutes] }.max || 0,
+      nominations: users.map { |user| raw_stats_by_user_id[user.id][:nominations] }.max || 0
     }
   end
 
@@ -89,17 +117,17 @@ class RankingService
   def calculate_percentages(raw_stats, max_values)
     {
       films: build_stat(
-        raw_stats[:films][:watched],
+        raw_stats[:films],
         total_films,
         max_values[:films]
       ),
       minutes: build_stat(
-        raw_stats[:minutes][:watched],
+        raw_stats[:minutes],
         total_minutes,
         max_values[:minutes]
       ),
       nominations: build_stat(
-        raw_stats[:nominations][:watched],
+        raw_stats[:nominations],
         total_nominations,
         max_values[:nominations]
       )
@@ -140,3 +168,4 @@ class RankingService
     ((watched.to_f / total) * 100).round(1)
   end
 end
+# rubocop:enable Metrics/ClassLength
