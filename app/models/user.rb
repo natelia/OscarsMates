@@ -21,6 +21,7 @@ class User < ApplicationRecord
   has_many :followers, through: :inverse_follows, source: :follower
 
   validates :name, presence: true
+  validates :session_token, presence: true, uniqueness: true
   validates :email, presence: true,
                     format: { with: /\A\S+@\S+\z/ },
                     uniqueness: { case_sensitive: false }
