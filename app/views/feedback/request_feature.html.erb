@@ -1,0 +1,37 @@
+<section class="feedback-form py-10">
+  <div class="container mx-auto px-4">
+    <div class="mx-auto max-w-2xl">
+      <h1 class="text-center text-2xl font-semibold text-slate-900">Request a feature</h1>
+
+      <div class="mt-3 text-center text-sm text-slate-600">
+        Have an idea to make OscarsMates better? We'd love to hear it!
+      </div>
+
+      <%= form_with(url: request_feature_path, method: :post, local: true, class: "mt-8 space-y-4", data: { controller: "feedback-form" }) do |f| %>
+        <div>
+          <%= f.label :email, "Your e-mail" %>
+          <% if current_user %>
+            <%= f.email_field :email, value: current_user.email, readonly: true, class: "mt-2 w-full bg-slate-100" %>
+          <% else %>
+            <%= f.email_field :email, required: true, class: "mt-2 w-full", placeholder: "your@email.com" %>
+          <% end %>
+        </div>
+
+        <div>
+          <%= f.label :message, "How can we help you?" %>
+          <%= f.text_area :message, rows: 8, required: true, class: "mt-2 w-full", placeholder: "How can we help you?", data: { feedback_form_target: "message", action: "input->feedback-form#checkLength" } %>
+          <div class="mt-1 text-xs text-slate-500" data-feedback-form-target="counter">
+            <span data-feedback-form-target="count">0</span> / 100 characters minimum
+          </div>
+          <div class="mt-2 text-xs text-slate-600">
+            If you need to attach an image, use <%= link_to "imgur.com", "https://imgur.com", target: "_blank", rel: "noopener noreferrer", class: "text-oscar-gold hover:underline" %> or <%= link_to "google drive", "https://drive.google.com", target: "_blank", rel: "noopener noreferrer", class: "text-oscar-gold hover:underline" %> with permissions to see for everybody.
+          </div>
+        </div>
+
+        <div>
+          <%= f.submit "Send", class: "btn-oscar w-full", disabled: true, data: { feedback_form_target: "submit" } %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</section>
