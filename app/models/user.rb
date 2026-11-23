@@ -1,6 +1,7 @@
 # Represents a user of the application.
 class User < ApplicationRecord
   has_secure_password
+  has_secure_token :session_token
   has_one_attached :avatar
 
   AVATAR_CONTENT_TYPES = %w[image/png image/jpeg image/gif image/webp].freeze

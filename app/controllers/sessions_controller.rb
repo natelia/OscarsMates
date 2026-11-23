@@ -7,7 +7,12 @@ class SessionsController < ApplicationController
 
     if user
       session[:user_id] = user.id
-      cookies.signed[:user_id] = { value: user.id, expires: 30.days.from_now }
+      cookies.signed[:remember_me] = {
+        value: "#{user.id}:#{user.session_token}",
+        expires: 30.days.from_now,
+        httponly: true,
+        same_site: :lax
+      }
       redirect_to root_path, notice: 'Logged in successfully!'
     else
       failed_authentication
@@ -16,7 +21,7 @@ class SessionsController < ApplicationController
 
   def destroy
     session[:user_id] = nil
-    cookies.delete(:user_id)
+    cookies.delete(:remember_me)
     redirect_to root_path, notice: 'Logged out successfully!'
   end
 

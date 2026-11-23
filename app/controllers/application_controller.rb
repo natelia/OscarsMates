@@ -38,10 +38,18 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user
-    @current_user ||= User.find_by(id: session[:user_id]) || User.find_by(id: cookies.signed[:user_id])
+    @current_user ||= User.find_by(id: session[:user_id]) || user_from_remember_cookie
   end
 
   helper_method :current_user
+
+  def user_from_remember_cookie
+    id, token = cookies.signed[:remember_me].to_s.split(':')
+    return if id.blank?
+
+    user = User.find_by(id: id)
+    user if user&.session_token == token
+  end
 
   def current_user?(user)
     current_user == user
