@@ -57,3 +57,6 @@ application.register("categories-select", CategoriesSelectController);
 
 import CategoryHighlightController from "./category_highlight_controller";
 application.register("category-highlight", CategoryHighlightController);
+
+import FeedbackFormController from "./feedback_form_controller";
+application.register("feedback-form", FeedbackFormController);
