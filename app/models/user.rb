@@ -1,6 +1,7 @@
 # Represents a user of the application.
 class User < ApplicationRecord
   has_secure_password
+  has_secure_token :session_token
   has_one_attached :avatar
 
   AVATAR_CONTENT_TYPES = %w[image/png image/jpeg image/gif image/webp].freeze
@@ -20,10 +21,14 @@ class User < ApplicationRecord
   has_many :followers, through: :inverse_follows, source: :follower
 
   validates :name, presence: true
+  validates :session_token, presence: true, uniqueness: true
   validates :email, presence: true,
                     format: { with: /\A\S+@\S+\z/ },
                     uniqueness: { case_sensitive: false }
   validate :acceptable_avatar
+
+  # allow_nil keeps profile updates (blank password) valid
+  validates :password, length: { minimum: 8 }, allow_nil: true
 
   def reviews_for_year(year)
     reviews.joins(movie: :nominations)

@@ -52,4 +52,20 @@ RSpec.describe User, type: :model do
       expect(count).to eq(1)
     end
   end
+
+  describe 'password length' do
+    it 'rejects passwords shorter than 8 characters' do
+      user = build(:user, password: 'abc')
+
+      expect(user).not_to be_valid
+      expect(user.errors[:password]).to include(/too short/)
+    end
+
+    it 'ignores blank passwords so profile updates stay valid' do
+      user = create(:user, password: 'password123')
+      user.password = ''
+
+      expect(user).to be_valid
+    end
+  end
 end

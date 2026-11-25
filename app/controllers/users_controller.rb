@@ -67,6 +67,9 @@ class UsersController < ApplicationController
 
   def update
     if @user.update(user_params)
+      # Invalidate remember-me cookies on other devices after a password change
+      @user.regenerate_session_token if @user.saved_change_to_password_digest?
+
       # Stay on edit page if only avatar was updated
       if params[:user].keys == ['avatar']
         redirect_to edit_user_path(@user), notice: 'Avatar updated!'
