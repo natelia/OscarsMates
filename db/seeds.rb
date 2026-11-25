@@ -117,7 +117,7 @@ movies = [
     runtime: 141,
     rating: 7.8,
     url: 'https://www.imdb.com/title/tt14230458/',
-    picture_url: 'https://m.media-amazon.com/images/M/MV5BNGIyYWMzNjktNDE3MC00YWQyLWEyMmEtN2ZmNzZhZDk3NGJlXkEyXkFqcGdeQXVyMTUzMTg2ODkz._V1_.jpg'
+    picture_url: 'https://upload.wikimedia.org/wikipedia/en/f/f3/Poor_Things_poster.jpg'
   },
   {
     title: 'Poprzednie Życie',
@@ -162,7 +162,7 @@ movies = [
     runtime: 106,
     rating: 6.5,
     url: 'https://www.imdb.com/title/tt14160834/',
-    picture_url: 'https://m.media-amazon.com/images/M/MV5BZDc2MDIzYzAtOWUzZS00ZjJmLWE4ZGMtMWZlNDc2OTQ5NzFjXkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_.jpg'
+    picture_url: 'https://upload.wikimedia.org/wikipedia/en/9/91/RUSTIN_poster.jpg'
   },
   {
     title: 'Nyad',
@@ -180,7 +180,7 @@ movies = [
     runtime: 121,
     rating: 7.6,
     url: 'https://www.imdb.com/title/tt14225838/',
-    picture_url: 'https://m.media-amazon.com/images/M/MV5BM2IxNjg4MmQtNmJmMi00MjNlLWFlMjAtMzI4M2FkNTFjMTU1XkEyXkFqcGdeQXVyMjUzMTYzMDI@._V1_FMjpg_UX1000_.jpg'
+    picture_url: 'https://upload.wikimedia.org/wikipedia/en/6/61/Io_capitano_2023_film_poster.jpg'
   },
   {
     title: 'Śnieżne Braterstwo',
@@ -207,7 +207,7 @@ movies = [
     runtime: 98,
     rating: 7.5,
     url: 'https://www.imdb.com/title/tt26612950/',
-    picture_url: 'https://m.media-amazon.com/images/M/MV5BYjc3MTM5MzktNTUwYi00ODRjLTliOTMtYWJiZTQ2NzhlZjJlXkEyXkFqcGdeQXVyMTQyODg5MjQw._V1_.jpg'
+    picture_url: 'https://upload.wikimedia.org/wikipedia/en/1/14/The_Teachers%27_Lounge_poster.jpg'
   },
   {
     title: 'Chłopiec i Czapla',
@@ -360,7 +360,7 @@ movies = [
     runtime: 104,
     rating: 7.1,
     url: 'https://www.imdb.com/title/tt28865980/',
-    picture_url: 'https://m.media-amazon.com/images/M/MV5BZmRiYjQ2MDItN2I5OC00Yjk1LTllYTEtMDZlZDAyZjgxZDVmXkEyXkFqcGdeQXVyMTAyMjQ3NzQ1._V1_FMjpg_UX1000_.jpg'
+    picture_url: 'https://upload.wikimedia.org/wikipedia/en/7/73/American_symphony_poster.jpg'
   },
   {
     title: '20 Dni w Mariupolu',
@@ -378,7 +378,7 @@ movies = [
     runtime: 113,
     rating: 7.4,
     url: 'https://www.imdb.com/title/tt21376900/',
-    picture_url: 'https://m.media-amazon.com/images/M/MV5BNWU3NTcyZGMtZjE4ZS00NGI2LWJkOTYtY2E1ZDA3YzQxNGFmXkEyXkFqcGdeQXVyMTY3ODkyNDkz._V1_FMjpg_UX1000_.jpg'
+    picture_url: 'https://upload.wikimedia.org/wikipedia/en/8/84/Bobi_Wine_The_People%27s_President_2022_film_poster.jpg'
   },
   {
     title: 'To Kill a Tiger',
@@ -387,7 +387,7 @@ movies = [
     runtime: 125,
     rating: 7.9,
     url: 'https://www.imdb.com/title/tt21688772/',
-    picture_url: 'https://m.media-amazon.com/images/M/MV5BMWQ4NjMwYTUtNjE0OC00MTYyLWE4MGQtYTEzNjYwZTA3NDM4XkEyXkFqcGdeQXVyMzM2Mzc4NTU@._V1_.jpg'
+    picture_url: 'https://upload.wikimedia.org/wikipedia/en/9/98/To_Kill_a_Tiger.jpg'
   },
   {
     title: 'Cztery Córki',
@@ -405,7 +405,7 @@ movies = [
     runtime: 85,
     rating: 7.8,
     url: 'https://www.imdb.com/title/tt21688772/',
-    picture_url: 'https://m.media-amazon.com/images/M/MV5BOTFiMjFlZjEtMDM5Zi00MmIzLTliM2EtZTc3NjUzNzA3ZWI1XkEyXkFqcGdeQXVyMTYzMDUzNjEw._V1_.jpg'
+    picture_url: 'https://upload.wikimedia.org/wikipedia/en/2/22/The_Eternal_Memory_poster.jpg'
   },
   {
     title: 'List do Świni',
@@ -414,7 +414,7 @@ movies = [
     runtime: 17,
     rating: 7.0,
     url: 'https://www.imdb.com/title/tt10346066/',
-    picture_url: 'https://m.media-amazon.com/images/M/MV5BMzRhMjg0NDAtZjdkZC00YmE2LThjZWUtZDBmYjBhZmQ0NWFlXkEyXkFqcGdeQXVyODgxMDAxMjY@._V1_FMjpg_UX1000_.jpg'
+    picture_url: 'https://upload.wikimedia.org/wikipedia/en/2/24/Letter_to_a_Pig_Film_Poster.jpg'
   },
   {
     title: 'Ninety-Five Senses',
@@ -441,7 +441,7 @@ movies = [
     runtime: 11,
     rating: 6.9,
     url: 'https://www.imdb.com/title/tt29795707/',
-    picture_url: 'https://m.media-amazon.com/images/M/MV5BZWMxNzhhZTItMzYzMC00NDIzLWJlMmItNTBmYTdlOTYxYWEyXkEyXkFqcGdeQXVyNTU4MTc2MjE@._V1_FMjpg_UX1000_.jpg'
+    picture_url: 'https://upload.wikimedia.org/wikipedia/en/9/9d/WAR_IS_OVER%21_Movie_Poster.jpg'
   },
   {
     title: 'Kawaler Fortuny',
@@ -450,7 +450,7 @@ movies = [
     runtime: 25,
     rating: 7.1,
     url: 'https://www.imdb.com/title/tt26600054/',
-    picture_url: 'https://m.media-amazon.com/images/M/MV5BNTY4MjllYWYtMGVjMi00Y2EyLTk4NjYtOGI3YTU0OGUwODgxXkEyXkFqcGdeQXVyMTI2NzYyODM3._V1_.jpg'
+    picture_url: 'https://upload.wikimedia.org/wikipedia/en/8/8f/Knight_of_Fortune.jpg'
   },
   {
     title: 'Red, White and Blue',
@@ -468,7 +468,7 @@ movies = [
     runtime: 19,
     rating: 6.2,
     url: 'https://www.imdb.com/title/tt28532006/',
-    picture_url: 'https://m.media-amazon.com/images/M/MV5BMzhiZDRmOTktZjNmNy00ZDYyLTk2OGUtZGJmMmFlOWRjYzFhXkEyXkFqcGdeQXVyMTc0ODU3MjY@._V1_FMjpg_UX1000_.jpg'
+    picture_url: 'https://upload.wikimedia.org/wikipedia/en/9/9a/The_After_film_poster.jpg'
   },
   {
     title: "Zdumiewająca historia Henry'ego Sugara",
@@ -477,7 +477,7 @@ movies = [
     runtime: 37,
     rating: 7.4,
     url: 'https://www.imdb.com/title/tt16968450/',
-    picture_url: 'https://m.media-amazon.com/images/M/MV5BZjJjYzkyNWMtZTM2My00YWQ3LWJiODktMzc5YjhlNGY1Mjg5XkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_FMjpg_UX1000_.jpg'
+    picture_url: 'https://upload.wikimedia.org/wikipedia/en/d/dc/HenrySugar.jpg'
   },
   {
     title: 'Island in Between',
@@ -522,7 +522,7 @@ movies = [
     runtime: 39,
     rating: 7.4,
     url: 'https://www.imdb.com/title/tt29118186/',
-    picture_url: 'https://m.media-amazon.com/images/M/MV5BZWNjZjFjMzEtMmRiYi00NjNiLWEyZDEtZDc0NDFlYTM3NTI4XkEyXkFqcGdeQXVyMTM1NjM2ODg1._V1_FMjpg_UX1000_.jpg'
+    picture_url: 'https://upload.wikimedia.org/wikipedia/en/a/a4/The_Last_Repair_Shop_film_poster.jpg'
   }
 ]
 
