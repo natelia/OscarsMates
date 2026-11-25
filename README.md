@@ -3,13 +3,6 @@
 OscarsMates is a web app built with Ruby on Rails to help you track your journey through Oscar-nominated films. Mark what you have watched, rate and review every movie, follow your friends, and compete to see who can watch the most before the ceremony.
 
 <p align="center">
-  <a href="https://github.com/natelia/OscarsMates/actions/workflows/ci.yml"><img src="https://github.com/natelia/OscarsMates/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
-  <img src="https://img.shields.io/badge/Ruby-3.3-red" alt="Ruby 3.3">
-  <img src="https://img.shields.io/badge/Rails-8.1-red" alt="Rails 8.1">
-  <img src="https://img.shields.io/badge/RSpec-~200%20examples-brightgreen" alt="RSpec">
-</p>
-
-<p align="center">
   <a href="docs/screenshots/movies-grid.png"><img src="docs/screenshots/movies-grid.png" width="720" alt="Movies index"></a><br>
   <sub><b>Movies index</b> — search, filters, watched progress</sub>
 </p>
