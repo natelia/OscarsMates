@@ -10,8 +10,8 @@ OscarsMates is a web app built with Ruby on Rails to help you track your journey
 </p>
 
 <p align="center">
-  <a href="docs/screenshots/movie-detail.png"><img src="docs/screenshots/movie-detail.png" width="640" alt="Movie details"></a><br>
-  <sub><b>Movie details</b> — ratings, reviews, mates' scores</sub>
+  <a href="docs/screenshots/movies-grid.png"><img src="docs/screenshots/movies-grid.png" width="720" alt="Movies index"></a><br>
+  <sub><b>Movies index</b> — search, filters, watched progress</sub>
 </p>
 
 <p align="center">
