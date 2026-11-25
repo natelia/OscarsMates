@@ -26,6 +26,10 @@
 # Ignore storage (uploaded files in development and any SQLite databases).
 /storage/*
 !/storage/.keep
+
+# Ignore local SQLite databases
+/db/*.sqlite3
+/db/*.sqlite3-*
 /tmp/storage/*
 !/tmp/storage/
 !/tmp/storage/.keep
