@@ -35,14 +35,14 @@ OscarsMates is a web app built with Ruby on Rails to help you track your journey
 
 ## Engineering Notes
 
-This project is deliberately run like a production codebase, not a demo:
+A few notes on how the project is built and maintained:
 
-- **~200 RSpec examples** (models, requests, and system specs with FactoryBot) plus JavaScript linting
-- **CI on every PR**: RuboCop, Brakeman (security scan), `database_consistency` (schema ↔ model checks), and the full test suite
-- **Protected `main`**: merges require all checks green, linear history, and up-to-date branches — for admins too
+- **~200 RSpec examples** (model, request, and system specs with FactoryBot) plus JavaScript linting
+- **CI on every pull request**: RuboCop, Brakeman (security scan), `database_consistency` (schema ↔ model checks), and the full test suite
+- **Protected `main` branch**: merges require green checks, linear history, and up-to-date branches
 - **Service and query objects** (`RankingService`, `ListMoviesQuery`) keep controllers thin and business logic testable
-- **Security hardening**: remember-me cookies store a per-user token that rotates on password change, `httponly` + `SameSite=Lax` flags, minimum password length
-- **Dependencies kept current** with Dependabot — including the Rails 7.1 → 8.1 upgrade
+- **Security care**: remember-me cookies store a per-user token that rotates on password change, with `httponly` and `SameSite=Lax` flags; a minimum password length is enforced
+- **Dependencies kept up to date** with Dependabot, including the Rails 7.1 → 8.1 upgrade
 
 ## Contributing
 
