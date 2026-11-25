@@ -1,5 +1,3 @@
-![image](https://github.com/user-attachments/assets/ad0937fd-8f2b-4e7c-a0ce-c4951af4f386)
-
 # OscarsMates
 
 OscarsMates is a web app built with Ruby on Rails to help you track your journey through Oscar-nominated films. Mark what you have watched, rate and review every movie, follow your friends, and compete to see who can watch the most before the ceremony.
@@ -11,30 +9,25 @@ OscarsMates is a web app built with Ruby on Rails to help you track your journey
   <img src="https://img.shields.io/badge/RSpec-~200%20examples-brightgreen" alt="RSpec">
 </p>
 
-## Screenshots
+<p align="center">
+  <a href="docs/screenshots/movies-grid.png"><img src="docs/screenshots/movies-grid.png" width="720" alt="Movies index"></a><br>
+  <sub><b>Movies index</b> — search, filters, watched progress</sub>
+</p>
 
-<table>
-  <tr>
-    <td width="50%" align="center">
-      <a href="docs/screenshots/movies-index.png"><img src="docs/screenshots/movies-index.png" width="390" alt="Movies index"></a><br>
-      <sub><b>Movies index</b> — search, filters, watched progress</sub>
-    </td>
-    <td width="50%" align="center">
-      <a href="docs/screenshots/movie-detail.png"><img src="docs/screenshots/movie-detail.png" width="390" alt="Movie details"></a><br>
-      <sub><b>Movie details</b> — ratings, reviews, mates' scores</sub>
-    </td>
-  </tr>
-  <tr>
-    <td width="50%" align="center">
-      <a href="docs/screenshots/mates-ranking.png"><img src="docs/screenshots/mates-ranking.png" width="390" alt="Mates ranking"></a><br>
-      <sub><b>Mates ranking</b> — films, minutes, nominations</sub>
-    </td>
-    <td width="50%" align="center">
-      <a href="docs/screenshots/timeline.png"><img src="docs/screenshots/timeline.png" width="390" alt="Timeline"></a><br>
-      <sub><b>Timeline</b> — your mates' reviews in order</sub>
-    </td>
-  </tr>
-</table>
+<p align="center">
+  <a href="docs/screenshots/movie-detail.png"><img src="docs/screenshots/movie-detail.png" width="640" alt="Movie details"></a><br>
+  <sub><b>Movie details</b> — ratings, reviews, mates' scores</sub>
+</p>
+
+<p align="center">
+  <a href="docs/screenshots/mates-ranking.png"><img src="docs/screenshots/mates-ranking.png" width="640" alt="Mates ranking"></a><br>
+  <sub><b>Mates ranking</b> — films, minutes, nominations</sub>
+</p>
+
+<p align="center">
+  <a href="docs/screenshots/timeline.png"><img src="docs/screenshots/timeline.png" width="640" alt="Timeline"></a><br>
+  <sub><b>Timeline</b> — your mates' reviews in order</sub>
+</p>
 
 ## Key Features
 
