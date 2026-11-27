@@ -1,5 +1,10 @@
 class FeedbackMailer < ApplicationMailer
-  default from: 'noreply@oscarsmates.com'
+  # FEEDBACK_EMAIL is required in production (see compose.production.yml).
+  FALLBACK_RECIPIENT = 'feedback@example.com'.freeze
+
+  def self.recipient
+    ENV.fetch('FEEDBACK_EMAIL', FALLBACK_RECIPIENT)
+  end
 
   def send_feedback(email:, message:, subject:, user_name: nil)
     @email = email
@@ -7,7 +12,7 @@ class FeedbackMailer < ApplicationMailer
     @user_name = user_name
 
     mail(
-      to: 'lunaenumen@gmail.com',
+      to: self.class.recipient,
       subject: "[OscarsMates] #{subject}",
       reply_to: email
     )

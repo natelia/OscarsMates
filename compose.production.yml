@@ -11,6 +11,13 @@ services:
       RAILS_LOG_LEVEL: info
       APP_HOST: ${APP_HOST}
       RAILS_SERVE_STATIC_FILES: "true"
+      # Outgoing mail. compose refuses to start without the required ones.
+      SMTP_ADDRESS: "${SMTP_ADDRESS:?set SMTP_ADDRESS in .env}"
+      SMTP_PORT: "${SMTP_PORT:-587}"
+      SMTP_USERNAME: "${SMTP_USERNAME:?set SMTP_USERNAME in .env}"
+      SMTP_PASSWORD: "${SMTP_PASSWORD:?set SMTP_PASSWORD in .env}"
+      SMTP_FROM: "${SMTP_FROM:?set SMTP_FROM in .env}"
+      FEEDBACK_EMAIL: "${FEEDBACK_EMAIL:?set FEEDBACK_EMAIL in .env}"
     volumes:
       - ./storage:/app/storage
       - ./log:/app/log
