@@ -8,7 +8,7 @@ OscarsMates is a Ruby on Rails social platform for tracking Oscar-nominated film
 
 ## Technology Stack
 
-- **Backend**: Ruby 3.3.6, Rails 7.1.5, SQLite 3, Puma, Sidekiq
+- **Backend**: Ruby 3.3.6, Rails 7.1.5, SQLite 3, Puma
 - **Frontend**: Hotwired Turbo + Stimulus, Tailwind CSS 3.4, Preline UI, Chart.js
 - **JavaScript**: Node.js 22+, Yarn, esbuild, ESLint, Prettier
 - **Testing**: RSpec, Factory Bot, Capybara, SimpleCov

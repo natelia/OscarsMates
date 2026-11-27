@@ -86,5 +86,3 @@ group :test do
   gem 'selenium-webdriver'
   gem 'simplecov', require: false
 end
-
-gem 'sidekiq', '~> 8.1'
