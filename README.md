@@ -26,7 +26,7 @@ OscarsMates is a web app built with Ruby on Rails to help you track your journey
 
 - **Ruby on Rails 8.1** (Ruby 3.3), SQLite, Hotwire (Turbo + Stimulus) for interactivity without a separate frontend
 - **Tailwind CSS** with a custom design system: brand color palettes (Red Carpet, Oscar Gold, Teal) as CSS variables shared across every component
-- **Chart.js** for stats, **Sidekiq** for background jobs, **esbuild** for the JS bundle
+- **Chart.js** for stats, **esbuild** for the JS bundle
 - **Docker Compose** for local development and production parity
 
 ## Engineering Notes

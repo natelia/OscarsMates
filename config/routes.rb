@@ -1,5 +1,3 @@
-require 'sidekiq/web' # require the web UI
-
 Rails.application.routes.draw do
   get 'design_system/index'
   # Health check endpoint for Docker
@@ -34,7 +32,6 @@ Rails.application.routes.draw do
 
   resources :nominations
   resources :genres
-  mount Sidekiq::Web => '/sidekiq'
 
   get 'signup' => 'users#new'
   get '/session', to: 'sessions#new', as: :new_session
